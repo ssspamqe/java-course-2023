@@ -1,19 +1,22 @@
 package edu.hw1;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public final class Homework1 {
     private final static Logger LOGGER = LogManager.getLogger();
+
+    private Homework1() {
+    }
 
     static void logHelloWorld() {
         LOGGER.info("Привет, мир!");
     }
 
+    @SuppressWarnings("MagicNumber")
     static int minutesToSeconds(String time) {
         String[] params = time.split(":");
         int seconds = Integer.parseInt(params[1]);
@@ -26,18 +29,18 @@ public final class Homework1 {
         return minutes * 60 + seconds;
     }
 
+    @SuppressWarnings("MagicNumber")
     static int countDigits(int num) {
 
-        num = Math.abs(num);
+        int absNum = Math.abs(num);
 
         int res = 1;
 
-        while (num >= 10) {
+        while (absNum >= 10) {
             res++;
-            num /= 10;
+            absNum /= 10;
         }
         return res;
-
     }
 
     static boolean isNestable(int[] small, int[] big) {
@@ -99,13 +102,15 @@ public final class Homework1 {
 
     static boolean isPalindromeDescendant(int num) {
 
+        int localNum = num;
+
         while (true) {
 
-            if (isPalindrome(num)) {
+            if (isPalindrome(localNum)) {
                 return true;
             }
 
-            String stringNum = String.valueOf(num);
+            String stringNum = String.valueOf(localNum);
 
             int res = 0;
             int n = stringNum.length();
@@ -120,10 +125,11 @@ public final class Homework1 {
                 res +=
                     Character.getNumericValue(stringNum.charAt(i)) + Character.getNumericValue(stringNum.charAt(i + 1));
             }
-            num = res;
+            localNum = res;
         }
     }
 
+    @SuppressWarnings("MagicNumber")
     private static int getNum(List<Integer> list) {
         int res = 0;
         int n = list.size();
@@ -135,13 +141,17 @@ public final class Homework1 {
 
     }
 
+    @SuppressWarnings("MagicNumber")
     private static int getKStep(int num) {
+
+        int localNum = num;
+
         List<Integer> digits = new ArrayList<>();
-        while (num > 10) {
-            digits.add(num % 10);
-            num /= 10;
+        while (localNum > 10) {
+            digits.add(localNum % 10);
+            localNum /= 10;
         }
-        digits.add(num);
+        digits.add(localNum);
 
         Collections.sort(digits);
         int descending = getNum(digits);
@@ -152,10 +162,14 @@ public final class Homework1 {
         return descending - ascending;
     }
 
+    @SuppressWarnings("MagicNumber")
     static int countK(int num) {
+
+        int localNum = num;
+
         int steps = 0;
-        while (num != 6174) {
-            num = getKStep(num);
+        while (localNum != 6174) {
+            localNum = getKStep(localNum);
             steps++;
         }
         return steps;
@@ -163,66 +177,63 @@ public final class Homework1 {
 
     static int rotateLeft(int n, int shift) {
 
-        int size = (int) (Math.log(n) / Math.log(2))+1;
-        shift %= size;
+        int size = (int) (Math.log(n) / Math.log(2)) + 1;
+        int localShift = shift % size;
 
-        int leftPart = n >> (size - shift);
+        int leftPart = n >> (size - localShift);
 
-        int rightPart = n - (int) Math.pow(2, size - shift) * leftPart;
+        int rightPart = n - (int) Math.pow(2, size - localShift) * leftPart;
 
-        return leftPart + rightPart * (int) Math.pow(2, shift);
+        return leftPart + rightPart * (int) Math.pow(2, localShift);
     }
 
     static int rotateRight(int n, int shift) {
         //StringBuffer s = StringBuffer Integer.toBinaryString(n);
-        int size = (int) (Math.log(n) / Math.log(2))+1;
-        shift %= size;
+        int size = (int) (Math.log(n) / Math.log(2)) + 1;
+        int localShift = shift % size;
 
-        int leftPart = n >> shift;
+        int leftPart = n >> localShift;
 
-        int rightPart = n - (int) Math.pow(2, shift) * leftPart;
+        int rightPart = n - (int) Math.pow(2, localShift) * leftPart;
 
-        return leftPart + rightPart * (int) Math.pow(2, size - shift);
+        return leftPart + rightPart * (int) Math.pow(2, size - localShift);
     }
 
+    @SuppressWarnings("MagicNumber")
+    private static boolean canBeatUp(int[][] board, int r, int c) {
+        return r >= 2 && ((c >= 1 && board[r - 2][c - 1] == 1) || (c <= 6 && board[r - 2][c + 1] == 1));
+    }
+
+    @SuppressWarnings("MagicNumber")
+    private static boolean canBeatDown(int[][] board, int r, int c) {
+        return r <= 5 && ((c >= 1 && board[r + 2][c - 1] == 1) || (c <= 6 && board[r + 2][c + 1] == 1));
+    }
+
+    @SuppressWarnings("MagicNumber")
+    private static boolean canBeatLeft(int[][] board, int r, int c) {
+        return c >= 2 && ((r >= 1 && board[r - 1][c - 2] == 1) || (r <= 6 && board[r + 1][c - 2] == 1));
+    }
+
+    @SuppressWarnings("MagicNumber")
+    private static boolean canBeatRight(int[][] board, int r, int c) {
+        return c <= 5 && ((r >= 1 && board[r - 1][c + 2] == 1) || (r <= 6 && board[r + 1][c + 2] == 1));
+    }
+
+    @SuppressWarnings("MagicNumber")
+    private static boolean canBeat(int[][] board, int r, int c) {
+        return canBeatRight(board, r, c)
+            || canBeatLeft(board, r, c)
+            || canBeatUp(board, r, c)
+            || canBeatDown(board, r, c);
+    }
+
+    @SuppressWarnings("MagicNumber")
     static boolean knightBoardCapture(int[][] board) {
         for (int r = 0; r < 8; r++) {
             for (int c = 0; c < 8; c++) {
                 if (board[r][c] == 1) {
-                    if (r >= 2) { //up
-                        if (c >= 1 && board[r - 2][c - 1] == 1) {
-                            return false;
-                        }
-                        if (c <= 6 && board[r - 2][c + 1] == 1) {
-                            return false;
-                        }
-                    }
-
-                    if (r >= 5) { //down
-                        if (c >= 1 && board[r + 2][c - 1] == 1) {
-                            return false;
-                        }
-                        if (c <= 6 && board[r + 2][c + 1] == 1) {
-                            return false;
-                        }
-                    }
-
-                    if (c >= 2) { //left
-                        if (r >= 1 && board[r - 1][c - 2] == 1) {
-                            return false;
-                        }
-                        if (r <= 6 && board[r + 1][c - 2] == 1) {
-                            return false;
-                        }
-                    }
-
-                    if (c <= 5) {//right
-                        if (r >= 1 && board[r - 1][c + 2] == 1) {
-                            return false;
-                        }
-                        if (r <= 6 && board[r + 1][c + 2] == 1) {
-                            return false;
-                        }
+                    if (canBeat(board, r, c)) {
+                        return false;
                     }
                 }
             }
@@ -231,7 +242,6 @@ public final class Homework1 {
         return true;
     }
 
-    public static void main(String[] args) {
-        Homework1.rotateRight(35, 2);
-    }
+//    public static void main(String[] args) {
+//    }
 }
