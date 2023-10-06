@@ -10,20 +10,23 @@ class Session {
     private int maxMistakes = 5;
     private int mistakes = 0;
 
-    private Set<Character> playedChars = new HashSet<>();
+    private final Set<Character> playedChars = new HashSet<>();
     private int overallGuessed = 0;
 
+    Dictionary dictionary = new Dictionary();
+
     Session() {
+        word = dictionary.getRandomWord();
+        currentState = new StringBuffer("*".repeat(word.length()));
     }
 
     Session(int maxMistakes) {
         this.maxMistakes = maxMistakes;
-        word = Dictionary.getRandomWord();
+        word = dictionary.getRandomWord();
         currentState = new StringBuffer("*".repeat(word.length()));
     }
 
     public int tryGuess(char c) {
-
         playedChars.add(c);
 
         int guessedCnt = 0;
