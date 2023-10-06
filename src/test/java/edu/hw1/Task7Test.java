@@ -3,6 +3,7 @@ package edu.hw1;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 public class Task7Test {
     Task7 task = new Task7();
@@ -41,6 +42,12 @@ public class Task7Test {
     @DisplayName("left rotation of number by negative one is right rotation")
     void checkL567_m3(){
         assertThat(task.rotateLeft(567,-3)).isEqualTo(966);
+    }
+
+    @Test
+    @DisplayName("n must be positive")
+    void checkNonPositive(){
+        assertThatThrownBy(()->task.rotateLeft(-13241,1231)).isInstanceOf(IllegalArgumentException.class);
     }
 
 }
