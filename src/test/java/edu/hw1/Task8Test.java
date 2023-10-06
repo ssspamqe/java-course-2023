@@ -5,9 +5,11 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class Task8Test {
+
+    Task8 task = new Task8();
     @Test
-    @DisplayName("1")
-    void test1(){
+    @DisplayName("Empty board must return true")
+    void checkEmptyBoard(){
 
         int[][] board = {
             {0,0,0,0,0,0,0,0},
@@ -20,30 +22,12 @@ public class Task8Test {
             {0,0,0,0,0,0,0,0},
         };
 
-        assertThat(Homework1.knightBoardCapture(board)).isEqualTo(true);
+        assertThat(task.knightBoardCapture(board)).isEqualTo(true);
     }
 
     @Test
-    @DisplayName("2")
-    void test2(){
-
-        int[][] board = {
-            {1,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0},
-            {0,1,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0},
-        };
-
-        assertThat(Homework1.knightBoardCapture(board)).isEqualTo(false);
-    }
-
-    @Test
-    @DisplayName("3")
-    void test3(){
+    @DisplayName("Random board (must return false)")
+    void checkRandomBoard(){
 
         int[][] board = {
             {1,0,0,0,0,0,0,0},
@@ -56,12 +40,12 @@ public class Task8Test {
             {0,0,0,0,0,0,0,0},
         };
 
-        assertThat(Homework1.knightBoardCapture(board)).isEqualTo(false);
+        assertThat(task.knightBoardCapture(board)).isEqualTo(false);
     }
 
     @Test
-    @DisplayName("4")
-    void test4(){
+    @DisplayName("Random board (must return true)")
+    void checkRandomBoard1(){
 
         int[][] board = {
             {1,0,0,0,0,0,0,0},
@@ -69,17 +53,18 @@ public class Task8Test {
             {0,0,0,0,0,0,0,0},
             {0,0,0,0,0,0,0,0},
             {0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,1,0,0},
+            {0,0,0,0,1,0,0,0},
             {0,0,0,0,0,0,0,0},
             {0,0,0,0,0,0,0,0},
         };
 
-        assertThat(Homework1.knightBoardCapture(board)).isEqualTo(true);
+        assertThat(task.knightBoardCapture(board)).isEqualTo(true);
     }
 
+
     @Test
-    @DisplayName("5")
-    void test5(){
+    @DisplayName("Random board (must return true)")
+    void checkRandomBoard2(){
 
         int[][] board = {
             {1,0,0,0,0,0,0,0},
@@ -92,6 +77,6 @@ public class Task8Test {
             {0,0,0,0,0,0,0,0},
         };
 
-        assertThat(Homework1.knightBoardCapture(board)).isEqualTo(true);
+        assertThat(task.knightBoardCapture(board)).isEqualTo(true);
     }
 }

@@ -6,27 +6,28 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class Task4Test {
 
+    Task4 task = new Task4();
     @Test
-    @DisplayName("1")
-    void test1(){
-        assertThat(Homework1.fixString("")).isEqualTo("");
+    @DisplayName("Empty string must return empty string")
+    void checkEmptyString(){
+        assertThat(task.fixString("")).isEqualTo("");
     }
 
     @Test
-    @DisplayName("2")
-    void test2(){
-        assertThat(Homework1.fixString("5")).isEqualTo("5");
+    @DisplayName("String with length 1 must return itself")
+    void checkStringWithLengthOne(){
+        assertThat(task.fixString("5")).isEqualTo("5");
     }
 
     @Test
-    @DisplayName("3")
-    void test3(){
-        assertThat(Homework1.fixString("6587")).isEqualTo("5678");
+    @DisplayName("6587 must return 5678")
+    void check6587(){
+        assertThat(task.fixString("6587")).isEqualTo("5678");
     }
 
     @Test
-    @DisplayName("4")
-    void test4(){
-        assertThat(Homework1.fixString("21435")).isEqualTo("12345");
+    @DisplayName("String with odd length should return fixed string on s[:-1]")
+    void checkStringWithOddLength(){
+        assertThat(task.fixString("21435")).isEqualTo("12345");
     }
 }

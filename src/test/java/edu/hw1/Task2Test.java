@@ -4,34 +4,36 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 public class Task2Test {
+
+    Task2 task = new Task2();
     @Test
-    @DisplayName("1")
-    void test1(){
-        assertThat(Homework1.countDigits(0)).isEqualTo(1);
+    @DisplayName("0 have 1 digit")
+    void checkZero(){
+        assertThat(task.countDigits(0)).isEqualTo(1);
     }
 
     @Test
-    @DisplayName("2")
-    void test2(){
-        assertThat(Homework1.countDigits(-90)).isEqualTo(2);
+    @DisplayName("Negative numbers have digits as their absolute value")
+    void checkNegative(){
+        assertThat(task.countDigits(-90)).isEqualTo(2);
     }
 
     @Test
-    @DisplayName("3")
-    void test3(){
-        assertThat(Homework1.countDigits(754624)).isEqualTo(6);
+    @DisplayName("754624 have 6 digits")
+    void check754624(){
+        assertThat(task.countDigits(754624)).isEqualTo(6);
     }
 
     @Test
-    @DisplayName("4")
-    void test4(){
-        assertThat(Homework1.countDigits(10)).isEqualTo(2);
+    @DisplayName("10 have 2 digits")
+    void check10(){
+        assertThat(task.countDigits(10)).isEqualTo(2);
     }
 
     @Test
-    @DisplayName("5")
-    void test5(){
-        assertThat(Homework1.countDigits(9)).isEqualTo(1);
+    @DisplayName("9 have one digit")
+    void check9(){
+        assertThat(task.countDigits(9)).isEqualTo(1);
     }
 
 }

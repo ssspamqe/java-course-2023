@@ -1,43 +1,44 @@
 package edu.hw1;
 
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.*;
 
 public class Task1Test {
 
+    Task1 task = new Task1();
+
     @Test
-    @DisplayName("1")
-    void test1(){
-        assertThat(Homework1.minutesToSeconds("00:00")).isEqualTo(0);
+    @DisplayName("00:00 must return 0")
+    void checkZeroTime() {
+        assertThat(task.minutesToSeconds("00:00")).isEqualTo(0);
     }
 
     @Test
-    @DisplayName("2")
-    void test2(){
-        assertThat(Homework1.minutesToSeconds("00:60")).isEqualTo(-1);
+    @DisplayName("Seconds must be under 60")
+    void check60Seconds() {
+        assertThatThrownBy(()-> task.minutesToSeconds("00:60")).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    @DisplayName("3")
-    void test3(){
-        assertThat(Homework1.minutesToSeconds("67:61")).isEqualTo(-1);
+    @DisplayName("Seconds must be under 60")
+    void check61Seconds() {
+        assertThatThrownBy(()-> task.minutesToSeconds("67:61")).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    @DisplayName("4")
-    void test4(){
-        assertThat(Homework1.minutesToSeconds("67:61")).isEqualTo(-1);
-    }
-    @Test
-    @DisplayName("5")
-    void test5(){
-        assertThat(Homework1.minutesToSeconds("-1:07")).isEqualTo(-1);
+    @DisplayName("Minutes must be non negative")
+    void checkNegativeMinutes() {
+        assertThatThrownBy(()-> task.minutesToSeconds("-1:07")).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    @DisplayName("6")
-    void test6(){
-        assertThat(Homework1.minutesToSeconds("01:07")).isEqualTo(67);
+    @DisplayName("01:07 must return 67")
+    void check0107() {
+        assertThat(task.minutesToSeconds("01:07")).isEqualTo(67);
     }
 }

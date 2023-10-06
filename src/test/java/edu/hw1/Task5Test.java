@@ -5,28 +5,29 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class Task5Test {
+    Task5 task = new Task5();
     @Test
-    @DisplayName("1")
-    void test1(){
-        assertThat(Homework1.isPalindromeDescendant(11)).isEqualTo(true);
+    @DisplayName("Palindrome number should return true")
+    void checkPalindromeNumber(){
+        assertThat(task.isPalindromeDescendant(11)).isEqualTo(true);
     }
 
     @Test
-    @DisplayName("2")
-    void test2(){
-        assertThat(Homework1.isPalindromeDescendant(11211230)).isEqualTo(true);
+    @DisplayName("11211230 must return true")
+    void check11211230(){
+        assertThat(task.isPalindromeDescendant(11211230)).isEqualTo(true);
     }
 
     @Test
-    @DisplayName("3")
-    void test3(){
-        assertThat(Homework1.isPalindromeDescendant(567)).isEqualTo(false);
+    @DisplayName("Number with odd length must return false")
+    void checkNumberWithOddLength(){
+        assertThat(task.isPalindromeDescendant(567)).isEqualTo(false);
     }
 
     @Test
-    @DisplayName("4")
-    void test4(){
-        assertThat(Homework1.isPalindromeDescendant(23336014)).isEqualTo(true);
+    @DisplayName("23336014 must return true")
+    void check23336014(){
+        assertThat(task.isPalindromeDescendant(23336014)).isEqualTo(true);
     }
 
 

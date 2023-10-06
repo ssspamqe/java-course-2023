@@ -3,55 +3,59 @@ package edu.hw1;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 public class Task3Test {
+
+    Task3 task = new Task3();
+
     @Test
-    @DisplayName("1")
-    void test1(){
+    @DisplayName("Two equal arrays cant be nested")
+    void checkEqualArrays() {
 
-        int[] small = {1,6,12,3,6};
-        int[] big = {1,6,12,3,6};
+        int[] small = {1, 6, 12, 3, 6};
+        int[] big = {1, 6, 12, 3, 6};
 
-        assertThat(Homework1.isNestable(small,big)).isEqualTo(false);
+        assertThat(task.isNestable(small, big)).isEqualTo(false);
     }
 
     @Test
-    @DisplayName("2")
-    void test2(){
+    @DisplayName("Array must be non empty")
+    void checkEmptyArray() {
 
         int[] small = {};
-        int[] big = {1,6,12,3,6};
+        int[] big = {1, 6, 12, 3, 6};
 
-        assertThat(Homework1.isNestable(small,big)).isEqualTo(false);
+        assertThatThrownBy(() -> task.isNestable(small, big)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    @DisplayName("3")
-    void test3(){
+    @DisplayName("Array may have int's maximal and minimal values")
+    void checkIntegerMaxAndMIn() {
 
-        int[] small = {-1,8};
+        int[] small = {-1, 8};
         int[] big = {Integer.MIN_VALUE, Integer.MAX_VALUE};
 
-        assertThat(Homework1.isNestable(small,big)).isEqualTo(true);
+        assertThat(task.isNestable(small, big)).isEqualTo(true);
     }
 
     @Test
-    @DisplayName("4")
-    void test4(){
+    @DisplayName("Array with repeating elements should work")
+    void checkRepeatingElements() {
 
-        int[] small = {4,5};
-        int[] big = {4,5,5,5};
+        int[] small = {4, 5};
+        int[] big = {4, 5, 5, 5};
 
-        assertThat(Homework1.isNestable(small,big)).isEqualTo(false);
+        assertThat(task.isNestable(small, big)).isEqualTo(false);
     }
 
     @Test
-    @DisplayName("5")
-    void test5(){
+    @DisplayName("Random input")
+    void checkRandomInput() {
 
-        int[] small = {4,10};
-        int[] big = {3,5,5,10};
+        int[] small = {4, 10};
+        int[] big = {3, 5, 5, 10};
 
-        assertThat(Homework1.isNestable(small,big)).isEqualTo(false);
+        assertThat(task.isNestable(small, big)).isEqualTo(false);
     }
 }

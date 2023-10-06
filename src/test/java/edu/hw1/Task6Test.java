@@ -3,29 +3,31 @@ package edu.hw1;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 public class Task6Test {
+    Task6 task = new Task6();
     @Test
-    @DisplayName("1")
-    void test1(){
-        assertThat(Homework1.countK(6174)).isEqualTo(0);
+    @DisplayName("6174 must return 0")
+    void check6174(){
+        assertThat(task.countK(6174)).isEqualTo(0);
     }
 
     @Test
-    @DisplayName("2")
-    void test2(){
-        assertThat(Homework1.countK(7641)).isEqualTo(1);
+    @DisplayName("7641 must return 1")
+    void check7641(){
+        assertThat(task.countK(7641)).isEqualTo(1);
     }
 
     @Test
-    @DisplayName("3")
-    void test3(){
-        assertThat(Homework1.countK(7641)).isEqualTo(1);
+    @DisplayName("3524 must return 3")
+    void check3524(){
+        assertThat(task.countK(3524)).isEqualTo(3);
     }
 
     @Test
-    @DisplayName("4")
-    void test4(){
-        assertThat(Homework1.countK(3524)).isEqualTo(3);
+    @DisplayName("Number must be in range (1000,9999]")
+    void checkRange(){
+         assertThatThrownBy(()->task.countK(1000)).isInstanceOf(IllegalArgumentException.class);
     }
 }
