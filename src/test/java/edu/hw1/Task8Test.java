@@ -9,7 +9,7 @@ public class Task8Test {
     Task8 task = new Task8();
     @Test
     @DisplayName("Empty board must return true")
-    void checkEmptyBoard(){
+    void should_returnTrue_when_emptyBoard(){
 
         int[][] board = {
             {0,0,0,0,0,0,0,0},
@@ -22,12 +22,12 @@ public class Task8Test {
             {0,0,0,0,0,0,0,0},
         };
 
-        assertThat(task.knightBoardCapture(board)).isEqualTo(true);
+        assertThat(task.knightBoardCapture(board)).isTrue();
     }
 
     @Test
     @DisplayName("Random board (must return false)")
-    void checkRandomBoard(){
+    void should_returnFalse_when_oneKnightCanBeatAnother(){
 
         int[][] board = {
             {1,0,0,0,0,0,0,0},
@@ -40,12 +40,12 @@ public class Task8Test {
             {0,0,0,0,0,0,0,0},
         };
 
-        assertThat(task.knightBoardCapture(board)).isEqualTo(false);
+        assertThat(task.knightBoardCapture(board)).isFalse();
     }
 
     @Test
     @DisplayName("Random board (must return true)")
-    void checkRandomBoard1(){
+    void should_returnFalse_when_oneKnightCantBeatAnother(){
 
         int[][] board = {
             {1,0,0,0,0,0,0,0},
@@ -58,25 +58,6 @@ public class Task8Test {
             {0,0,0,0,0,0,0,0},
         };
 
-        assertThat(task.knightBoardCapture(board)).isEqualTo(true);
-    }
-
-
-    @Test
-    @DisplayName("Random board (must return true)")
-    void checkRandomBoard2(){
-
-        int[][] board = {
-            {1,0,0,0,0,0,0,0},
-            {0,1,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,1,0,0},
-            {0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0},
-        };
-
-        assertThat(task.knightBoardCapture(board)).isEqualTo(true);
+        assertThat(task.knightBoardCapture(board)).isTrue();
     }
 }

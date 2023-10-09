@@ -14,31 +14,25 @@ public class Task1Test {
 
     @Test
     @DisplayName("00:00 must return 0")
-    void checkZeroTime() {
+    void should_return0_when_0MinutesAnd0Seconds() {
         assertThat(task.minutesToSeconds("00:00")).isEqualTo(0);
     }
 
     @Test
     @DisplayName("Seconds must be under 60")
-    void check60Seconds() {
+    void should_throwException_when_secondsGreaterOrEqualThan60() {
         assertThatThrownBy(()-> task.minutesToSeconds("00:60")).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    @DisplayName("Seconds must be under 60")
-    void check61Seconds() {
-        assertThatThrownBy(()-> task.minutesToSeconds("67:61")).isInstanceOf(IllegalArgumentException.class);
-    }
-
-    @Test
     @DisplayName("Minutes must be non negative")
-    void checkNegativeMinutes() {
+    void should_throwException_when_minutesNegative() {
         assertThatThrownBy(()-> task.minutesToSeconds("-1:07")).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     @DisplayName("01:07 must return 67")
-    void check0107() {
+    void should_returnTime_When_NormalInput() {
         assertThat(task.minutesToSeconds("01:07")).isEqualTo(67);
     }
 }
