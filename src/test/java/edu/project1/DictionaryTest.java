@@ -8,7 +8,7 @@ public class DictionaryTest {
 
     @Test
     @DisplayName("Check the adding words to dictionary")
-    void checkAddingWords(){
+    void should_addWordToDictionary(){
 
         String newWord = "myword";
 
@@ -19,7 +19,7 @@ public class DictionaryTest {
 
     @Test
     @DisplayName("Check the getting of random words")
-    void checkRandomWord(){
+    void should_returnRandomWordFromDictionary(){
 
         String randomWord = dictionary.getRandomWord();
 

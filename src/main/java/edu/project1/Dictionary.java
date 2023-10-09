@@ -21,7 +21,6 @@ class Dictionary {
             if (newWord.charAt(i) > 'z' || newWord.charAt(i) < 'a') {
                 throw new IllegalArgumentException("Word must contain only lower english letters");
             }
-
         }
         dictionary.add(newWord);
     }

@@ -20,7 +20,7 @@ public class SessionTest {
 
     @Test
     @DisplayName("Check guess attempt")
-    void checkGuess() {
+    void check_guess() {
 
         String word = session.getWord();
 
@@ -34,7 +34,7 @@ public class SessionTest {
 
     @Test
     @DisplayName("Check win situation")
-    void checkWin() {
+    void check_win() {
 
         String word = session.getWord();
 
@@ -52,7 +52,7 @@ public class SessionTest {
 
     @Test
     @DisplayName("Check lose situation")
-    void checkLose() {
+    void check_lose() {
 
         String word = session.getWord();
 
