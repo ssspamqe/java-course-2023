@@ -17,15 +17,13 @@ public class ConsoleHangman {
 
         LOGGER.info("Starting game...");
 
-        boolean first = true;
-
         gameLoop:
         while (!line.equals("exit")) {
             LOGGER.info("Starting round...");
             LOGGER.info("Input max possible mistakes");
             int maxMistakes = 5;
             maxMistakes = sc.nextInt();
-            sc.nextLine();
+            sc.nextLine(); //idk why but this method returns empty line without reading an actual stdin
             Session session = new Session(maxMistakes);
             line = "";
             roundLoop:
