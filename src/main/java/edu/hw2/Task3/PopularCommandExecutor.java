@@ -1,0 +1,38 @@
+package edu.hw2.Task3;
+
+import edu.hw2.Task3.interfaces.Connection;
+import edu.hw2.Task3.interfaces.ConnectionManager;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+public final class PopularCommandExecutor {
+
+    Logger LOGGER = LogManager.getLogger();
+
+    private final ConnectionManager manager;
+    private final int maxAttempts;
+
+    public PopularCommandExecutor(ConnectionManager manager, int maxAttempts) {
+        this.manager = manager;
+        this.maxAttempts = maxAttempts;
+    }
+
+    void updatePackages() {
+        tryExecute("apt update && apt upgrade -y");
+    }
+
+    private void tryExecute(String command) {
+        try (Connection connection = manager.getConnection())
+        {
+            if (connection instanceof FaultyConnection) {
+                return;
+            }
+            for (int i = 0; i < maxAttempts; i++) {
+                connection.execute(command);
+            }
+        } catch (Exception ex){
+            LOGGER.info(ex);
+        }
+
+    }
+}
