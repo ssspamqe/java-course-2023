@@ -10,7 +10,7 @@ public class ConsoleHangman {
     private final static Logger LOGGER = LogManager.getLogger();
     final String constEXIT = "exit";
     final String constFINISH = "finish";
-    final String constLOSE = "You lost!";
+   static final String CONST_LOSE = "You lost!";
 
     @SuppressWarnings("MagicNumber") public void playGame() {
 
