@@ -5,15 +5,15 @@ import java.util.List;
 import java.util.Random;
 
 class Dictionary {
-    private static final List<String> dictionary = new ArrayList<>(List.of("machine", "house", "theatre"));
+    private static final List<String> DICTIONARY = new ArrayList<>(List.of("machine", "house", "theatre"));
     private final Random rnd = new Random();
 
     public String getRandomWord() {
-        return dictionary.get(rnd.nextInt(dictionary.size()));
+        return DICTIONARY.get(rnd.nextInt(DICTIONARY.size()));
     }
 
     public List<String> getDictionary() {
-        return dictionary;
+        return DICTIONARY;
     }
 
     public static void addNewWord(String newWord) {
@@ -22,6 +22,6 @@ class Dictionary {
                 throw new IllegalArgumentException("Word must contain only lower english letters");
             }
         }
-        dictionary.add(newWord);
+        DICTIONARY.add(newWord);
     }
 }

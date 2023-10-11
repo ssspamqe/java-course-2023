@@ -60,8 +60,9 @@ public class SessionTest {
             if (session.tryGuess(letter) == 0) {
                 mistakes++;
             }
-            if(mistakes == session.getMaxMistakes())
+            if (mistakes == session.getMaxMistakes()) {
                 break;
+            }
         }
 
         assertThat(session.getMistakes()).isEqualTo(mistakes);

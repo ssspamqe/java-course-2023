@@ -13,6 +13,7 @@ public class ConsoleHangman {
 
     private Session session;
 
+    //Call this method to start the game
     @SuppressWarnings("MagicNumber") public void playGame() {
 
         Scanner sc = new Scanner(System.in);
@@ -66,28 +67,23 @@ public class ConsoleHangman {
     //Are these two methods allowed to output something?
     boolean isIncorrectInput(String line) {
 
+        boolean isIncorrect = false;
 
         if (line.length() > 1) {
             LOGGER.info("Inputted line have length 2+");
-            return true;
-        }
-
-        if (line.isEmpty()) {
+            isIncorrect = true;
+        } else if (line.isEmpty()) {
             LOGGER.info("Empty line");
-            return true;
-        }
-
-        if (!Character.isLetter(line.charAt(0)) || !Character.isLowerCase(line.charAt(0))) {
+            isIncorrect = true;
+        } else if (!Character.isLetter(line.charAt(0)) || !Character.isLowerCase(line.charAt(0))) {
             LOGGER.info("Not a lowercase english letter");
-            return true;
-        }
-
-        if (session.wasPlayed(line.charAt(0))) {
+            isIncorrect = true;
+        } else if (session.wasPlayed(line.charAt(0))) {
             LOGGER.info("This character was played");
-            return true;
+            isIncorrect = true;
         }
 
-        return false;
+        return isIncorrect;
     }
 
     String getGuessCheckResult(int guessed) {

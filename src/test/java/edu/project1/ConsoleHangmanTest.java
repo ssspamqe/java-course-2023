@@ -13,23 +13,23 @@ public class ConsoleHangmanTest {
     ConsoleHangman game;
 
     @BeforeEach
-    void initializeObject(){
+    void initializeObject() {
         game = new ConsoleHangman();
     }
 
-
     static Arguments[] incorrectLines() {
-        return new Arguments[]{
+        return new Arguments[] {
             Arguments.of("123"),
             Arguments.of("exxit"),
             Arguments.of("1"),
             Arguments.of("A")
         };
     }
+
     @ParameterizedTest
     @MethodSource("incorrectLines")
     @DisplayName("Check isIncorrectInput(String line)")
-    void check_isIncorrectInput(String line){
+    void check_isIncorrectInput(String line) {
         assertThat(game.isIncorrectInput(line)).isTrue();
     }
 }
