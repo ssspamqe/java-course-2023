@@ -1,6 +1,7 @@
 package edu.hw2.Task3;
 
 import edu.hw2.Task3.interfaces.Connection;
+import edu.hw2.Task3.interfaces.ConnectionException;
 import edu.hw2.Task3.interfaces.ConnectionManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,17 +23,16 @@ public final class PopularCommandExecutor {
     }
 
     private void tryExecute(String command) {
-        try (Connection connection = manager.getConnection())
-        {
-            if (connection instanceof FaultyConnection) {
-                return;
+        for (int i = 0; i < maxAttempts; i++) {
+            try (Connection connection = manager.getConnection()) {
+                if (connection instanceof StableConnection) {
+                    connection.execute(command);
+                }
+            } catch (Exception ex) {
+                LOGGER.info(ex);
             }
-            for (int i = 0; i < maxAttempts; i++) {
-                connection.execute(command);
-            }
-        } catch (Exception ex){
-            LOGGER.info(ex);
         }
 
+        throw new ConnectionException();
     }
 }
