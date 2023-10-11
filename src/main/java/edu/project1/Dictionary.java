@@ -12,7 +12,7 @@ class Dictionary {
         return dictionary.get(rnd.nextInt(dictionary.size()));
     }
 
-    public List<String> getDictionary(){
+    public List<String> getDictionary() {
         return dictionary;
     }
 

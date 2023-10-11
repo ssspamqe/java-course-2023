@@ -3,10 +3,10 @@ package edu.project1;
 import java.util.HashSet;
 import java.util.Set;
 
-
 class Session {
     private String word;
     private StringBuffer currentState;
+    @SuppressWarnings("MagicNumber")
     private int maxMistakes = 5;
     private int mistakes = 0;
 
@@ -31,7 +31,7 @@ class Session {
 
         int guessedCnt = 0;
         for (int i = 0; i < currentState.length(); i++) {
-            if (word.charAt(i) == c && currentState.charAt(i)=='*') {
+            if (word.charAt(i) == c && currentState.charAt(i) == '*') {
                 currentState.setCharAt(i, c);
                 guessedCnt++;
             }
@@ -58,15 +58,15 @@ class Session {
         return currentState.toString();
     }
 
-    public String getWord(){
+    public String getWord() {
         return word;
     }
 
-    public boolean wasPlayed(char c){
+    public boolean wasPlayed(char c) {
         return playedChars.contains(c);
     }
 
-    public boolean won(){
+    public boolean won() {
         return overallGuessed == currentState.length();
     }
 }
