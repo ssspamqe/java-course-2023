@@ -1,14 +1,16 @@
 package edu.project1;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
 public class DictionaryTest {
 
     Dictionary dictionary = new Dictionary();
 
     @Test
     @DisplayName("Check the adding words to dictionary")
-    void should_addWordToDictionary(){
+    void should_addWordToDictionary() {
 
         String newWord = "myword";
 
@@ -19,7 +21,7 @@ public class DictionaryTest {
 
     @Test
     @DisplayName("Check the getting of random words")
-    void should_returnRandomWordFromDictionary(){
+    void should_returnRandomWordFromDictionary() {
 
         String randomWord = dictionary.getRandomWord();
 

@@ -12,9 +12,10 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 public class SessionTest {
 
     Session session;
+    ConsoleHangman game;
 
     @BeforeEach
-    public void initializeSession() {
+    public void initializeObjects() {
         session = new Session();
     }
 
@@ -42,7 +43,7 @@ public class SessionTest {
 
         word.chars().forEach(i -> letters.add((char) i));
 
-        for(var i : letters){
+        for (var i : letters) {
             assertThat(session.tryGuess(i)).isGreaterThan(0);
         }
 
@@ -53,29 +54,18 @@ public class SessionTest {
     @Test
     @DisplayName("Check lose situation")
     void check_lose() {
-
-        String word = session.getWord();
-
-        Set<Character> letters = new HashSet<Character>();
-
-        word.chars().forEach(i -> letters.add((char) i));
-
         int mistakes = 0;
-
-        for(int i = 0;i<26;i++)
-        {
-            char letter = (char)((int)'a'+i);
-
-            if(!letters.contains(letter)){
-                session.tryGuess(letter);
+        for (int i = 0; i < 26; i++) {
+            char letter = (char) ((int) 'a' + i);
+            if (session.tryGuess(letter) == 0) {
                 mistakes++;
             }
-
+            if(mistakes == session.getMaxMistakes())
+                break;
         }
 
-
-        assertThat(session.getMistakes()).isGreaterThan(session.getMaxMistakes());
         assertThat(session.getMistakes()).isEqualTo(mistakes);
+        assertThat(session.getMaxMistakes()).isEqualTo(mistakes);
     }
 
 }

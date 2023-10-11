@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 class Dictionary {
-    private final ArrayList<String> dictionary = new ArrayList<>(List.of("machine", "house", "theatre"));
+    private static final List<String> dictionary = new ArrayList<>(List.of("machine", "house", "theatre"));
     private final Random rnd = new Random();
 
     public String getRandomWord() {
@@ -16,9 +16,9 @@ class Dictionary {
         return dictionary;
     }
 
-    public void addNewWord(String newWord) {
+    public static void addNewWord(String newWord) {
         for (int i = 0; i < newWord.length(); i++) {
-            if (newWord.charAt(i) > 'z' || newWord.charAt(i) < 'a') {
+            if (!Character.isLetter(newWord.charAt(i)) || !Character.isLowerCase(newWord.charAt(i))) {
                 throw new IllegalArgumentException("Word must contain only lower english letters");
             }
         }
