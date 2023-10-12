@@ -35,7 +35,7 @@ public class ConsoleHangman {
             line = "";
 
             roundLoop:
-            while (!line.equals(FINISH)) {
+            while (! FINISH.equals(line))) {
                 LOGGER.info("Word: " + session.getCurrentState());
 
                 LOGGER.info("Guess a letter or type \"exit\" to exit the game, \"finish\" to finish the round");
