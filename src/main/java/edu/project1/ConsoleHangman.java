@@ -66,23 +66,17 @@ public class ConsoleHangman {
 
     //I need to use not more than 4 return statements according to checkstyle
     boolean isIncorrectInput(String line) {
-
-        boolean isIncorrect = false;
-
-        if (line.length() > 1) {
-            LOGGER.info("Inputted line have length 2+");
-            isIncorrect = true;
-        } else if (line.isEmpty()) {
-            LOGGER.info("Empty line");
-            isIncorrect = true;
+        if (line.length() != 1) {
+            LOGGER.info("Inputted line is not a single char");
+            return true;
         } else if (!Character.isLetter(line.charAt(0)) || !Character.isLowerCase(line.charAt(0))) {
             LOGGER.info("Not a lowercase english letter");
-            isIncorrect = true;
+            return true;
         } else if (session.wasPlayed(line.charAt(0))) {
             LOGGER.info("This character was played");
-            isIncorrect = true;
+            return true;
         }
-        return isIncorrect;
+        return false;
     }
 
     String getGuessCheckResult(int guessed) {

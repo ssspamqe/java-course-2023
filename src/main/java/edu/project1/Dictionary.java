@@ -1,13 +1,15 @@
 package edu.project1;
 
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 class Dictionary {
     //List.of returns immutable Collection, so we will be not able to add new words
     // (and i decided to let it be just private)
-    private List<String> dictionary = new ArrayList<>(List.of("machine", "house", "theatre"));
+    private List<String> dictionary = List.of("machine", "house", "theatre");
     private final Random rnd = new Random();
 
     public String getRandomWord() {
@@ -24,6 +26,7 @@ class Dictionary {
                 throw new IllegalArgumentException("Word must contain only lower english letters");
             }
         }
-        dictionary.add(newWord);
+
+        dictionary = Stream.concat(dictionary.stream(), Stream.of(newWord)).collect(Collectors.toUnmodifiableList());
     }
 }
