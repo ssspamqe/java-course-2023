@@ -23,7 +23,7 @@ public class ConsoleHangman {
         LOGGER.info("Starting game...");
 
         gameLoop:
-        while (!line.equals(EXIT)) {
+        while (!EXIT.equals(line)) {
             LOGGER.info("Starting round...");
             LOGGER.info("Input max possible mistakes");
 
@@ -35,19 +35,19 @@ public class ConsoleHangman {
             line = "";
 
             roundLoop:
-            while (! FINISH.equals(line))) {
+            while (!FINISH.equals(line)) {
                 LOGGER.info("Word: " + session.getCurrentState());
 
                 LOGGER.info("Guess a letter or type \"exit\" to exit the game, \"finish\" to finish the round");
                 line = sc.nextLine();
 
-                if (line.equals(FINISH)) {
+                if (FINISH.equals(line)) {
                     LOGGER.info(LOSE);
                     LOGGER.info("Mysterious word was: " + session.getWord());
-                    break roundLoop;
+                    break;
                 }
 
-                if (line.equals(EXIT)) {
+                if (EXIT.equals(line)) {
                     LOGGER.info("Exiting the game...");
                     break gameLoop;
                 }
@@ -64,7 +64,7 @@ public class ConsoleHangman {
         sc.close();
     }
 
-    //Are these two methods allowed to output something?
+    //I need to use not more than 4 return statements according to checkstyle
     boolean isIncorrectInput(String line) {
 
         boolean isIncorrect = false;
@@ -82,7 +82,6 @@ public class ConsoleHangman {
             LOGGER.info("This character was played");
             isIncorrect = true;
         }
-
         return isIncorrect;
     }
 

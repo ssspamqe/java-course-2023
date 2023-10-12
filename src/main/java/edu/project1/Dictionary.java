@@ -5,23 +5,25 @@ import java.util.List;
 import java.util.Random;
 
 class Dictionary {
-    private static final List<String> DICTIONARY = List.of("machine", "house", "theatre");
+    //List.of returns immutable Collection, so we will be not able to add new words
+    // (and i decided to let it be just private)
+    private List<String> dictionary = new ArrayList<>(List.of("machine", "house", "theatre"));
     private final Random rnd = new Random();
 
     public String getRandomWord() {
-        return DICTIONARY.get(rnd.nextInt(DICTIONARY.size()));
+        return dictionary.get(rnd.nextInt(dictionary.size()));
     }
 
     public List<String> getDictionary() {
-        return DICTIONARY;
+        return dictionary;
     }
 
-    public static void addNewWord(String newWord) {
+    public void addNewWord(String newWord) {
         for (int i = 0; i < newWord.length(); i++) {
             if (!Character.isLetter(newWord.charAt(i)) || !Character.isLowerCase(newWord.charAt(i))) {
                 throw new IllegalArgumentException("Word must contain only lower english letters");
             }
         }
-        DICTIONARY.add(newWord);
+        dictionary.add(newWord);
     }
 }
