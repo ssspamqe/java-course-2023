@@ -1,11 +1,8 @@
 package edu.hw2.Task4;
 
-import java.util.Arrays;
-import java.util.function.Function;
+public class Task4 {
 
-public class Task4Main {
-
-    static CallingInfo callingInfo(Throwable throwable){
+    public static CallingInfo callingInfo(Throwable throwable){
         var stackTrace = throwable.getStackTrace();
 
         String className = stackTrace[0].getClassName();
@@ -14,10 +11,10 @@ public class Task4Main {
     }
 
     public static void main(String[] params){
-        callingInfo(new Throwable());
+        f();
     }
 
-    void f(){
+    private static void f(){
         System.out.println(callingInfo(new Throwable()));
     }
 }

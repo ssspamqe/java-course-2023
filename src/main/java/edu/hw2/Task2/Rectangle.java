@@ -1,9 +1,10 @@
 package edu.hw2.Task2;
 
 public class Rectangle {
-    private int width=-1;
-    private int height=-1;
+    private int width;
+    private int height;
 
+    public Rectangle(){}
 
     public void setWidth(int width) {
         this.width = width;
@@ -13,13 +14,15 @@ public class Rectangle {
         this.height = height;
     }
 
-    public double area() {
-        if(width == -1 && height ==-1)
-            return 0;
-        else if(width == -1)
-            return height*height;
-        else if(height == -1)
-            return width * width;
+    public int getWidth(){
+        return width;
+    }
+
+    public int getHeight(){
+        return height;
+    }
+
+    public double getRectangularArea() {
         return width * height;
     }
 }
