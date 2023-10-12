@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 class Dictionary {
-    private static final List<String> DICTIONARY = new ArrayList<>(List.of("machine", "house", "theatre"));
+    private static final List<String> DICTIONARY = List.of("machine", "house", "theatre");
     private final Random rnd = new Random();
 
     public String getRandomWord() {
