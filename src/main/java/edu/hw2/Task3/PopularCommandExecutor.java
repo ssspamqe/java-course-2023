@@ -8,7 +8,7 @@ import org.apache.logging.log4j.Logger;
 
 public final class PopularCommandExecutor {
 
-    Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
     private final ConnectionManager manager;
     private final int maxAttempts;

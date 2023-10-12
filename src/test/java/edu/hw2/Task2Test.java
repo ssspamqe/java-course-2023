@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class Task2Test {
     static Arguments[] rectangles() {
-        return new Arguments[]{
+        return new Arguments[] {
             Arguments.of(new Rectangle()),
             Arguments.of(new Square())
         };
@@ -25,7 +25,8 @@ public class Task2Test {
 
         assertThat(rect.getRectangularArea()).isEqualTo(200.0);
 
-        if(rect instanceof Square)
+        if (rect instanceof Square) {
             assertThat(((Square) rect).getSquareArea()).isEqualTo(100);
+        }
     }
 }

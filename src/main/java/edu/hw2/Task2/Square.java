@@ -14,12 +14,8 @@ public class Square extends Rectangle {
         side = height;
         super.setHeight(height);
     }
-    public int getSquareArea(){
-        return side * side;
-    }
 
-    @Override
-    public double getRectangularArea() {
-        return getWidth() * getWidth();
+    public int getSquareArea() {
+        return side * side;
     }
 }

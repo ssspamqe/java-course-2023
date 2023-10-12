@@ -6,10 +6,12 @@ import java.util.Random;
 
 public class DefaultConnectionManager implements ConnectionManager {
     Random rand = new Random();
+
     @Override
     public Connection getConnection() {
-        if(rand.nextBoolean())
+        if (rand.nextBoolean()) {
             return new FaultyConnection();
+        }
         return new StableConnection();
     }
 }

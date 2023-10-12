@@ -6,11 +6,11 @@ import org.apache.logging.log4j.Logger;
 
 public class StableConnection implements Connection {
 
-    Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
     public void execute(String command) {
-        LOGGER.info("Executed command: " + command +" via StableConnection");
+        LOGGER.info("Executed command: " + command + " via StableConnection");
     }
 
     @Override

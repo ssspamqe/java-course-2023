@@ -12,7 +12,7 @@ public sealed interface Expr {
 
     public record Negate(Expr constant) implements Expr {
         @Override
-        public double evaluate(){
+        public double evaluate() {
             return -constant.evaluate();
         }
     }
@@ -20,16 +20,18 @@ public sealed interface Expr {
     public record Exponent(Expr constant, double num) implements Expr {
         @Override
         public double evaluate() {
-            return Math.pow(constant.evaluate(),num);
+            return Math.pow(constant.evaluate(), num);
         }
     }
+
     public record Addition(Expr a, Expr b) implements Expr {
         @Override
-        public double evaluate(){
+        public double evaluate() {
             return a.evaluate() + b.evaluate();
         }
     }
-    public record Multiplication (Expr a, Expr b) implements Expr {
+
+    public record Multiplication(Expr a, Expr b) implements Expr {
         @Override
         public double evaluate() {
             return a.evaluate() * b.evaluate();

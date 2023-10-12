@@ -4,7 +4,8 @@ public class Rectangle {
     private int width;
     private int height;
 
-    public Rectangle(){}
+    public Rectangle() {
+    }
 
     public void setWidth(int width) {
         this.width = width;
@@ -14,11 +15,11 @@ public class Rectangle {
         this.height = height;
     }
 
-    public int getWidth(){
+    public int getWidth() {
         return width;
     }
 
-    public int getHeight(){
+    public int getHeight() {
         return height;
     }
 

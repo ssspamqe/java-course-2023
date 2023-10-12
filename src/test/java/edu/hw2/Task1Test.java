@@ -10,7 +10,7 @@ public class Task1Test {
 
     @Test
     @DisplayName("Classes that implement Expr interface should compute values correctly")
-    void check_ExprInterface(){
+    void check_ExprInterface() {
         var two = new Constant(2);
         var four = new Constant(4);
         var negOne = new Negate(new Constant(1));

@@ -9,8 +9,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class Task4Test {
 
     @Test
-    @DisplayName("callingInfo should return CallingInfo instance that contains correct className and methodName which called it")
-    void check_callingInfo(){
+    @DisplayName(
+        "callingInfo should return CallingInfo instance that contains correct className and methodName which called it")
+    void check_callingInfo() {
         CallingInfo callingInfo = Task4.callingInfo(new Throwable());
         assertThat(callingInfo.className()).isEqualTo("edu.hw2.Task4Test");
         assertThat(callingInfo.methodName()).isEqualTo("check_callingInfo");
