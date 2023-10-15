@@ -16,13 +16,23 @@ public class Task3Test {
     @DisplayName("DefaultConnectionManager should return Connection interface implementation instance")
     void check_DefaultConnectionManager_getConnection() {
         ConnectionManager connectionManager = new DefaultConnectionManager();
-        assertThat(connectionManager.getConnection()).isInstanceOf(Connection.class);
+
+
+        Connection connection = connectionManager.getConnection();
+
+
+        assertThat(connection).isInstanceOf(Connection.class);
     }
 
     @Test
     @DisplayName("FaultyConnectionManager should return FaultyConnection instance")
     void check_FaultyConnectionManager_getConnection() {
         ConnectionManager connectionManager = new FaultyConnectionManager();
-        assertThat(connectionManager.getConnection()).isInstanceOf(FaultyConnection.class);
+
+
+        Connection connection = connectionManager.getConnection();
+
+
+        assertThat(connection).isInstanceOf(FaultyConnection.class);
     }
 }
