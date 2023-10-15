@@ -4,9 +4,6 @@ import edu.hw2.Task2.Rectangle;
 import edu.hw2.Task2.Square;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class Task2Test {
@@ -14,12 +11,12 @@ public class Task2Test {
     @Test
     @DisplayName("Rectangle instance should have method for getting it's area")
     void check_rectangleArea() {
-        Rectangle rectangle = new Rectangle();
+        Rectangle rectangle = new Rectangle(0,0);
 
 
-        rectangle.setWidth(20);
-        rectangle.setHeight(10);
-        double area = rectangle.getRectangularArea();
+        rectangle = rectangle.setWidth(20);
+        rectangle = rectangle.setHeight(10);
+        double area = rectangle.getArea();
 
 
         assertThat(area).isEqualTo(200);
@@ -29,12 +26,11 @@ public class Task2Test {
     @Test
     @DisplayName("Square instance should not override Rectangle behaviour, but expand it")
     void check_squareArea(){
-        Square square = new Square();
+        Square square = new Square(0);
 
 
-        square.setWidth(20);
-        square.setHeight(10);
-        double area = square.getRectangularArea();
+        square = (Square) square.setHeight(10);
+        double area = square.getArea();
 
 
         assertThat(area).isEqualTo(100);

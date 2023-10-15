@@ -1,21 +1,23 @@
 package edu.hw2.Task2;
 
-//well, i dont think i had understood the task correctly
 public class Square extends Rectangle {
-
-    int side;
-
-    @Override public void setWidth(int width) {
-        side = width;
-        super.setWidth(width);
+    public Square(int side) {
+        super(side, side);
     }
 
-    @Override public void setHeight(int height) {
-        side = height;
-        super.setHeight(height);
+    @Deprecated
+    @Override
+    public Rectangle setWidth(int width) {
+        return new Square(width);
     }
 
-    public int getSquareArea() {
-        return side * side;
+    @Deprecated
+    @Override
+    public Rectangle setHeight(int height) {
+        return new Square(height);
+    }
+
+    public Rectangle setSide(int side) {
+        return new Square(side);
     }
 }
