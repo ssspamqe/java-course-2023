@@ -4,25 +4,26 @@ class Task2 {
 
     fun clusterize(s: String): List<String> {
 
-        var res: List<String> = emptyList();
+        var res: List<String> = emptyList()
 
         var cnt = 0;
-        var lastCluster = "";
+        var lastCluster = ""
+
         s.forEach {
-            lastCluster += it;
+            lastCluster += it
 
             if (it == '(')
-                cnt++;
+                cnt++
             else
-                cnt--;
+                cnt--
 
             if (cnt == 0) {
-                res += lastCluster;
-                lastCluster = "";
+                res += lastCluster
+                lastCluster = ""
             }
         }
 
-        return res;
+        return res
     }
 
 }
