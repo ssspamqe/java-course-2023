@@ -1,4 +1,4 @@
-package edu.hw3;
+package edu.hw3.Task5;
 
 import org.jetbrains.annotations.NotNull;
 

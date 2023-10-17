@@ -1,4 +1,4 @@
-package edu.hw3;
+package edu.hw3.Task5;
 
 import java.util.Arrays;
 import java.util.Collections;
