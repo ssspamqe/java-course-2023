@@ -8,8 +8,6 @@ class Task1 {
     private val lowersStart = 'a'.code
     private val uppersStart = 'A'.code
 
-    private val LOGGER = LogManager.getLogger()
-
     init{
         for (i in 0..25) {
             lowers+= (lowersStart + i).toChar()

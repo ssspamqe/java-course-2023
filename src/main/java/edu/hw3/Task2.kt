@@ -4,7 +4,7 @@ class Task2 {
 
     fun clusterize(s: String): List<String> {
 
-        var res: List<String> = emptyList()
+        var res:MutableList<String> = mutableListOf()
 
         var cnt = 0;
         var lastCluster = ""
@@ -12,10 +12,7 @@ class Task2 {
         s.forEach {
             lastCluster += it
 
-            if (it == '(')
-                cnt++
-            else
-                cnt--
+            cnt += (it == '(').toInt()
 
             if (cnt == 0) {
                 res += lastCluster
@@ -25,5 +22,7 @@ class Task2 {
 
         return res
     }
+
+    private fun Boolean.toInt() = if (this) 1 else -1
 
 }
