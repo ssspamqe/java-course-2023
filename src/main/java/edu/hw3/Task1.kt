@@ -1,16 +1,14 @@
 package edu.hw3
 
-import org.apache.logging.log4j.LogManager
-
 class Task1 {
     private val lowers: MutableList<Char> = ArrayList()
     private val uppers: MutableList<Char> = ArrayList()
     private val lowersStart = 'a'.code
     private val uppersStart = 'A'.code
 
-    init{
+    init {
         for (i in 0..25) {
-            lowers+= (lowersStart + i).toChar()
+            lowers += (lowersStart + i).toChar()
             uppers += (uppersStart + i).toChar()
         }
     }

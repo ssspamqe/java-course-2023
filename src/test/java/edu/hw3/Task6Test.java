@@ -12,17 +12,16 @@ public class Task6Test {
     DefaultStockMarket market;
 
     @BeforeEach
-    void initializeObjects(){
+    void initializeObjects() {
         market = new DefaultStockMarket();
     }
 
     @Test
     @DisplayName("DefaultStockMarket.mostValuableStock() should return the most valuable stock")
-    void check_mostValuableStock(){
-        Stock stock1 = new Stock("stock1",9999);
-        Stock stock2 = new Stock("stock2",34);
-        Stock stock3 = new Stock("stock3",9999.01);
-
+    void check_mostValuableStock() {
+        Stock stock1 = new Stock("stock1", 9999);
+        Stock stock2 = new Stock("stock2", 34);
+        Stock stock3 = new Stock("stock3", 9999.01);
 
         market.add(stock1);
         market.add(stock2);
@@ -30,17 +29,15 @@ public class Task6Test {
 
         Stock mostValuableStock = market.mostValuableStock();
 
-
         assertThat(mostValuableStock).isEqualTo(stock3);
     }
 
     @Test
     @DisplayName("DefaultStockMarket.remove(Stock stock) should remove stock from a queue")
-    void check_remove(){
-        Stock stock1 = new Stock("stock1",9999);
-        Stock stock2 = new Stock("stock2",34);
-        Stock stock3 = new Stock("stock3",9999.01);
-
+    void check_remove() {
+        Stock stock1 = new Stock("stock1", 9999);
+        Stock stock2 = new Stock("stock2", 34);
+        Stock stock3 = new Stock("stock3", 9999.01);
 
         market.add(stock1);
         market.add(stock2);
@@ -49,7 +46,6 @@ public class Task6Test {
         market.remove(stock3);
 
         Stock mostValuableStock = market.mostValuableStock();
-
 
         assertThat(mostValuableStock).isEqualTo(stock1);
     }

@@ -9,20 +9,20 @@ class Task3Test {
 
     @Test
     @DisplayName("Method should find frequency of strings in list")
-    fun check_strings(){
+    fun check_strings() {
         val list = listOf("код", "код", "код", "bug")
 
-        val frequencyDict  = task.freqDict(list)
+        val frequencyDict = task.freqDict(list)
 
         assertThat(frequencyDict).isEqualTo(mapOf("код" to 3, "bug" to 1))
     }
 
     @Test
     @DisplayName("Method should find frequency of integers in list")
-    fun check_int(){
+    fun check_int() {
         val list = listOf(1, 1, 2, 2)
 
-        val frequencyDict  = task.freqDict(list)
+        val frequencyDict = task.freqDict(list)
 
         assertThat(frequencyDict).isEqualTo(mapOf(1 to 2, 2 to 2))
     }

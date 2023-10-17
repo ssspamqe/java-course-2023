@@ -4,7 +4,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import kotlin.IllegalArgumentException
 
 class Task4Test {
 
@@ -43,11 +42,12 @@ class Task4Test {
     @Test
     @DisplayName(
         "Method should throw Exception if number not in [1;3999] " +
-            "(because is will be not possible to express number only with \"I\", \"V\", \"X\", \"L\", \"C\", \"D\", \"M\")")
+            "(because is will be not possible to express number only with \"I\", \"V\", \"X\", \"L\", \"C\", \"D\", \"M\")"
+    )
     fun check_range() {
         val arabic = 4000
 
-        assertThatThrownBy{task.convertToRoman(arabic)}.isInstanceOf(IllegalArgumentException::class.java)
+        assertThatThrownBy { task.convertToRoman(arabic) }.isInstanceOf(IllegalArgumentException::class.java)
     }
 
 }

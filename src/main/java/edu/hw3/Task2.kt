@@ -4,7 +4,7 @@ class Task2 {
 
     fun clusterize(s: String): List<String> {
 
-        var res:MutableList<String> = mutableListOf()
+        var res: MutableList<String> = mutableListOf()
 
         var cnt = 0;
         var lastCluster = ""

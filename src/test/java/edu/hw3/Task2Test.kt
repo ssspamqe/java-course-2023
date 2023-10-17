@@ -10,7 +10,7 @@ class Task2Test {
 
     @Test
     @DisplayName("Method should split round bracket expressions into clusters")
-    fun check_clusterizing(){
+    fun check_clusterizing() {
         val originalExpression = "((()))(())()()(()())";
 
         val clusterizedExpression = task.clusterize(originalExpression);

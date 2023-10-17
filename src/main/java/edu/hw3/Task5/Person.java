@@ -7,12 +7,12 @@ public class Person implements Comparable<Person> {
     private String name = "";
     private String lastName = "";
 
-    public Person(String nameAndLastName){
+    public Person(String nameAndLastName) {
         String[] data = nameAndLastName.split(" ");
-        if(data.length == 1)
+        if (data.length == 1) {
             this.name = data[0];
-        else{
-            this.name= data[0];
+        } else {
+            this.name = data[0];
             this.lastName = data[1];
         }
 
@@ -25,11 +25,13 @@ public class Person implements Comparable<Person> {
         capitalizeNames();
     }
 
-    private void capitalizeNames(){
-        if(!name.isEmpty())
-            name = name.substring(0,1).toUpperCase() + name.substring(1);
-        if(!lastName.isEmpty())
-            lastName = lastName.substring(0,1).toUpperCase() + lastName.substring(1);
+    private void capitalizeNames() {
+        if (!name.isEmpty()) {
+            name = name.substring(0, 1).toUpperCase() + name.substring(1);
+        }
+        if (!lastName.isEmpty()) {
+            lastName = lastName.substring(0, 1).toUpperCase() + lastName.substring(1);
+        }
     }
 
     public String getName() {
@@ -50,24 +52,26 @@ public class Person implements Comparable<Person> {
 
     @Override
     public boolean equals(Object obj) {
-        if(this == obj)
+        if (this == obj) {
             return true;
-        if(obj instanceof Person)
+        }
+        if (obj instanceof Person) {
             return lastName.equals(((Person) obj).lastName) && name.equals(((Person) obj).name);
+        }
         return false;
     }
 
-    public String getComparableString(){
-        if("".equals(lastName))
+    public String getComparableString() {
+        if ("".equals(lastName)) {
             return name;
-        else
+        } else {
             return lastName;
+        }
     }
 
     @Override
     public int compareTo(@NotNull Person anotherPerson) {
         return getComparableString().compareTo(anotherPerson.getComparableString());
     }
-
 
 }
