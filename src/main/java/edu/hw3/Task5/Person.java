@@ -56,9 +56,15 @@ public class Person implements Comparable<Person> {
             return true;
         }
         if (obj instanceof Person) {
-            return lastName.equals(((Person) obj).lastName) && name.equals(((Person) obj).name);
+            //вот тут лучше же сравнивать просто name и lastName, тк это будет быстрее, чем нахождение хэша?
+            return hashCode() == obj.hashCode();
         }
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return (name + lastName).hashCode();
     }
 
     public String getComparableString() {

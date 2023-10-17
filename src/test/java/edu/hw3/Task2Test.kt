@@ -13,7 +13,9 @@ class Task2Test {
     fun check_clusterizing() {
         val originalExpression = "((()))(())()()(()())";
 
+
         val clusterizedExpression = task.clusterize(originalExpression);
+
 
         assertThat(clusterizedExpression).isEqualTo(listOf("((()))", "(())", "()", "()", "(()())"))
     }

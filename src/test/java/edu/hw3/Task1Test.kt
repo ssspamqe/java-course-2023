@@ -13,7 +13,9 @@ class Task1Test {
     fun check_latinLetters() {
         val originalString = "abcML"
 
+
         val encodedString = task.atbash(originalString)
+
 
         assertThat(encodedString).isEqualTo("zyxNO")
     }
@@ -23,7 +25,9 @@ class Task1Test {
     fun check_nonLatinLetters() {
         val originalString = "тестAb"
 
+
         val encodedString = task.atbash(originalString)
+
 
         assertThat(encodedString).isEqualTo("тестZy")
     }

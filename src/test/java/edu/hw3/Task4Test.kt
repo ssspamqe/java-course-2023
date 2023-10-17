@@ -10,11 +10,13 @@ class Task4Test {
     val task = Task4()
 
     @Test
-    @DisplayName("Method should convert arabic numbers into romans ones")
+    @DisplayName("Method should convert arabic numbers into Roman ones")
     fun check_conversion() {
         val arabic = 3571
 
+
         val roman = task.convertToRoman(arabic)
+
 
         assertThat(roman).isEqualTo("MMMDLXXI")
     }
@@ -24,7 +26,9 @@ class Task4Test {
     fun check_one() {
         val arabic = 1;
 
+
         val roman = task.convertToRoman(arabic)
+
 
         assertThat(roman).isEqualTo("I")
     }
@@ -34,7 +38,9 @@ class Task4Test {
     fun check_four() {
         val arabic = 4;
 
+
         val roman = task.convertToRoman(arabic)
+
 
         assertThat(roman).isEqualTo("IV")
     }
@@ -46,6 +52,7 @@ class Task4Test {
     )
     fun check_range() {
         val arabic = 4000
+
 
         assertThatThrownBy { task.convertToRoman(arabic) }.isInstanceOf(IllegalArgumentException::class.java)
     }

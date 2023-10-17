@@ -1,9 +1,8 @@
 package edu.hw3;
 
-import com.sun.source.tree.Tree;
+import java.util.TreeMap;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import java.util.TreeMap;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class Task7Test {
@@ -13,7 +12,7 @@ public class Task7Test {
     @Test
     @DisplayName("TreeMap should be able to have null value as key")
     void check_nullAsKey() {
-        TreeMap<String, String> map= new TreeMap<>(comparator);
+        TreeMap<String, String> map = new TreeMap<>(comparator);
 
         map.put(null, "test");
         boolean containsNull = map.containsKey(null);

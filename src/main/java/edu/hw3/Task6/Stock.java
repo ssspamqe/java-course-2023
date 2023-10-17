@@ -11,7 +11,13 @@ public record Stock(String name, double price) implements Comparable<Stock> {
         if (obj == this) {
             return true;
         } else {
-            return price == ((Stock) obj).price && name.equals(((Stock) obj).name);
+            //вот тут лучше же сравнивать просто name и price, тк это будет быстрее, чем нахождение хэша?
+            return hashCode() == obj.hashCode();
         }
+    }
+
+    @Override
+    public int hashCode() {
+        return (name + price).hashCode();
     }
 }
