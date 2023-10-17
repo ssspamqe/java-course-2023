@@ -12,7 +12,7 @@ public class Task7Test {
 
     @Test
     @DisplayName("TreeMap should be able to have null value as key")
-    void f() {
+    void check_nullAsKey() {
         TreeMap<String, String> map= new TreeMap<>(comparator);
 
         map.put(null, "test");
