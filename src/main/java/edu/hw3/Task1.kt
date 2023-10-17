@@ -12,8 +12,8 @@ class Task1 {
 
     init{
         for (i in 0..25) {
-            lowers += (lowersStart+i).toChar()
-            uppers += (uppersStart +i).toChar()
+            lowers+= (lowersStart + i).toChar()
+            uppers += (uppersStart + i).toChar()
         }
     }
 
