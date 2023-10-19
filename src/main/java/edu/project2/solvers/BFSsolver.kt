@@ -44,7 +44,6 @@ class BFSsolver : MazeSolver {
                     break
             }
         }
-
         return buildSolvedMaze(maze, start, end, ancestors)
     }
 }
