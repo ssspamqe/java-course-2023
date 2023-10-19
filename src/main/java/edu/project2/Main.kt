@@ -11,7 +11,7 @@ data class Person(val name: String, val age: Int)
 fun main() {
     val generator = ChaoticMazeGenerator()
 
-    val maze = generator.getMaze(20, 20, 70)
+    val maze = generator.getMaze(40, 40, 70)
 
     maze.printMaze()
 

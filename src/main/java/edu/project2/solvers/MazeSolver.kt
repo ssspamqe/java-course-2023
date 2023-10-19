@@ -20,7 +20,7 @@ interface MazeSolver {
         if (cell.row < maze.height - 1) //down
             adjacentCells.add(Cell(cell.row + 1, cell.column))
 
-        if (cell.column > 0)
+        if (cell.column > 0)//left
             adjacentCells.add(Cell(cell.row, cell.column - 1))
 
 

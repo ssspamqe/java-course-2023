@@ -25,13 +25,17 @@ class Maze : Cloneable {
     constructor(oldMatrix: List<MutableList<CellType>>) {
         this.height = oldMatrix.size
         this.width = oldMatrix[0].size
+
         matrix = List(height) { _ ->
             List(width) { _ -> CellType.WALL }.toMutableList()
         }.toMutableList()
 
-        for (row in oldMatrix.indices)
-            for (column in oldMatrix[row].indices)
-                matrix[row][column] = oldMatrix[row][column]
+
+        oldMatrix.forEachIndexed { rowIndex, row ->
+            row.forEachIndexed { columnIndex, cellType ->
+                matrix[rowIndex][columnIndex] = cellType
+            }
+        }
     }
 
 

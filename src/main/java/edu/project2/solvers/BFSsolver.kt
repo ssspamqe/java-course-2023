@@ -25,8 +25,8 @@ class BFSsolver : MazeSolver {
             List(maze.width) { Cell(-1, -1) }.toMutableList()
         }
 
-        val visited = hashSetOf<Cell>()
 
+        val visited = hashSetOf<Cell>()
 
         while (queue.isNotEmpty()) {
             val currentCell = queue.poll()
@@ -34,6 +34,7 @@ class BFSsolver : MazeSolver {
             val nextCells = getAdjacentCells(maze, currentCell).filter {
                 it !in visited && maze.getCellType(it) == CellType.PASSAGE
             }
+
 
             for (cell in nextCells) {
                 ancestors[cell.row][cell.column] = currentCell
