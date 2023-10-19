@@ -11,7 +11,7 @@ public class Task5 {
 
         List<Person> persons = getPersons(contacts);
 
-        if (order.equals("DESC")) {
+        if ("DESC".equals(order)) {
             persons.sort(Collections.reverseOrder());
 
         } else if (order.equals("ASC")) {
