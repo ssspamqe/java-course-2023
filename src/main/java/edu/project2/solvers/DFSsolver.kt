@@ -7,16 +7,12 @@ import edu.project2.Maze.Maze
 class DFSsolver : MazeSolver {
 
     private lateinit var maze: Maze
-    private lateinit var visited: List<MutableList<Boolean>>
+    private var visited = hashSetOf<Cell>()
     private lateinit var ancestors: List<MutableList<Cell>>
 
     override fun solve(mazeParam: Maze, start: Cell, end: Cell): Maze {
 
         maze = mazeParam.clone()
-
-        visited = List(maze.height) { _ ->
-            List(maze.width) { false }.toMutableList()
-        }
 
         ancestors = List(maze.height) { _ ->
             List(maze.width) { Cell(-1, -1) }.toMutableList()
@@ -29,10 +25,10 @@ class DFSsolver : MazeSolver {
 
     private fun dfs(cell: Cell) {
 
-        visited[cell.row][cell.column] = true
+        visited.add(cell)
 
         val nextCells = getAdjacentCells(maze, cell).filter {
-            !visited[it.row][it.column] && maze.getCellType(cell) == CellType.PASSAGE
+            it !in visited && maze.getCellType(cell) == CellType.PASSAGE
         }
 
 

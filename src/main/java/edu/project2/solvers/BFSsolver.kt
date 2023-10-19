@@ -25,19 +25,14 @@ class BFSsolver : MazeSolver {
             List(maze.width) { Cell(-1, -1) }.toMutableList()
         }
 
-
-        val visited = List(maze.height) { _ ->
-            List(maze.width) { false }.toMutableList()
-        }
+        val visited = hashSetOf<Cell>()
 
 
         while (queue.isNotEmpty()) {
             val currentCell = queue.poll()
-
-            visited[currentCell.row][currentCell.column] = true
-
+            visited.add(currentCell)
             val nextCells = getAdjacentCells(maze, currentCell).filter {
-                !visited[it.row][it.column] && maze.getCellType(it) == CellType.PASSAGE
+                it !in visited && maze.getCellType(it) == CellType.PASSAGE
             }
 
             for (cell in nextCells) {

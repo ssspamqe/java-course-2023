@@ -29,6 +29,7 @@ class ChaoticMazeGenerator() {
 
         val trace: Stack<Cell> = Stack()
         trace.add(startCell)
+
         val visited = hashSetOf(startCell)
 
 
