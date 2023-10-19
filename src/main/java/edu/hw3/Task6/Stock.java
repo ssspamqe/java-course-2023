@@ -1,5 +1,7 @@
 package edu.hw3.Task6;
 
+import java.util.Objects;
+
 public record Stock(String name, double price) implements Comparable<Stock> {
     @Override
     public int compareTo(Stock anotherStock) {
@@ -18,6 +20,6 @@ public record Stock(String name, double price) implements Comparable<Stock> {
 
     @Override
     public int hashCode() {
-        return (name + price).hashCode();
+        return Objects.hash(name, price);
     }
 }

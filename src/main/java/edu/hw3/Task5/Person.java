@@ -1,5 +1,6 @@
 package edu.hw3.Task5;
 
+import java.util.Objects;
 import org.jetbrains.annotations.NotNull;
 
 public class Person implements Comparable<Person> {
@@ -55,24 +56,25 @@ public class Person implements Comparable<Person> {
         if (this == obj) {
             return true;
         }
+
         if (obj instanceof Person) {
-            //вот тут лучше же сравнивать просто name и lastName, тк это будет быстрее, чем нахождение хэша?
             return hashCode() == obj.hashCode();
         }
-        return false;
-    }
 
-    @Override
-    public int hashCode() {
-        return (name + lastName).hashCode();
+        return false;
     }
 
     public String getComparableString() {
         if ("".equals(lastName)) {
             return name;
-        } else {
-            return lastName;
         }
+        return lastName;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, lastName);
     }
 
     @Override

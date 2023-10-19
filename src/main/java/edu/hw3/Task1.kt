@@ -13,19 +13,20 @@ class Task1 {
         }
     }
 
-    fun atbash(s: String): String {
-        val res = StringBuilder()
-        for (i in s) {
-            if (i.isLatinLower()) {
-                res.append(lowers[25 - (i.code - lowersStart)])
-            } else if (i.isLatinUpper()) {
-                res.append(uppers[25 - (i.code - uppersStart)])
-            } else {
-                res.append(i)
-            }
+    fun atbash(s: String): String  =
+        buildString {
+            for(i in s)
+                append(
+                    if(i.isLatinLower())
+                        lowers[25 - (i.code - lowersStart)]
+                    else if(i.isLatinUpper())
+                        uppers[25 - (i.code - uppersStart)]
+                    else
+                        i
+                )
         }
-        return res.toString()
-    }
+
+
 
     //because 'ф'.isLetter() == true
     private fun Char.isLatinLower(): Boolean {

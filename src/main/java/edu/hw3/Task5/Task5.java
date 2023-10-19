@@ -14,7 +14,7 @@ public class Task5 {
         if ("DESC".equals(order)) {
             persons.sort(Collections.reverseOrder());
 
-        } else if (order.equals("ASC")) {
+        } else if ("ASC".equals(order)) {
             Collections.sort(persons);
 
         } else {

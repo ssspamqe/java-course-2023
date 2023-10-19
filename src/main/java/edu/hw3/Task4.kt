@@ -35,19 +35,15 @@ class Task4 {
         }
 
 
-        var res = StringBuilder()
-
-        for (i in numbers.indices) {
-            val currentNum = numbers[i]
-
-            res.append(
-                if (cnt[currentNum] == 4)
-                    alphabet[currentNum] + alphabet[numbers[i - 1]]
-                else
-                    alphabet[currentNum]!!.repeat(cnt[currentNum]!!)
-            )
-
+        return buildString {
+            numbers.forEachIndexed { index, num ->
+                append(
+                    if (cnt[num] == 4)
+                        alphabet[num] + alphabet[numbers[index - 1]]
+                    else
+                        alphabet[num]!!.repeat(cnt[num]!!)
+                )
+            }
         }
-        return res.toString()
     }
 }
