@@ -1,13 +1,12 @@
 package edu.project2.generators.chaotic
 
+import edu.project2.Cell
 import edu.project2.Maze.CellType
 import edu.project2.Maze.Maze
 import java.util.*
 import kotlin.random.Random
 
 class ChaoticMazeGenerator() {
-
-    data class Cell(var row: Int, var column: Int)
 
     private var height: Int = 0
     private var width: Int = 0
@@ -45,7 +44,7 @@ class ChaoticMazeGenerator() {
             //set up next cells types and update trace
             nextCellsAssignment.forEachIndexed { index, cellType ->
                 val cell = nextCells[index]
-                maze!!.setCell(cell.row, cell.column, cellType)
+                maze!!.setCell(cell, cellType)
 
 
                 visited.add(cell)
