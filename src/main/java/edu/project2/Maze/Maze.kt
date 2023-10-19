@@ -1,19 +1,17 @@
 package edu.project2.Maze
 
-import edu.project2.Maze.Cell
 import org.apache.logging.log4j.LogManager
-import java.lang.StringBuilder
 
-class Maze:Cloneable {
+class Maze : Cloneable {
 
     private val LOGGER = LogManager.getLogger()
 
-    private var matrix:List<MutableList<CellType>>
+    private var matrix: List<MutableList<CellType>>
 
-    val height:Int
-    val width:Int
+    val height: Int
+    val width: Int
 
-    constructor(height: Int, width: Int){
+    constructor(height: Int, width: Int) {
         this.height = height
         this.width = width
 
@@ -22,9 +20,9 @@ class Maze:Cloneable {
         }.toMutableList()
     }
 
-    public constructor(size:Int):this(size,size)
+    public constructor(size: Int) : this(size, size)
 
-    constructor(oldMatrix:List<MutableList<CellType>>){
+    constructor(oldMatrix: List<MutableList<CellType>>) {
         this.height = oldMatrix.size
         this.width = oldMatrix[0].size
         matrix = List(height) { _ ->
@@ -37,12 +35,10 @@ class Maze:Cloneable {
     }
 
 
-
-
-    public fun setCellType(cell: Cell, newType:CellType):Maze{
-        if(cell.row !in 0 until height)
+    public fun setCellType(cell: Cell, newType: CellType): Maze {
+        if (cell.row !in 0 until height)
             throw IllegalArgumentException("row must be in [0;height)")
-        if(cell.column !in 0 until width)
+        if (cell.column !in 0 until width)
             throw IllegalArgumentException("column must be in [0;width)")
 
         matrix[cell.row][cell.column] = newType
@@ -50,9 +46,9 @@ class Maze:Cloneable {
         return this
     }
 
-    public fun printMaze(){
+    public fun printMaze() {
 
-        LOGGER.info(CellType.WALL.getSymbol().toString().repeat(width+2))
+        LOGGER.info(CellType.WALL.getSymbol().toString().repeat(width + 2))
 
         matrix.forEach { line ->
             val symbolLine = StringBuilder()
@@ -64,16 +60,16 @@ class Maze:Cloneable {
 
         }
 
-        LOGGER.info(CellType.WALL.getSymbol().toString().repeat(width+2))
+        LOGGER.info(CellType.WALL.getSymbol().toString().repeat(width + 2))
     }
 
-    public fun getCellType(cell: Cell):CellType{
-        if(cell.row !in 0 until height || cell.column !in 0 until width)
+    public fun getCellType(cell: Cell): CellType {
+        if (cell.row !in 0 until height || cell.column !in 0 until width)
             return CellType.OUT_OF_BOUNDS
         return matrix[cell.row][cell.column]
     }
 
-    public override fun clone():Maze{
+    public override fun clone(): Maze {
         return Maze(matrix)
     }
 

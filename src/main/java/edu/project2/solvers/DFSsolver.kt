@@ -19,12 +19,12 @@ class DFSsolver : MazeSolver {
         }
 
         ancestors = List(maze.height) { _ ->
-            List(maze.width) { Cell(-1,-1) }.toMutableList()
+            List(maze.width) { Cell(-1, -1) }.toMutableList()
         }
 
         dfs(start)
 
-        return buildSolvedMaze(maze, start,end,ancestors)
+        return buildSolvedMaze(maze, start, end, ancestors)
     }
 
     private fun dfs(cell: Cell) {

@@ -1,34 +1,32 @@
 package edu.project2.Maze
 
-import edu.project2.Maze.Cell
-
 enum class CellType {
-    PASSAGE{
-        override fun getSymbol():Char = ' '
+    PASSAGE {
+        override fun getSymbol(): Char = ' '
     },
 
-    WALL{
+    WALL {
         override fun getSymbol(): Char = '■'
     },
 
-    OUT_OF_BOUNDS{
+    OUT_OF_BOUNDS {
         override fun getSymbol(): Char = '*'
     },
 
-    START{
-        override fun getSymbol():Char = 's'
+    START {
+        override fun getSymbol(): Char = 's'
     },
 
-    END{
-        override fun getSymbol():Char = 'e'
+    END {
+        override fun getSymbol(): Char = 'e'
     },
 
-    PATH{
-        override fun getSymbol():Char = '.'
+    PATH {
+        override fun getSymbol(): Char = '.'
     };
 
 
-    abstract fun getSymbol():Char
+    abstract fun getSymbol(): Char
 
 
 }

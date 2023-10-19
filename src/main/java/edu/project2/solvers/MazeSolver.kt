@@ -5,7 +5,7 @@ import edu.project2.Maze.CellType
 import edu.project2.Maze.Maze
 
 interface MazeSolver {
-    public fun solve(mazeParam: Maze, start: Cell, end: Cell):Maze
+    public fun solve(mazeParam: Maze, start: Cell, end: Cell): Maze
 
     fun getAdjacentCells(maze: Maze, cell: Cell): List<Cell> {
         val adjacentCells = mutableListOf<Cell>()
@@ -27,7 +27,7 @@ interface MazeSolver {
         return adjacentCells
     }
 
-    fun buildSolvedMaze(maze:Maze, start:Cell, end:Cell, ancestors:List<MutableList<Cell>>):Maze{
+    fun buildSolvedMaze(maze: Maze, start: Cell, end: Cell, ancestors: List<MutableList<Cell>>): Maze {
         var currentCell = end
 
         while (!(currentCell.row == start.row && currentCell.column == start.column)) {

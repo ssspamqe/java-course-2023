@@ -5,9 +5,9 @@ import edu.project2.Maze.CellType
 import edu.project2.Maze.Maze
 import java.util.*
 
-class BFSsolver:MazeSolver {
+class BFSsolver : MazeSolver {
 
-    public override fun solve(mazeParam: Maze, start: Cell, end: Cell):Maze {
+    public override fun solve(mazeParam: Maze, start: Cell, end: Cell): Maze {
 
         val maze = mazeParam.clone()
 
@@ -18,11 +18,11 @@ class BFSsolver:MazeSolver {
             throw IllegalArgumentException("End cell is not a passage")
 
 
-        val queue:Queue<Cell> = LinkedList()
+        val queue: Queue<Cell> = LinkedList()
 
         queue.add(start)
         val ancestors = List(maze.height) { _ ->
-            List(maze.width) { Cell(-1,-1) }.toMutableList()
+            List(maze.width) { Cell(-1, -1) }.toMutableList()
         }
 
 
@@ -49,6 +49,6 @@ class BFSsolver:MazeSolver {
             }
         }
 
-        return buildSolvedMaze(maze,start,end,ancestors)
+        return buildSolvedMaze(maze, start, end, ancestors)
     }
 }

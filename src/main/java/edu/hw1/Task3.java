@@ -1,7 +1,5 @@
 package edu.hw1;
 
-import java.util.Collections;
-
 public class Task3 {
 
     public boolean isNestable(int[] small, int[] big) {
@@ -9,7 +7,6 @@ public class Task3 {
         if (small.length == 0 || big.length == 0) {
             throw new IllegalArgumentException("Empty array");
         }
-
 
         int smallMin = Integer.MAX_VALUE;
         int smallMax = Integer.MIN_VALUE;
