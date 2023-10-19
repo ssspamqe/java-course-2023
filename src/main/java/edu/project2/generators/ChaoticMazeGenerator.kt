@@ -1,6 +1,6 @@
-package edu.project2.generators.chaotic
+package edu.project2.generators
 
-import edu.project2.Cell
+import edu.project2.Maze.Cell
 import edu.project2.Maze.CellType
 import edu.project2.Maze.Maze
 import java.util.*
@@ -44,7 +44,7 @@ class ChaoticMazeGenerator() {
             //set up next cells types and update trace
             nextCellsAssignment.forEachIndexed { index, cellType ->
                 val cell = nextCells[index]
-                maze!!.setCell(cell, cellType)
+                maze!!.setCellType(cell, cellType)
 
 
                 visited.add(cell)

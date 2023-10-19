@@ -1,5 +1,7 @@
 package edu.project2.Maze
 
+import edu.project2.Maze.Cell
+
 enum class CellType {
     PASSAGE{
         override fun getSymbol():Char = ' '
@@ -22,10 +24,11 @@ enum class CellType {
     },
 
     PATH{
-        override fun getSymbol():Char = '@'
+        override fun getSymbol():Char = '.'
     };
 
 
     abstract fun getSymbol():Char
+
 
 }
