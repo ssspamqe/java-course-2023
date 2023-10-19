@@ -39,13 +39,15 @@ class Maze:Cloneable {
 
 
 
-    public fun setCellType(cell: Cell, newType:CellType){
+    public fun setCellType(cell: Cell, newType:CellType):Maze{
         if(cell.row !in 0 until height)
             throw IllegalArgumentException("row must be in [0;height)")
         if(cell.column !in 0 until width)
             throw IllegalArgumentException("column must be in [0;width)")
 
         matrix[cell.row][cell.column] = newType
+
+        return this
     }
 
     public fun printMaze(){

@@ -5,11 +5,11 @@ import edu.project2.Maze.CellType
 import edu.project2.Maze.Maze
 import java.util.*
 
-class BFSsolver {
+class BFSsolver:MazeSolver {
 
-    public fun solve(_maze: Maze, start: Cell, end: Cell):Maze {
+    public override fun solve(mazeParam: Maze, start: Cell, end: Cell):Maze {
 
-        val maze = _maze.clone()
+        val maze = mazeParam.clone()
 
         if (maze.getCellType(start) != CellType.PASSAGE)
             throw IllegalArgumentException("Start cell is not a passage")
@@ -24,6 +24,7 @@ class BFSsolver {
         val ancestors = List(maze.height) { _ ->
             List(maze.width) { Cell(-1,-1) }.toMutableList()
         }
+
 
         val visited = List(maze.height) { _ ->
             List(maze.width) { false }.toMutableList()
@@ -48,36 +49,6 @@ class BFSsolver {
             }
         }
 
-
-        var current = end
-        while (!(current.row == start.row && current.column == start.column)) {
-            current = ancestors[current.row][current.column]
-            maze.setCellType(current, CellType.PATH)
-        }
-
-        maze.setCellType(start, CellType.START)
-        maze.setCellType(end, CellType.END)
-
-        return maze
-    }
-
-    private fun getAdjacentCells(maze: Maze, cell: Cell): List<Cell> {
-        val adjacentCells = mutableListOf<Cell>()
-
-
-        if (cell.row > 0) //up
-            adjacentCells.add(Cell(cell.row - 1, cell.column))
-
-        if (cell.column < maze.width - 1) //right
-            adjacentCells.add(Cell(cell.row, cell.column + 1))
-
-        if (cell.row < maze.height - 1) //down
-            adjacentCells.add(Cell(cell.row + 1, cell.column))
-
-        if (cell.column > 0)
-            adjacentCells.add(Cell(cell.row, cell.column - 1))
-
-
-        return adjacentCells
+        return buildSolvedMaze(maze,start,end,ancestors)
     }
 }
