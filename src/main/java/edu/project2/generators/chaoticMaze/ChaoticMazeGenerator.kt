@@ -1,17 +1,22 @@
-package edu.project2.generators
+package edu.project2.generators.chaoticMaze
 
 import edu.project2.Maze.Cell
 import edu.project2.Maze.CellType
 import edu.project2.Maze.Maze
+import edu.project2.generators.MazeGenerator
 import java.util.*
 import kotlin.random.Random
 
-class ChaoticMazeGenerator():MazeGenerator {
+class ChaoticMazeGenerator() : MazeGenerator {
 
     private lateinit var maze: Maze
 
-    public fun getMaze(height: Int, width: Int, wallChance: Int): Maze {
+    public fun getMaze(height: Int, width: Int, wallChance: Int = 75): Maze {
         return generateMaze(height, width, wallChance)
+    }
+
+    public fun getMaze(side: Int, wallChance: Int = 75): Maze {
+        return getMaze(side, side, wallChance)
     }
 
     private fun generateMaze(height: Int, width: Int, wallChance: Int): Maze {
@@ -27,7 +32,7 @@ class ChaoticMazeGenerator():MazeGenerator {
 
         val visited = hashSetOf(startCell)
 
-
+        //start bfs
         while (trace.isNotEmpty()) {
 
             val currentCell = trace.pop()
@@ -50,7 +55,7 @@ class ChaoticMazeGenerator():MazeGenerator {
 
         }
 
-        return maze as Maze
+        return maze
     }
 
     private fun getNextCellsAssignment(amount: Int, wallChance: Int): List<CellType> {

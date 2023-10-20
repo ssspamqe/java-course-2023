@@ -35,7 +35,6 @@ class BFSsolver : MazeSolver {
                 it !in visited && maze.getCellType(it) == CellType.PASSAGE
             }
 
-
             for (cell in nextCells) {
                 ancestors[cell.row][cell.column] = currentCell
                 queue.add(cell)

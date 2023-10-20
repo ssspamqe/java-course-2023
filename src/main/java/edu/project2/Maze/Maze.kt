@@ -12,6 +12,7 @@ class Maze : Cloneable {
     val width: Int
 
     constructor(height: Int, width: Int) {
+
         this.height = height
         this.width = width
 
@@ -23,13 +24,13 @@ class Maze : Cloneable {
     public constructor(size: Int) : this(size, size)
 
     constructor(oldMatrix: List<MutableList<CellType>>) {
+
         this.height = oldMatrix.size
         this.width = oldMatrix[0].size
 
         matrix = List(height) { _ ->
             List(width) { _ -> CellType.WALL }.toMutableList()
         }.toMutableList()
-
 
         oldMatrix.forEachIndexed { rowIndex, row ->
             row.forEachIndexed { columnIndex, cellType ->
@@ -40,13 +41,14 @@ class Maze : Cloneable {
 
 
     public fun setCellType(cell: Cell, newType: CellType): Maze {
+
         if (cell.row !in 0 until height)
             throw IllegalArgumentException("row must be in [0;height), given row is ${cell.row}")
         if (cell.column !in 0 until width)
             throw IllegalArgumentException("column must be in [0;width), given column is ${cell.column}")
 
-        matrix[cell.row][cell.column] = newType
 
+        matrix[cell.row][cell.column] = newType
         return this
     }
 
@@ -65,8 +67,6 @@ class Maze : Cloneable {
                 LOGGER.info(CellType.WALL.getSymbol().toString() + symbolLine + CellType.WALL.getSymbol())
             else
                 LOGGER.info(symbolLine)
-
-
         }
 
         if(printBounds)
@@ -92,7 +92,6 @@ class Maze : Cloneable {
             throw IllegalArgumentException("Distance must be positive number ")
 
         val adjacentCells = mutableListOf<Cell>()
-
 
         if (cell.row >= distance) //up
             adjacentCells.add(Cell(cell.row - distance, cell.column))
