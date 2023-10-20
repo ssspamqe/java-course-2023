@@ -1,7 +1,5 @@
 package edu.hw1;
 
-import java.util.Collections;
-
 public class Task3 {
 
     public boolean isNestable(int[] small, int[] big) {
@@ -10,9 +8,10 @@ public class Task3 {
             throw new IllegalArgumentException("Empty array");
         }
 
-
+        //Collections.max()
         int smallMin = Integer.MAX_VALUE;
         int smallMax = Integer.MIN_VALUE;
+
         for (var i : small) {
             smallMax = Integer.max(i, smallMax);
             smallMin = Integer.min(i, smallMin);
@@ -20,6 +19,7 @@ public class Task3 {
 
         int bigMin = Integer.MAX_VALUE;
         int bigMax = Integer.MIN_VALUE;
+
         for (var i : big) {
             bigMax = Integer.max(i, bigMax);
             bigMin = Integer.min(i, bigMin);
