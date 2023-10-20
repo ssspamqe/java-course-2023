@@ -31,7 +31,7 @@ class BFSsolver : MazeSolver {
         while (queue.isNotEmpty()) {
             val currentCell = queue.poll()
             visited.add(currentCell)
-            val nextCells = getAdjacentCells(maze, currentCell).filter {
+            val nextCells = maze.getAdjacentCells(currentCell).filter {
                 it !in visited && maze.getCellType(it) == CellType.PASSAGE
             }
 

@@ -6,16 +6,11 @@ import edu.project2.Maze.Maze
 import java.util.*
 import kotlin.random.Random
 
-class ChaoticMazeGenerator() {
+class ChaoticMazeGenerator():MazeGenerator {
 
-    private var height: Int = 0
-    private var width: Int = 0
-
-    private var maze: Maze? = null
+    private lateinit var maze: Maze
 
     public fun getMaze(height: Int, width: Int, wallChance: Int): Maze {
-        this.height = height
-        this.width = width
         return generateMaze(height, width, wallChance)
     }
 
@@ -36,7 +31,7 @@ class ChaoticMazeGenerator() {
         while (trace.isNotEmpty()) {
 
             val currentCell = trace.pop()
-            val nextCells = getAdjacentCells(currentCell).filter { it !in visited }
+            val nextCells = maze.getAdjacentCells(currentCell).filter { it !in visited }
             val nextCellsAssignment = getNextCellsAssignment(nextCells.size, wallChance)
 
             if (nextCellsAssignment.size != nextCells.size)
@@ -80,27 +75,5 @@ class ChaoticMazeGenerator() {
         assignment.shuffle()
         return assignment
     }
-
-
-    private fun getAdjacentCells(cell: Cell): List<Cell> {
-        val adjacentCells = mutableListOf<Cell>()
-
-
-        if (cell.row > 0) //up
-            adjacentCells.add(Cell(cell.row - 1, cell.column))
-
-        if (cell.column < width - 1) //right
-            adjacentCells.add(Cell(cell.row, cell.column + 1))
-
-        if (cell.row < height - 1) //down
-            adjacentCells.add(Cell(cell.row + 1, cell.column))
-
-        if (cell.column > 0)
-            adjacentCells.add(Cell(cell.row, cell.column - 1))
-
-
-        return adjacentCells
-    }
-
 
 }

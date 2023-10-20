@@ -77,4 +77,25 @@ class Maze : Cloneable {
         return Maze(matrix)
     }
 
+    fun getAdjacentCells(cell: Cell): List<Cell> {
+        val adjacentCells = mutableListOf<Cell>()
+
+
+        if (cell.row > 0) //up
+            adjacentCells.add(Cell(cell.row - 1, cell.column))
+
+        if (cell.column < width - 1) //right
+            adjacentCells.add(Cell(cell.row, cell.column + 1))
+
+        if (cell.row < height - 1) //down
+            adjacentCells.add(Cell(cell.row + 1, cell.column))
+
+        if (cell.column > 0)
+            adjacentCells.add(Cell(cell.row, cell.column - 1))
+
+
+        return adjacentCells
+    }
+
+
 }

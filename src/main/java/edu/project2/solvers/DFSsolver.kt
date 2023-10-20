@@ -27,7 +27,7 @@ class DFSsolver : MazeSolver {
 
         visited.add(cell)
 
-        val nextCells = getAdjacentCells(maze, cell).filter {
+        val nextCells = maze.getAdjacentCells(cell).filter {
             it !in visited && maze.getCellType(cell) == CellType.PASSAGE
         }
 
