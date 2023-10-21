@@ -1,5 +1,6 @@
 package edu.project2
 
+import edu.project2.Maze.Cell
 import edu.project2.Maze.Maze
 import edu.project2.generators.MazeGenerator
 import edu.project2.generators.chaoticMaze.ChaoticMazeGenerator
@@ -16,64 +17,87 @@ lateinit var sc: Scanner
 
 var height: Int = -1
 var width: Int = -1
-var printBound: Boolean = false
+var printBounds: Boolean = false
 var wallChance: Int = 50
 
 
-var generator: MazeGenerator = null!! //???
-var maze: Maze = null!!
-var solvedMaze: Maze = null!!
-var solver: MazeSolver = null!!
+var generator: MazeGenerator = IdealMazeGenerator()
+var maze: Maze = Maze()
+var solvedMaze: Maze = Maze()
+var solver: MazeSolver = BFSsolver()
+
+var start = Cell(0,0)
+var end = Cell(0,0)
+
+var choice:Char = 'a'
 fun main() {
 
     sc = Scanner(System.`in`)
 
-    LOGGER.info(
-        """
-        WELCOME TO MAZE GENERATOR!
+    while(choice!='n'){
+        LOGGER.info(
+            """WELCOME TO MAZE GENERATOR!
         Select maze generating algorithm:
             1 for chaotic maze
             2 for ideal maze
         """
-    )
+        )
 
-    var mazeType = -1
+        var mazeType = -1
 
-    while (mazeType !in 1..2) {
-        LOGGER.info("type either '1' or '2'")
-        mazeType = sc.nextInt()
-    }
+        while (mazeType !in 1..2) {
+            LOGGER.info("type either '1' or '2'")
+            mazeType = sc.nextInt()
+        }
 
-    if (mazeType == 1) {
-        LOGGER.info("You've chosen chaotic maze")
-        setUpChaoticMaze()
-    } else {
-        LOGGER.info("You've chosen ideal maze")
-        setUpChaoticMaze()
-    }
+        if (mazeType == 1) {
+            LOGGER.info("You've chosen chaotic maze")
+            setUpChaoticMaze()
+        } else {
+            LOGGER.info("You've chosen ideal maze")
+            setUpIdealMaze()
+        }
 
 
-    LOGGER.info(
-        """
+        LOGGER.info(
+            """
         Select maze solving algorithm:
             1 for bfs
             2 for dfs
         """
-    )
-    var solverType = -1
-    while (solverType !in 1..2) {
-        LOGGER.info("type either '1' or '2'")
-        solverType = sc.nextInt()
+        )
+        var solverType = -1
+        while (solverType !in 1..2) {
+            LOGGER.info("type either '1' or '2'")
+            solverType = sc.nextInt()
+        }
+
+        solver =
+            if (mazeType == 1) {
+                LOGGER.info("You've chosen bfs")
+                BFSsolver()
+            } else {
+                LOGGER.info("You've chosen dfs")
+                DFSsolver()
+            }
+
+
+        getCells()
+
+
+        solvedMaze = solver.solve(maze, start, end)
+        solvedMaze.printMaze(printBounds)
+
+        LOGGER.info("Do you want to finish?")
+        choice = sc.nextLine()[0]
+        while (choice !in "yn")
+            choice = sc.nextLine()[0]
+
+        if (choice == 'n')
+            break
     }
 
-    solver =
-        if (mazeType == 1) {
-            LOGGER.info("You've chosen bfs")
-            BFSsolver()
-        } else {
-            LOGGER.info("You've chosen dfs")
-            DFSsolver()
-        }
+    sc.close()
 }
 
 private fun setUpChaoticMaze() {
@@ -89,17 +113,16 @@ private fun setUpChaoticMaze() {
 
     maze = (generator as ChaoticMazeGenerator).getMaze(height, width, wallChance)
 
-    maze.printMaze()
+    maze.printMaze(printBounds)
 
     LOGGER.info("Do you want to regenerate it? (y/n)")
-    var choice = sc.nextLine()[0]
+    choice = sc.nextLine()[0]
     while (choice !in "yn")
         choice = sc.nextLine()[0]
 
-    if(choice == 'y')
+    if (choice == 'y')
         setUpIdealMaze()
 }
-
 
 private fun setUpIdealMaze() {
     generator = IdealMazeGenerator()
@@ -108,16 +131,15 @@ private fun setUpIdealMaze() {
 
     maze = (generator as IdealMazeGenerator).getMaze(height, width)
 
-    maze.printMaze()
+    maze.printMaze(printBounds)
 
     LOGGER.info("Do you want to regenerate it? (y/n)")
-    var choice = sc.nextLine()[0]
+    choice = sc.nextLine()[0]
     while (choice !in "yn")
         choice = sc.nextLine()[0]
 
-    if(choice == 'y')
+    if (choice == 'y')
         setUpIdealMaze()
-
 }
 
 private fun getDefaultMazeInfo() {
@@ -128,13 +150,44 @@ private fun getDefaultMazeInfo() {
     width = sc.nextInt()
 
     LOGGER.info("Do you want to print bound of your maze? (y/n)")
-    var choice = sc.nextLine()[0]
+    sc.nextLine()
+    var choice: Char = sc.nextLine()[0]
     while (choice !in "yn")
         choice = sc.nextLine()[0]
 
-    printBound =
+    printBounds =
         if (choice == 'y')
             true
         else
             false
+}
+
+private fun getCells() {
+    var row: Int
+    var column: Int
+
+    LOGGER.info(
+        """
+        Now you need to input coordinates of starting and ending points
+        The start of counting is in upper left corner (not counting bound's corner)
+        Enumeration starts with zero
+        """
+    )
+
+    LOGGER.info("Input row of start cell")
+    row = sc.nextInt()
+
+    LOGGER.info("Input column of start cell")
+    column = sc.nextInt()
+
+    start = Cell(row, column)
+
+
+    LOGGER.info("Input row of end cell")
+    row = sc.nextInt()
+
+    LOGGER.info("Input column of end cell")
+    column = sc.nextInt()
+
+    end = Cell(row,column)
 }

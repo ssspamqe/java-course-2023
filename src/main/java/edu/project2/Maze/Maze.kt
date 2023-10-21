@@ -21,6 +21,16 @@ class Maze : Cloneable {
         }.toMutableList()
     }
 
+    constructor(){
+        this.height = 0
+        this.width = 0
+
+        matrix = List(height) { _ ->
+            List(width) { _ -> CellType.WALL }.toMutableList()
+        }.toMutableList()
+    }
+
+
     public constructor(size: Int) : this(size, size)
 
     constructor(oldMatrix: List<MutableList<CellType>>) {

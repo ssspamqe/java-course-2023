@@ -5,7 +5,7 @@ import edu.project2.Maze.CellType
 import edu.project2.Maze.Maze
 import java.util.*
 
-class BFSsolver : MazeSolver {
+class BFSsolver : MazeSolver() {
 
     public override fun solve(mazeParam: Maze, start: Cell, end: Cell): Maze {
 

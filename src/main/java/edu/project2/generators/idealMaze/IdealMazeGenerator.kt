@@ -64,7 +64,6 @@ class IdealMazeGenerator : MazeGenerator {
         }
     }
 
-
     private fun getCellShift(originalCell: Cell, cell: Cell): Position {
         if (originalCell == cell)
             return Position.UNKNOWN

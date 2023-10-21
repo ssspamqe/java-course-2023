@@ -4,7 +4,7 @@ import edu.project2.Maze.Cell
 import edu.project2.Maze.CellType
 import edu.project2.Maze.Maze
 
-class DFSsolver : MazeSolver {
+class DFSsolver : MazeSolver() {
 
     private lateinit var maze: Maze
     private var visited = hashSetOf<Cell>()
