@@ -1,5 +1,6 @@
 package edu.project2.generators.chaoticMaze
 
+import edu.project2.LOGGER
 import edu.project2.Maze.Cell
 import edu.project2.Maze.CellType
 import edu.project2.Maze.Maze
@@ -12,6 +13,10 @@ class ChaoticMazeGenerator() : MazeGenerator {
     private lateinit var maze: Maze
 
     public fun getMaze(height: Int, width: Int, wallChance: Int = 75): Maze {
+
+        if(height<=0 || width <= 0)
+            throw IllegalArgumentException("Sizes of maze must be positive integers")
+
         return generateMaze(height, width, wallChance)
     }
 
@@ -19,7 +24,7 @@ class ChaoticMazeGenerator() : MazeGenerator {
         return getMaze(side, side, wallChance)
     }
 
-    private fun generateMaze(height: Int, width: Int, wallChance: Int): Maze {
+    private fun generateMaze(height: Int, width: Int, wallChance: Int): Maze  {
 
         maze = Maze(height, width)
 
@@ -52,9 +57,7 @@ class ChaoticMazeGenerator() : MazeGenerator {
                 if (cellType == CellType.PASSAGE)
                     trace.add(cell)
             }
-
         }
-
         return maze
     }
 
@@ -80,5 +83,4 @@ class ChaoticMazeGenerator() : MazeGenerator {
         assignment.shuffle()
         return assignment
     }
-
 }

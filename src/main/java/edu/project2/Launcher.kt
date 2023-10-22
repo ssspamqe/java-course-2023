@@ -5,8 +5,8 @@ import edu.project2.Maze.Maze
 import edu.project2.generators.MazeGenerator
 import edu.project2.generators.chaoticMaze.ChaoticMazeGenerator
 import edu.project2.generators.idealMaze.IdealMazeGenerator
-import edu.project2.solvers.BFSsolver
-import edu.project2.solvers.DFSsolver
+import edu.project2.solvers.BFSSolver
+import edu.project2.solvers.DFSSolver
 import edu.project2.solvers.MazeSolver
 import org.apache.logging.log4j.LogManager
 import java.util.*
@@ -24,7 +24,7 @@ var wallChance: Int = 50
 var generator: MazeGenerator = IdealMazeGenerator()
 var maze: Maze = Maze()
 var solvedMaze: Maze = Maze()
-var solver: MazeSolver = BFSsolver()
+var solver: MazeSolver = BFSSolver()
 
 var start = Cell(0,0)
 var end = Cell(0,0)
@@ -75,10 +75,10 @@ fun main() {
         solver =
             if (mazeType == 1) {
                 LOGGER.info("You've chosen bfs")
-                BFSsolver()
+                BFSSolver()
             } else {
                 LOGGER.info("You've chosen dfs")
-                DFSsolver()
+                DFSSolver()
             }
 
 
@@ -89,6 +89,8 @@ fun main() {
         solvedMaze.printMaze(printBounds)
 
         LOGGER.info("Do you want to finish?")
+
+        sc.nextLine()
         choice = sc.nextLine()[0]
         while (choice !in "yn")
             choice = sc.nextLine()[0]
@@ -107,7 +109,7 @@ private fun setUpChaoticMaze() {
 
     LOGGER.info(
         "Input integer from [0;100] that is chance of getting wall " +
-            "(the less number - the less walls if the maze)"
+            "(the less number - the less walls in the maze)"
     )
     wallChance = sc.nextInt()
 
@@ -116,6 +118,7 @@ private fun setUpChaoticMaze() {
     maze.printMaze(printBounds)
 
     LOGGER.info("Do you want to regenerate it? (y/n)")
+    sc.nextLine()
     choice = sc.nextLine()[0]
     while (choice !in "yn")
         choice = sc.nextLine()[0]

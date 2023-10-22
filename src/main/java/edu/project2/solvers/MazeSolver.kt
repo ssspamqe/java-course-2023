@@ -10,7 +10,7 @@ abstract class MazeSolver {
 
         var currentCell = end
 
-        while (!(currentCell.row == start.row && currentCell.column == start.column)) {
+        while (currentCell!=start) {
             currentCell = ancestors[currentCell.row][currentCell.column]
             maze.setCellType(currentCell, CellType.PATH)
         }

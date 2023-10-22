@@ -1,6 +1,6 @@
 package edu.project2.generators.idealMaze
 
-enum class Position {
+enum class Shift {
     UP,
     RIGHT,
     DOWN,

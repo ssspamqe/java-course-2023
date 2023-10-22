@@ -12,6 +12,10 @@ class IdealMazeGenerator : MazeGenerator {
     private lateinit var visited: MutableSet<Cell>
 
     public fun getMaze(height: Int, width: Int): Maze {
+
+        if (height <= 0 || width <= 0)
+            throw IllegalArgumentException("Sizes of maze must be positive integers")
+
         maze = Maze(height, width)
         visited = mutableSetOf()
 
@@ -23,7 +27,11 @@ class IdealMazeGenerator : MazeGenerator {
         return maze
     }
 
-    private fun procedureBacktracking(start:Cell){
+    public fun getMaze(side: Int): Maze {
+        return getMaze(side, side)
+    }
+
+    private fun procedureBacktracking(start: Cell) {
 
         val trace = Stack<Cell>()
         trace.add(start)
@@ -44,19 +52,19 @@ class IdealMazeGenerator : MazeGenerator {
                 trace.add(nextCell)
 
                 when (getCellShift(currentCell, nextCell)) {
-                    Position.UP ->
+                    Shift.UP ->
                         maze.setCellType(Cell(currentCell.row - 1, currentCell.column), CellType.PASSAGE)
 
-                    Position.RIGHT ->
+                    Shift.RIGHT ->
                         maze.setCellType(Cell(currentCell.row, currentCell.column + 1), CellType.PASSAGE)
 
-                    Position.DOWN ->
+                    Shift.DOWN ->
                         maze.setCellType(Cell(currentCell.row + 1, currentCell.column), CellType.PASSAGE)
 
-                    Position.LEFT ->
+                    Shift.LEFT ->
                         maze.setCellType(Cell(currentCell.row, currentCell.column - 1), CellType.PASSAGE)
 
-                    Position.UNKNOWN -> continue
+                    Shift.UNKNOWN -> continue
                 }
                 currentCell = nextCell
             } else
@@ -64,23 +72,22 @@ class IdealMazeGenerator : MazeGenerator {
         }
     }
 
-    private fun getCellShift(originalCell: Cell, cell: Cell): Position {
+    private fun getCellShift(originalCell: Cell, cell: Cell): Shift {
         if (originalCell == cell)
-            return Position.UNKNOWN
+            return Shift.UNKNOWN
 
         if (originalCell.row == cell.row) {
             if (originalCell.column > cell.column)
-                return Position.LEFT
-            return Position.RIGHT
+                return Shift.LEFT
+            return Shift.RIGHT
         }
 
         if (originalCell.column == cell.column) {
             if (originalCell.row > cell.row)
-                return Position.UP
-            return Position.DOWN
+                return Shift.UP
+            return Shift.DOWN
         }
 
-        return Position.UNKNOWN
+        return Shift.UNKNOWN
     }
-
 }

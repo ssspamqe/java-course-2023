@@ -27,6 +27,7 @@
         <jdk.version>21</jdk.version>
         <java.release>21</java.release>
 
+
         <revision>1.0.0</revision>
 
         <jetbrains-annotations.version>24.0.1</jetbrains-annotations.version>
@@ -49,6 +50,7 @@
 
     <dependencyManagement>
         <dependencies>
+
             <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
                 <artifactId>log4j-bom</artifactId>
@@ -75,6 +77,13 @@
             <dependency>
                 <groupId>io.kotest</groupId>
                 <artifactId>kotest-runner-junit5-jvm</artifactId>
+                <version>5.7.2</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>io.kotest</groupId>
+                <artifactId>kotest-property-jvm</artifactId>
                 <version>5.7.2</version>
                 <scope>test</scope>
             </dependency>
@@ -129,6 +138,7 @@
             <scope>test</scope>
         </dependency>
 
+
 <!--        <dependency>-->
 <!--            <groupId>io.kotest</groupId>-->
 <!--            <artifactId>kotest-assertions-core-jvm</artifactId>-->
@@ -146,6 +156,13 @@
         <dependency>
             <groupId>io.kotest</groupId>
             <artifactId>kotest-runner-junit5-jvm</artifactId>
+            <version>5.7.2</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.kotest</groupId>
+            <artifactId>kotest-property-jvm</artifactId>
             <version>5.7.2</version>
             <scope>test</scope>
         </dependency>
