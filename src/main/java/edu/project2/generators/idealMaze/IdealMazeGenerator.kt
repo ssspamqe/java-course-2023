@@ -5,11 +5,12 @@ import edu.project2.Maze.CellType
 import edu.project2.Maze.Maze
 import edu.project2.generators.MazeGenerator
 import java.util.*
+import kotlin.collections.HashSet
 
 class IdealMazeGenerator : MazeGenerator {
 
     private lateinit var maze: Maze
-    private lateinit var visited: MutableSet<Cell>
+    private lateinit var visited: HashSet<Cell>
 
     public fun getMaze(height: Int, width: Int): Maze {
 
@@ -17,7 +18,7 @@ class IdealMazeGenerator : MazeGenerator {
             throw IllegalArgumentException("Sizes of maze must be positive integers")
 
         maze = Maze(height, width)
-        visited = mutableSetOf()
+        visited = hashSetOf()
 
         val start = Cell(0, 0)
         maze.setCellType(start, CellType.PASSAGE)

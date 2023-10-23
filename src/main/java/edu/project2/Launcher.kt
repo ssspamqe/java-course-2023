@@ -26,8 +26,10 @@ var maze: Maze = Maze()
 var solvedMaze: Maze = Maze()
 var solver: MazeSolver = BFSSolver()
 
+
 var start = Cell(0,0)
 var end = Cell(0,0)
+
 
 var choice:Char = 'a'
 fun main() {

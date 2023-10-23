@@ -7,8 +7,8 @@ import edu.project2.Maze.Maze
 class DFSSolver : MazeSolver() {
 
     private lateinit var maze: Maze
-    private var visited = hashSetOf<Cell>()
-    private lateinit var ancestors: List<MutableList<Cell>>
+    private lateinit var visited:HashSet<Cell>
+    private lateinit var ancestors: List<List<Cell>>
 
     override fun solve(mazeParam: Maze, start: Cell, end: Cell): Maze {
         maze = mazeParam.clone()
@@ -25,6 +25,7 @@ class DFSSolver : MazeSolver() {
 
         visited = hashSetOf()
 
+
         dfs(start)
 
         return buildSolvedMaze(maze, start, end, ancestors)
@@ -39,9 +40,14 @@ class DFSSolver : MazeSolver() {
         }
 
 
-
         nextCells.forEach {
-            ancestors[it.row][it.column] = cell
+
+            val mutableAncestors = ancestors.toMutableList()                        //?????
+            mutableAncestors[it.row] = mutableAncestors[it.row].toMutableList()    //??????
+            (mutableAncestors[it.row] as MutableList<Cell>)[it.column] = cell         //?????
+            mutableAncestors[it.row] = mutableAncestors[it.row].toList()            //????
+
+            ancestors = mutableAncestors.toList()
             dfs(it)
         }
     }

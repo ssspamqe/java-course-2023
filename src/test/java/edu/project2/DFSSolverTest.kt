@@ -33,7 +33,6 @@ class DFSSolverTest : StringSpec({
 
                 val end = Cell(row, column)
 
-
                 // вот тут нам нужно узнать, является ли ячейка свободной или нет, и исходя из этого определить тест
                 if (maze.getCellType(start) != CellType.PASSAGE || maze.getCellType(end) != CellType.PASSAGE) {
                     shouldThrowAny {
@@ -47,4 +46,5 @@ class DFSSolverTest : StringSpec({
             }
         }
     }
+
 })

@@ -28,9 +28,7 @@ class ChaoticMazeGenerator() : MazeGenerator {
 
         maze = Maze(height, width)
 
-
         val startCell = Cell(Random.nextInt(height), Random.nextInt(width))
-
 
         val trace: Stack<Cell> = Stack()
         trace.add(startCell)
