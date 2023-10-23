@@ -74,15 +74,17 @@ class Maze : Cloneable {
             LOGGER.info(CellType.WALL.getSymbol().toString().repeat(width + 2))
 
         matrix.forEach { line ->
-            val symbolLine = StringBuilder()
-            line.forEach {
-                symbolLine.append(it.getSymbol())
+
+            val symbolLine = buildString {
+                line.forEach {
+                    append(it.getSymbol())
+                }
             }
 
             if(printBounds)
                 LOGGER.info(CellType.WALL.getSymbol().toString() + symbolLine + CellType.WALL.getSymbol())
             else
-                LOGGER.info(symbolLine)
+                LOGGER.info( symbolLine)
         }
 
         if(printBounds)

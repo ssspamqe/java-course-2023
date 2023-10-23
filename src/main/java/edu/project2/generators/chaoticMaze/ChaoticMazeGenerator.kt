@@ -47,7 +47,7 @@ class ChaoticMazeGenerator() : MazeGenerator {
             //set up next cells types and update trace
             nextCellsAssignment.forEachIndexed { index, cellType ->
                 val cell = nextCells[index]
-                maze!!.setCellType(cell, cellType)
+                maze.setCellType(cell, cellType)
 
 
                 visited.add(cell)

@@ -154,7 +154,7 @@ private fun getDefaultMazeInfo() {
     LOGGER.info("Input width of the maze")
     width = sc.nextInt()
 
-    LOGGER.info("Do you want to print bound of your maze? (y/n)")
+    LOGGER.info("Do you want to print bounds of your maze? (y/n)")
     sc.nextLine()
     var choice: Char = sc.nextLine()[0]
     while (choice !in "yn")
@@ -168,8 +168,6 @@ private fun getDefaultMazeInfo() {
 }
 
 private fun getStartEndCells() {
-    var row: Int
-    var column: Int
 
     LOGGER.info(
         """
@@ -180,10 +178,10 @@ private fun getStartEndCells() {
     )
 
     LOGGER.info("Input row of start cell")
-    row = sc.nextInt()
+    var row: Int = sc.nextInt()
 
     LOGGER.info("Input column of start cell")
-    column = sc.nextInt()
+    var column: Int = sc.nextInt()
 
     start = Cell(row, column)
 
