@@ -4,6 +4,8 @@ import edu.project2.Maze.Cell
 import edu.project2.Maze.CellType
 import edu.project2.Maze.Maze
 import edu.project2.generators.MazeGenerator
+import edu.project2.height
+import edu.project2.width
 import java.util.*
 import kotlin.collections.HashSet
 
@@ -24,6 +26,14 @@ class IdealMazeGenerator : MazeGenerator {
         maze.setCellType(start, CellType.PASSAGE)
 
         procedureBacktracking(start)
+
+
+
+        if(width%2==0)
+            fillRightBorder()
+
+        if(height%2==0)
+            fillDownBorder()
 
         return maze
     }
@@ -90,5 +100,37 @@ class IdealMazeGenerator : MazeGenerator {
         }
 
         return Shift.UNKNOWN
+    }
+
+    private fun fillRightBorder(){
+        val column = width-1
+
+        var prevFilled = false
+
+        for(row in 0 until  height)
+            prevFilled =
+                if(maze.getCellType(Cell(row,column-1)) == CellType.PASSAGE
+                    && Random().nextBoolean()
+                    && !prevFilled) {
+                    maze.setCellType(Cell(row, column), CellType.PASSAGE)
+                    true
+                }
+                else false
+    }
+
+    private fun fillDownBorder(){
+        val row = height-1
+
+        var prevFilled = false
+
+        for(column in 0 until width)
+            prevFilled =
+                if(maze.getCellType(Cell(row-1,column)) == CellType.PASSAGE
+                    && Random().nextBoolean()
+                    && !prevFilled) {
+                    maze.setCellType(Cell(row, column), CellType.PASSAGE)
+                    true
+                }
+                else false
     }
 }
