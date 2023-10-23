@@ -33,7 +33,7 @@ var end = Cell(0, 0)
 
 
 var choice: Char = 'a'
-fun startGame() {
+fun main() {
 
     sc = Scanner(System.`in`)
 
