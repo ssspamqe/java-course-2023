@@ -97,7 +97,7 @@ fun main() {
         while (choice !in "yn")
             choice = sc.nextLine()[0]
 
-        if (choice == 'n')
+        if (choice == 'y')
             break
     }
 
