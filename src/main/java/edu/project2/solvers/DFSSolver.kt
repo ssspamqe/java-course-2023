@@ -20,7 +20,7 @@ class DFSSolver : MazeSolver() {
             throw IllegalArgumentException("End cell is not a passage")
 
         ancestors = List(maze.height) { _ ->
-            List(maze.width) { Cell(-1, -1) }.toMutableList()
+            List(maze.width) { Cell(-1, -1) }
         }
 
         visited = hashSetOf()
