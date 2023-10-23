@@ -1,6 +1,5 @@
 package edu.project2.generators.chaoticMaze
 
-import edu.project2.LOGGER
 import edu.project2.Maze.Cell
 import edu.project2.Maze.CellType
 import edu.project2.Maze.Maze

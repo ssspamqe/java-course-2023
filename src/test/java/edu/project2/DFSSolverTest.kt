@@ -4,7 +4,6 @@ import edu.project2.Maze.Cell
 import edu.project2.Maze.CellType
 import edu.project2.Maze.Maze
 import edu.project2.generators.idealMaze.IdealMazeGenerator
-import edu.project2.solvers.BFSSolver
 import edu.project2.solvers.DFSSolver
 import io.kotest.assertions.throwables.shouldNotThrowAny
 import io.kotest.assertions.throwables.shouldThrowAny
