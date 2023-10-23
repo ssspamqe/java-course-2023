@@ -4,9 +4,9 @@ import edu.project2.Maze.Cell
 import edu.project2.Maze.CellType
 import edu.project2.Maze.Maze
 
-abstract class MazeSolver {
-    public abstract fun solve(mazeParam: Maze, start: Cell, end: Cell): Maze
-    internal fun buildSolvedMaze(maze: Maze, start: Cell, end: Cell, ancestors: List<List<Cell>>): Maze {
+interface MazeSolver {
+    public fun solve(mazeParam: Maze, start: Cell, end: Cell): Maze
+    fun buildSolvedMaze(maze: Maze, start: Cell, end: Cell, ancestors: List<List<Cell>>): Maze {
 
         var currentCell = end
 

@@ -11,6 +11,7 @@ import edu.project2.solvers.MazeSolver
 import org.apache.logging.log4j.LogManager
 import java.util.*
 
+
 val LOGGER = LogManager.getLogger()
 lateinit var sc: Scanner
 
@@ -27,16 +28,16 @@ var solvedMaze: Maze = Maze()
 var solver: MazeSolver = BFSSolver()
 
 
-var start = Cell(0,0)
-var end = Cell(0,0)
+var start = Cell(0, 0)
+var end = Cell(0, 0)
 
 
-var choice:Char = 'a'
-fun main() {
+var choice: Char = 'a'
+fun startGame() {
 
     sc = Scanner(System.`in`)
 
-    while(choice!='n'){
+    while (choice != 'n') {
         LOGGER.info(
             """WELCOME TO MAZE GENERATOR!
         Select maze generating algorithm:
@@ -84,13 +85,12 @@ fun main() {
             }
 
 
-        getCells()
-
+        getStartEndCells()
 
         solvedMaze = solver.solve(maze, start, end)
         solvedMaze.printMaze(printBounds)
 
-        LOGGER.info("Do you want to finish?")
+        LOGGER.info("Do you want to finish? (y/n)")
 
         sc.nextLine()
         choice = sc.nextLine()[0]
@@ -167,7 +167,7 @@ private fun getDefaultMazeInfo() {
             false
 }
 
-private fun getCells() {
+private fun getStartEndCells() {
     var row: Int
     var column: Int
 
@@ -194,5 +194,6 @@ private fun getCells() {
     LOGGER.info("Input column of end cell")
     column = sc.nextInt()
 
-    end = Cell(row,column)
+    end = Cell(row, column)
 }
+
