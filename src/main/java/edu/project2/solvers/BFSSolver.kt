@@ -21,7 +21,7 @@ class BFSSolver : MazeSolver() {
         val queue: Queue<Cell> = LinkedList()
 
         queue.add(start)
-        val ancestors = List(maze.height) { _ ->
+        var ancestors = List(maze.height) { _ ->
             List(maze.width) { Cell(-1, -1) }
         }
 
@@ -39,8 +39,10 @@ class BFSSolver : MazeSolver() {
 
                 val mutableAncestors = ancestors.toMutableList()                        //?????
                 mutableAncestors[cell.row] = mutableAncestors[cell.row].toMutableList()    //??????
-                (mutableAncestors[cell.row] as MutableList<Cell>)[cell.column] = cell         //?????
+                (mutableAncestors[cell.row] as MutableList<Cell>)[cell.column] = currentCell         //?????
                 mutableAncestors[cell.row] = mutableAncestors[cell.row].toList()
+
+                ancestors = mutableAncestors.toList()
 
                 queue.add(cell)
                 if (cell.row == end.row && cell.column == end.column)
