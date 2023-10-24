@@ -2,19 +2,21 @@ package edu.project2.Maze
 
 import org.apache.logging.log4j.LogManager
 
-data class Maze(val height:Int,
-                val width: Int) : Cloneable {
+data class Maze(
+    val height: Int,
+    val width: Int
+)  {
 
     private val LOGGER = LogManager.getLogger()
 
     private var matrix: List<List<CellType>>? = null
 
-    init{
+    init {
         if (matrix == null)
             matrix = List(height) { List(width) { CellType.WALL } }
     }
 
-    constructor(oldMatrix: List<List<CellType>>):this(oldMatrix.size, oldMatrix[0].size){
+    constructor(oldMatrix: List<List<CellType>>) : this(oldMatrix.size, oldMatrix[0].size) {
         val height = oldMatrix.size
         val width = oldMatrix[0].size
 
@@ -63,15 +65,13 @@ data class Maze(val height:Int,
             LOGGER.info(CellType.WALL.getSymbol().repeat(width + 2))
     }
 
-    public fun getCellType(cell: Cell): CellType {
+    public fun getCellType(cell: Cell): CellType =
         if (cell.row !in 0 until height || cell.column !in 0 until width)
-            return CellType.OUT_OF_BOUNDS
-        return matrix!![cell.row][cell.column]
-    }
+            CellType.OUT_OF_BOUNDS
+        else matrix!![cell.row][cell.column]
 
-    fun getAdjacentCells(cell: Cell): List<Cell> {
-        return getAdjacentCells(cell, 1)
-    }
+    fun getAdjacentCells(cell: Cell): List<Cell> = getAdjacentCells(cell, 1)
+
 
     fun getAdjacentCells(cell: Cell, distance: Int): List<Cell> {
 
@@ -95,9 +95,5 @@ data class Maze(val height:Int,
         return adjacentCells
     }
 
-    public override fun clone(): Maze {
-        return Maze(matrix!!)
-    }
-
-
+    public fun clone(): Maze = Maze(matrix!!)
 }

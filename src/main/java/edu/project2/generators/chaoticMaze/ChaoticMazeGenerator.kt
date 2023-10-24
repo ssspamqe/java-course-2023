@@ -19,9 +19,8 @@ class ChaoticMazeGenerator() : MazeGenerator {
         return generateMaze(height, width, wallChance)
     }
 
-    public fun getMaze(side: Int, wallChance: Int = 75): Maze {
-        return getMaze(side, side, wallChance)
-    }
+    public fun getMaze(side: Int, wallChance: Int = 75): Maze = getMaze(side, side, wallChance)
+
 
     private fun generateMaze(height: Int, width: Int, wallChance: Int): Maze {
 

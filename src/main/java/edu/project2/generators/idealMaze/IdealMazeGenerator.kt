@@ -39,9 +39,8 @@ class IdealMazeGenerator : MazeGenerator {
         return maze
     }
 
-    public fun getMaze(side: Int): Maze {
-        return getMaze(side, side)
-    }
+    public fun getMaze(side: Int): Maze = getMaze(side, side)
+
 
     private fun procedureBacktracking(start: Cell) {
 
