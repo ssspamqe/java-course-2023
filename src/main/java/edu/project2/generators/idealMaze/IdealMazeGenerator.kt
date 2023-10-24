@@ -4,8 +4,6 @@ import edu.project2.Maze.Cell
 import edu.project2.Maze.CellType
 import edu.project2.Maze.Maze
 import edu.project2.generators.MazeGenerator
-import edu.project2.height
-import edu.project2.width
 import java.util.*
 
 class IdealMazeGenerator : MazeGenerator {
@@ -13,7 +11,12 @@ class IdealMazeGenerator : MazeGenerator {
     private lateinit var maze: Maze
     private lateinit var visited: HashSet<Cell>
 
+    private var height = 0
+    private var width = 0
     public fun getMaze(height: Int, width: Int): Maze {
+
+        this.height = height
+        this.width = width
 
         if (height <= 0 || width <= 0)
             throw IllegalArgumentException("Sizes of maze must be positive integers")
@@ -25,7 +28,6 @@ class IdealMazeGenerator : MazeGenerator {
         maze.setCellType(start, CellType.PASSAGE)
 
         procedureBacktracking(start)
-
 
 
         if (width % 2 == 0)

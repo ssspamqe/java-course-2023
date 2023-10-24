@@ -2,42 +2,21 @@ package edu.project2.Maze
 
 import org.apache.logging.log4j.LogManager
 
-class Maze : Cloneable {
+data class Maze(val height:Int,
+                val width: Int) : Cloneable {
 
     private val LOGGER = LogManager.getLogger()
 
-    private var matrix: List<List<CellType>>
+    private var matrix: List<List<CellType>>? = null
 
-    val height: Int
-    val width: Int
-
-    constructor(height: Int, width: Int) {
-
-        this.height = height
-        this.width = width
-
-        matrix = List(height) { _ ->
-            List(width) { _ -> CellType.WALL }.toMutableList()
-        }.toMutableList()
+    init{
+        if (matrix == null)
+            matrix = List(height) { List(width) { CellType.WALL } }
     }
 
-    constructor() {
-
-        this.height = 0
-        this.width = 0
-
-        matrix = List(height) { _ ->
-            List(width) { _ -> CellType.WALL }.toMutableList()
-        }.toMutableList()
-    }
-
-
-    public constructor(size: Int) : this(size, size)
-
-    constructor(oldMatrix: List<List<CellType>>) {
-
-        this.height = oldMatrix.size
-        this.width = oldMatrix[0].size
+    constructor(oldMatrix: List<List<CellType>>):this(oldMatrix.size, oldMatrix[0].size){
+        val height = oldMatrix.size
+        val width = oldMatrix[0].size
 
         matrix = List(height) { _ ->
             List(width) { _ -> CellType.WALL }.toMutableList()
@@ -50,7 +29,6 @@ class Maze : Cloneable {
         }
     }
 
-
     public fun setCellType(cell: Cell, newType: CellType): Maze {
 
         if (cell.row !in 0 until height)
@@ -58,11 +36,10 @@ class Maze : Cloneable {
         if (cell.column !in 0 until width)
             throw IllegalArgumentException("column must be in [0;width), given column is ${cell.column}")
 
-        val mutableMatrix = matrix.toMutableList()                        //?????
+        val mutableMatrix = matrix!!.toMutableList()                        //?????
         mutableMatrix[cell.row] = mutableMatrix[cell.row].toMutableList()    //??????
         (mutableMatrix[cell.row] as MutableList<CellType>)[cell.column] = newType         //?????
         mutableMatrix[cell.row] = mutableMatrix[cell.row].toList()            //????
-
 
         matrix = mutableMatrix.toList()
         return this
@@ -71,9 +48,9 @@ class Maze : Cloneable {
     public fun printMaze(printBounds: Boolean = false) {
 
         if (printBounds)
-            LOGGER.info(CellType.WALL.getSymbol().toString().repeat(width + 2))
+            LOGGER.info(CellType.WALL.getSymbol().repeat(width + 2))
 
-        matrix.forEach { line ->
+        matrix!!.forEach { line ->
 
             val symbolLine = buildString {
                 line.forEach {
@@ -82,23 +59,19 @@ class Maze : Cloneable {
             }
 
             if (printBounds)
-                LOGGER.info(CellType.WALL.getSymbol().toString() + symbolLine + CellType.WALL.getSymbol())
+                LOGGER.info(CellType.WALL.getSymbol() + symbolLine + CellType.WALL.getSymbol())
             else
                 LOGGER.info(symbolLine)
         }
 
         if (printBounds)
-            LOGGER.info(CellType.WALL.getSymbol().toString().repeat(width + 2))
+            LOGGER.info(CellType.WALL.getSymbol().repeat(width + 2))
     }
 
     public fun getCellType(cell: Cell): CellType {
         if (cell.row !in 0 until height || cell.column !in 0 until width)
             return CellType.OUT_OF_BOUNDS
-        return matrix[cell.row][cell.column]
-    }
-
-    public override fun clone(): Maze {
-        return Maze(matrix)
+        return matrix!![cell.row][cell.column]
     }
 
     fun getAdjacentCells(cell: Cell): List<Cell> {
@@ -125,6 +98,10 @@ class Maze : Cloneable {
             adjacentCells.add(Cell(cell.row, cell.column - distance))
 
         return adjacentCells
+    }
+
+    public override fun clone(): Maze {
+        return Maze(matrix!!)
     }
 
 
