@@ -21,7 +21,7 @@ class Maze : Cloneable {
         }.toMutableList()
     }
 
-    constructor(){
+    constructor() {
 
         this.height = 0
         this.width = 0
@@ -45,7 +45,7 @@ class Maze : Cloneable {
 
         oldMatrix.forEachIndexed { rowIndex, row ->
             row.forEachIndexed { columnIndex, cellType ->
-                setCellType(Cell(rowIndex, columnIndex),cellType)
+                setCellType(Cell(rowIndex, columnIndex), cellType)
             }
         }
     }
@@ -68,9 +68,9 @@ class Maze : Cloneable {
         return this
     }
 
-    public fun printMaze(printBounds:Boolean = false) {
+    public fun printMaze(printBounds: Boolean = false) {
 
-        if(printBounds)
+        if (printBounds)
             LOGGER.info(CellType.WALL.getSymbol().toString().repeat(width + 2))
 
         matrix.forEach { line ->
@@ -81,13 +81,13 @@ class Maze : Cloneable {
                 }
             }
 
-            if(printBounds)
+            if (printBounds)
                 LOGGER.info(CellType.WALL.getSymbol().toString() + symbolLine + CellType.WALL.getSymbol())
             else
-                LOGGER.info( symbolLine)
+                LOGGER.info(symbolLine)
         }
 
-        if(printBounds)
+        if (printBounds)
             LOGGER.info(CellType.WALL.getSymbol().toString().repeat(width + 2))
     }
 
@@ -105,9 +105,9 @@ class Maze : Cloneable {
         return getAdjacentCells(cell, 1)
     }
 
-    fun getAdjacentCells(cell:Cell, distance:Int):List<Cell>{
+    fun getAdjacentCells(cell: Cell, distance: Int): List<Cell> {
 
-        if(distance<=0)
+        if (distance <= 0)
             throw IllegalArgumentException("Distance must be positive number ")
 
         val adjacentCells = mutableListOf<Cell>()

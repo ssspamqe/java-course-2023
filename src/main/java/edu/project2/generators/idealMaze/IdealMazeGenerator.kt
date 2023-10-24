@@ -7,7 +7,6 @@ import edu.project2.generators.MazeGenerator
 import edu.project2.height
 import edu.project2.width
 import java.util.*
-import kotlin.collections.HashSet
 
 class IdealMazeGenerator : MazeGenerator {
 
@@ -29,10 +28,10 @@ class IdealMazeGenerator : MazeGenerator {
 
 
 
-        if(width%2==0)
+        if (width % 2 == 0)
             fillRightBorder()
 
-        if(height%2==0)
+        if (height % 2 == 0)
             fillDownBorder()
 
         return maze
@@ -102,35 +101,35 @@ class IdealMazeGenerator : MazeGenerator {
         return Shift.UNKNOWN
     }
 
-    private fun fillRightBorder(){
-        val column = width-1
+    private fun fillRightBorder() {
+        val column = width - 1
 
         var prevFilled = false
 
-        for(row in 0 until  height)
+        for (row in 0 until height)
             prevFilled =
-                if(maze.getCellType(Cell(row,column-1)) == CellType.PASSAGE
+                if (maze.getCellType(Cell(row, column - 1)) == CellType.PASSAGE
                     && Random().nextBoolean()
-                    && !prevFilled) {
+                    && !prevFilled
+                ) {
                     maze.setCellType(Cell(row, column), CellType.PASSAGE)
                     true
-                }
-                else false
+                } else false
     }
 
-    private fun fillDownBorder(){
-        val row = height-1
+    private fun fillDownBorder() {
+        val row = height - 1
 
         var prevFilled = false
 
-        for(column in 0 until width)
+        for (column in 0 until width)
             prevFilled =
-                if(maze.getCellType(Cell(row-1,column)) == CellType.PASSAGE
+                if (maze.getCellType(Cell(row - 1, column)) == CellType.PASSAGE
                     && Random().nextBoolean()
-                    && !prevFilled) {
+                    && !prevFilled
+                ) {
                     maze.setCellType(Cell(row, column), CellType.PASSAGE)
                     true
-                }
-                else false
+                } else false
     }
 }

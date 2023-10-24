@@ -7,7 +7,7 @@ import edu.project2.Maze.Maze
 class DFSSolver : MazeSolver() {
 
     private lateinit var maze: Maze
-    private lateinit var visited:HashSet<Cell>
+    private lateinit var visited: HashSet<Cell>
     private lateinit var ancestors: List<List<Cell>>
 
     override fun solve(mazeParam: Maze, start: Cell, end: Cell): Maze {

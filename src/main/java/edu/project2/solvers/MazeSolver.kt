@@ -10,10 +10,10 @@ abstract class MazeSolver {
 
         var currentCell = end
 
-        while (currentCell!=start) {
+        while (currentCell != start) {
             currentCell = ancestors[currentCell.row][currentCell.column]
 
-            if(maze.getCellType(currentCell) == CellType.OUT_OF_BOUNDS)
+            if (maze.getCellType(currentCell) == CellType.OUT_OF_BOUNDS)
                 print(1)
 
             maze.setCellType(currentCell, CellType.PATH)

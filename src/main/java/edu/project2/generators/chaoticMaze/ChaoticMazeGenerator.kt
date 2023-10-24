@@ -13,7 +13,7 @@ class ChaoticMazeGenerator() : MazeGenerator {
 
     public fun getMaze(height: Int, width: Int, wallChance: Int = 75): Maze {
 
-        if(height<=0 || width <= 0)
+        if (height <= 0 || width <= 0)
             throw IllegalArgumentException("Sizes of maze must be positive integers")
 
         return generateMaze(height, width, wallChance)
@@ -23,7 +23,7 @@ class ChaoticMazeGenerator() : MazeGenerator {
         return getMaze(side, side, wallChance)
     }
 
-    private fun generateMaze(height: Int, width: Int, wallChance: Int): Maze  {
+    private fun generateMaze(height: Int, width: Int, wallChance: Int): Maze {
 
         maze = Maze(height, width)
 
