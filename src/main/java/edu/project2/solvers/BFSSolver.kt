@@ -36,13 +36,7 @@ class BFSSolver : MazeSolver() {
             }
 
             for (cell in nextCells) {
-
-                val mutableAncestors = ancestors.toMutableList()                        //?????
-                mutableAncestors[cell.row] = mutableAncestors[cell.row].toMutableList()    //??????
-                (mutableAncestors[cell.row] as MutableList<Cell>)[cell.column] = currentCell         //?????
-                mutableAncestors[cell.row] = mutableAncestors[cell.row].toList()
-
-                ancestors = mutableAncestors.toList()
+                (ancestors[cell.row] as MutableList<Cell>)[cell.column] = currentCell
 
                 queue.add(cell)
                 if (cell.row == end.row && cell.column == end.column)

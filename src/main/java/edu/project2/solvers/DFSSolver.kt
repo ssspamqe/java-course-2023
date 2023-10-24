@@ -41,13 +41,7 @@ class DFSSolver : MazeSolver() {
 
 
         nextCells.forEach {
-
-            val mutableAncestors = ancestors.toMutableList()                        //?????
-            mutableAncestors[it.row] = mutableAncestors[it.row].toMutableList()    //??????
-            (mutableAncestors[it.row] as MutableList<Cell>)[it.column] = cell         //?????
-            mutableAncestors[it.row] = mutableAncestors[it.row].toList()            //????
-
-            ancestors = mutableAncestors.toList()
+            (ancestors[it.row] as MutableList<Cell>)[it.column] = cell
             dfs(it)
         }
     }

@@ -36,12 +36,7 @@ data class Maze(val height:Int,
         if (cell.column !in 0 until width)
             throw IllegalArgumentException("column must be in [0;width), given column is ${cell.column}")
 
-        val mutableMatrix = matrix!!.toMutableList()                        //?????
-        mutableMatrix[cell.row] = mutableMatrix[cell.row].toMutableList()    //??????
-        (mutableMatrix[cell.row] as MutableList<CellType>)[cell.column] = newType         //?????
-        mutableMatrix[cell.row] = mutableMatrix[cell.row].toList()            //????
-
-        matrix = mutableMatrix.toList()
+        (matrix!![cell.row] as MutableList<CellType>)[cell.column] = newType
         return this
     }
 
