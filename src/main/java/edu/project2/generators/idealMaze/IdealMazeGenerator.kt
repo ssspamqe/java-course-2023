@@ -13,6 +13,8 @@ class IdealMazeGenerator : MazeGenerator {
 
     private var height = 0
     private var width = 0
+
+    private val random = Random()
     public fun getMaze(height: Int, width: Int): Maze {
 
         this.height = height
@@ -107,15 +109,16 @@ class IdealMazeGenerator : MazeGenerator {
 
         var prevFilled = false
 
-        for (row in 0 until height)
-            prevFilled =
-                if (maze.getCellType(Cell(row, column - 1)) == CellType.PASSAGE
-                    && Random().nextBoolean()
-                    && !prevFilled
-                ) {
-                    maze.setCellType(Cell(row, column), CellType.PASSAGE)
-                    true
-                } else false
+        for (row in 0 until height) {
+            if (maze.getCellType(Cell(row, column - 1)) == CellType.PASSAGE
+                && random.nextBoolean()
+                && !prevFilled
+            ) {
+                maze.setCellType(Cell(row, column), CellType.PASSAGE)
+                prevFilled = true
+            } else
+                prevFilled = false
+        }
     }
 
     private fun fillDownBorder() {
@@ -123,14 +126,15 @@ class IdealMazeGenerator : MazeGenerator {
 
         var prevFilled = false
 
-        for (column in 0 until width)
-            prevFilled =
-                if (maze.getCellType(Cell(row - 1, column)) == CellType.PASSAGE
-                    && Random().nextBoolean()
-                    && !prevFilled
-                ) {
-                    maze.setCellType(Cell(row, column), CellType.PASSAGE)
-                    true
-                } else false
+        for (column in 0 until width) {
+            if (maze.getCellType(Cell(row - 1, column)) == CellType.PASSAGE
+                && random.nextBoolean()
+                && !prevFilled
+            ) {
+                maze.setCellType(Cell(row, column), CellType.PASSAGE)
+                prevFilled = true
+            } else
+                prevFilled = false
+        }
     }
 }
