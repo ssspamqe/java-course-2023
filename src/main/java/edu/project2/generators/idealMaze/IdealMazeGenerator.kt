@@ -64,24 +64,29 @@ class IdealMazeGenerator : MazeGenerator {
 
                 trace.add(nextCell)
 
-                when (getCellShift(currentCell, nextCell)) {
-                    Shift.UP ->
-                        maze.setCellType(Cell(currentCell.row - 1, currentCell.column), CellType.PASSAGE)
+                changeTransitionCellTypeToPassage(currentCell,getCellShift(currentCell, nextCell))
 
-                    Shift.RIGHT ->
-                        maze.setCellType(Cell(currentCell.row, currentCell.column + 1), CellType.PASSAGE)
-
-                    Shift.DOWN ->
-                        maze.setCellType(Cell(currentCell.row + 1, currentCell.column), CellType.PASSAGE)
-
-                    Shift.LEFT ->
-                        maze.setCellType(Cell(currentCell.row, currentCell.column - 1), CellType.PASSAGE)
-
-                    Shift.UNKNOWN -> continue
-                }
                 currentCell = nextCell
             } else
                 currentCell = trace.pop()
+        }
+    }
+
+    private fun changeTransitionCellTypeToPassage(currentCell:Cell, shift: Shift){
+        when (shift) {
+            Shift.UP ->
+                maze.setCellType(Cell(currentCell.row - 1, currentCell.column), CellType.PASSAGE)
+
+            Shift.RIGHT ->
+                maze.setCellType(Cell(currentCell.row, currentCell.column + 1), CellType.PASSAGE)
+
+            Shift.DOWN ->
+                maze.setCellType(Cell(currentCell.row + 1, currentCell.column), CellType.PASSAGE)
+
+            Shift.LEFT ->
+                maze.setCellType(Cell(currentCell.row, currentCell.column - 1), CellType.PASSAGE)
+
+            Shift.UNKNOWN -> return
         }
     }
 
