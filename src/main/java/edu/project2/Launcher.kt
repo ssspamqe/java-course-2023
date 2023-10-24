@@ -13,79 +13,38 @@ import java.util.*
 
 class Launcher {
 
-    val LOGGER = LogManager.getLogger()
-    lateinit var sc: Scanner
+    private val LOGGER = LogManager.getLogger()
+    private lateinit var sc: Scanner
 
 
-    var height: Int = -1
-    var width: Int = -1
-    var printBounds: Boolean = false
-    var wallChance: Int = 50
+    private var height: Int = -1
+    private var width: Int = -1
+    private var printBounds: Boolean = false
+    private var wallChance: Int = 50
 
 
-    var generator: MazeGenerator = IdealMazeGenerator()
-    var maze: Maze = Maze(0,0)
-    var solvedMaze: Maze = Maze(0,0)
-    var solver: MazeSolver = BFSSolver()
+    private var generator: MazeGenerator = IdealMazeGenerator()
+    private var maze: Maze = Maze(0,0)
+    private var solvedMaze: Maze = Maze(0,0)
+    private var solver: MazeSolver = BFSSolver()
 
 
-    var start = Cell(0, 0)
-    var end = Cell(0, 0)
+    private var start = Cell(0, 0)
+    private var end = Cell(0, 0)
 
 
-    var choice: Char = 'a'
+    private var choice: Char = 'a'
 
     fun startGame() {
 
         sc = Scanner(System.`in`)
+        LOGGER.info("WELCOME TO MAZE GENERATOR!")
 
         while (choice != 'n') {
-            LOGGER.info(
-                """WELCOME TO MAZE GENERATOR!
-        Select maze generating algorithm:
-            1 for chaotic maze
-            2 for ideal maze
-        """
-            )
 
-            var mazeType = -1
+            chooseMazeGenerator()
 
-            while (mazeType !in 1..2) {
-                LOGGER.info("type either '1' or '2'")
-                mazeType = sc.nextInt()
-            }
-
-            if (mazeType == 1) {
-                LOGGER.info("You've chosen chaotic maze")
-                setUpChaoticMaze()
-            } else {
-                LOGGER.info("You've chosen ideal maze")
-                setUpIdealMaze()
-            }
-
-
-            LOGGER.info(
-                """
-        Select maze solving algorithm:
-            1 for bfs
-            2 for dfs
-        """
-            )
-            var solverType = -1
-            while (solverType !in 1..2) {
-                LOGGER.info("type either '1' or '2'")
-                solverType = sc.nextInt()
-            }
-
-            solver =
-                if (mazeType == 1) {
-                    LOGGER.info("You've chosen bfs")
-                    BFSSolver()
-                } else {
-                    LOGGER.info("You've chosen dfs")
-                    DFSSolver()
-                }
-
+            chooseSolvingAlgo()
 
             getStartEndCells()
 
@@ -195,6 +154,56 @@ class Launcher {
         column = sc.nextInt()
 
         end = Cell(row, column)
+    }
+
+    private fun chooseMazeGenerator(){
+        LOGGER.info("""
+        Select maze generating algorithm:
+            1 for chaotic maze
+            2 for ideal maze
+        """
+        )
+
+        var mazeType = -1
+
+        while (mazeType !in 1..2) {
+            LOGGER.info("type either '1' or '2'")
+            mazeType = sc.nextInt()
+        }
+
+        if (mazeType == 1) {
+            LOGGER.info("You've chosen chaotic maze")
+            setUpChaoticMaze()
+        } else {
+            LOGGER.info("You've chosen ideal maze")
+            setUpIdealMaze()
+        }
+
+    }
+
+    private fun chooseSolvingAlgo(){
+        LOGGER.info(
+            """
+        Select maze solving algorithm:
+            1 for bfs
+            2 for dfs
+        """
+        )
+        var solverType = -1
+        while (solverType !in 1..2) {
+            LOGGER.info("type either '1' or '2'")
+            solverType = sc.nextInt()
+        }
+
+        solver =
+            if (solverType == 1) {
+                LOGGER.info("You've chosen bfs")
+                BFSSolver()
+            } else {
+                LOGGER.info("You've chosen dfs")
+                DFSSolver()
+            }
+
     }
 
 }

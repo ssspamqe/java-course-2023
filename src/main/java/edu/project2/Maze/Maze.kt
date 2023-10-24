@@ -5,11 +5,13 @@ import org.apache.logging.log4j.LogManager
 data class Maze(
     val height: Int,
     val width: Int
-)  {
+) :Cloneable {
 
     private val LOGGER = LogManager.getLogger()
 
-    private var matrix: List<List<CellType>>? = null
+    private var matrix: List<List<CellType>>? = null //такова цена дата класса....
+    // (тут все равно надо копировать это поле, а если вызвать .copy(), то скопируются только height:Int и width:Int
+    // и в init{} матрица снова будет состоять только из стен) Зато повторяющегося кода меньше стало
 
     init {
         if (matrix == null)
@@ -95,5 +97,5 @@ data class Maze(
         return adjacentCells
     }
 
-    public fun clone(): Maze = Maze(matrix!!)
+    public override fun clone(): Maze = Maze(matrix!!)
 }
