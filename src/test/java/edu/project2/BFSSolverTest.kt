@@ -7,12 +7,13 @@ import edu.project2.generators.idealMaze.IdealMazeGenerator
 import edu.project2.solvers.BFSSolver
 import io.kotest.assertions.throwables.shouldNotThrowAny
 import io.kotest.assertions.throwables.shouldThrowAny
+import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.property.Arb
 import io.kotest.property.arbitrary.int
 import io.kotest.property.checkAll
 
-class BFSSolverTest : StringSpec({
+class BFSSolverTest : ShouldSpec({
     val solver = BFSSolver()
 
 
@@ -25,7 +26,7 @@ class BFSSolverTest : StringSpec({
         maze = IdealMazeGenerator().getMaze(height, width)
     }
 
-    "Solver should throw an exception if not passing CellType.WALL as start cell" {
+    should("throw an exception if not passing CellType.WALL as start cell") {
         checkAll(Arb.int(-height, 2 * height), Arb.int(-width, 2 * width)) { row, column ->
 
             val start = Cell(row, column)

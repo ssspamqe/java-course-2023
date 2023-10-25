@@ -4,12 +4,12 @@ import edu.project2.Maze.Cell
 import edu.project2.Maze.CellType
 import edu.project2.Maze.Maze
 import edu.project2.generators.idealMaze.IdealMazeGenerator
-import io.kotest.core.spec.style.StringSpec
+import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.property.Arb
 import io.kotest.property.arbitrary.int
 import io.kotest.property.forAll
 
-class MazeTest : StringSpec({
+class MazeTest : ShouldSpec({
 
     val generator = IdealMazeGenerator()
     val height = 20
@@ -20,44 +20,51 @@ class MazeTest : StringSpec({
         maze = generator.getMaze(height, width)
     }
 
+    context("getCellType()") {
 
-    "Method getCellType() should return CellType.PASSAGE or CellType.WALL if passing correct cell" {
+        should("return CellType.PASSAGE or CellType.WALL if passing correct cell") {
 
-        forAll(Arb.int(0 until height), Arb.int(0 until width)) { row, column ->
+            forAll(Arb.int(0 until height), Arb.int(0 until width)) { row, column ->
 
-            val cell = Cell(row, column)
+                val cell = Cell(row, column)
 
-            val type = maze.getCellType(cell)
+                val type = maze.getCellType(cell)
 
-            type in listOf(CellType.PASSAGE, CellType.WALL)
+                type in listOf(CellType.PASSAGE, CellType.WALL)
+            }
+
         }
 
-    }
+        should("return CellType.OUT_OF_BOUNDS if passing incorrect cell") {
 
-    "Method getCellType() should return CellType.OUT_OF_BOUNDS if passing incorrect cell" {
+            forAll(Arb.int(-height until 0), Arb.int(width until 2 * width)) { row, column ->
 
-        forAll(Arb.int(-height until 0), Arb.int(width until 2 * width)) { row, column ->
+                val cell = Cell(row, column)
 
-            val cell = Cell(row, column)
+                val type = maze.getCellType(cell)
 
-            val type = maze.getCellType(cell)
+                type == CellType.OUT_OF_BOUNDS
+            }
 
-            type == CellType.OUT_OF_BOUNDS
         }
-
     }
 
 
-    "Method setCellType() should change CellType of cell" {
+    context("setCellType()") {
 
-        forAll(Arb.int(0 until height), Arb.int(0 until width)) { row, column ->
+        should("change CellType of cell") {
 
-            val cell = Cell(row, column)
+            forAll(Arb.int(0 until height), Arb.int(0 until width)) { row, column ->
 
-            maze.setCellType(cell, CellType.OUT_OF_BOUNDS)
+                val cell = Cell(row, column)
 
-            maze.getCellType(cell) == CellType.OUT_OF_BOUNDS
+                maze.setCellType(cell, CellType.OUT_OF_BOUNDS)
+
+                maze.getCellType(cell) == CellType.OUT_OF_BOUNDS
+            }
+
         }
-
     }
+
+
 })
