@@ -7,8 +7,6 @@ public class Task3 {
         if (small.length == 0 || big.length == 0) {
             throw new IllegalArgumentException("Empty array");
         }
-
-        //Collections.max()
         int smallMin = Integer.MAX_VALUE;
         int smallMax = Integer.MIN_VALUE;
 
