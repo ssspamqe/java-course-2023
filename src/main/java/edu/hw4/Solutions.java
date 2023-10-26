@@ -1,9 +1,11 @@
 package edu.hw4;
 
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -182,5 +184,109 @@ public class Solutions {
 
     }
 
+    
+
+    class ValidationException extends RuntimeException {
+        private final String message;
+        private final ValidationExceptionType type;
+
+        ValidationException(String message, ValidationExceptionType type) {
+            this.message = message;
+            this.type = type;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+
+        public ValidationExceptionType getType() {
+            return type;
+        }
+    }
+
+    private Set<ValidationException> validateAnimal(Animal animal){
+        Set<ValidationException> exceptions = new HashSet<>();
+
+        exceptions.addAll(validateName(animal.name()));
+        exceptions.addAll(validateAge(animal.age()));
+        exceptions.addAll(validateType(animal.type()));
+        exceptions.addAll(validateSex(animal.sex()));
+        exceptions.addAll(validateWeight(animal.weight()));
+        exceptions.addAll(validateHeight(animal.height()));
+
+        return exceptions;
+    }
+
+    enum ValidationExceptionType {
+        NAME,
+        TYPE,
+        SEX,
+        AGE,
+        HEIGHT,
+        WEIGHT
+    }
+
+    private Set<ValidationException> validateName(String name) {
+
+        Set<ValidationException> exceptions = new HashSet<>();
+
+        if (name.charAt(0) != Character.toUpperCase(name.charAt(0))) {
+            exceptions.add(new ValidationException("Name must start with capital letter",
+                ValidationExceptionType.NAME));
+        }
+
+        for (int i = 0; i < name.length(); i++) {
+            if (Character.isDigit(name.charAt(i))) {
+                exceptions.add(new ValidationException("Name must not contain any digis",
+                    ValidationExceptionType.NAME));
+                break;
+            }
+        }
+
+        return exceptions;
+    }
+
+    private Set<ValidationException> validateType(Type type) {
+        Set<ValidationException> exceptions = new HashSet<>();
+        if (type == null) {
+            exceptions.add(new ValidationException("Type must not be null", ValidationExceptionType.TYPE));
+        }
+        return exceptions;
+    }
+
+    private Set<ValidationException> validateSex(Sex sex) {
+        Set<ValidationException> exceptions = new HashSet<>();
+        if (sex == null) {
+            exceptions.add(new ValidationException("Sex must not be null", ValidationExceptionType.TYPE));
+        }
+        return exceptions;
+    }
+
+    private Set<ValidationException> validateAge(int age) {
+        Set<ValidationException> exceptions = new HashSet<>();
+        if (age < 0) {
+            exceptions.add(new ValidationException("Age must be non negative",ValidationExceptionType.AGE));
+        }
+        return exceptions;
+    }
+
+    private Set<ValidationException> validateHeight(int height){
+        Set<ValidationException> exceptions = new HashSet<>();
+        if(height <= 0){
+            exceptions.add(new ValidationException("Height must be positive",ValidationExceptionType.HEIGHT));
+        }
+        return exceptions;
+    }
+
+    private Set<ValidationException> validateWeight(int weight){
+        Set<ValidationException> exceptions = new HashSet<>();
+        if(weight<=0){
+            exceptions.add(new ValidationException("Weight must be positive number",ValidationExceptionType.WEIGHT));
+        }
+        return exceptions;
+    }
 }
+
+
+
 
