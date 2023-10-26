@@ -184,9 +184,38 @@ public class Solutions {
 
     }
 
-    
+    //Животные, в записях о которых есть ошибки: вернуть имя и список ошибок -> Map<String, Set<ValidationError>>.
+    //Класс ValidationError и набор потенциальных проверок нужно придумать самостоятельно. (поменяю на ValidationException)
+    public Map<String, Set<ValidationException>> task19(List<Animal> animals) {
+        return animals.stream().collect(Collectors.toMap(
+            Animal::name,
+            this::validateAnimal
+        ));
+    }
 
-    class ValidationException extends RuntimeException {
+    //Сделать результат предыдущего задания более читабельным:
+    // вернуть имя и названия полей с ошибками, объединенные в строку -> Map<String, String>
+    public Map<String,String> task20(List<Animal> animals){
+        return animals.stream().collect(Collectors.toMap(
+            Animal::name,
+            animal ->{
+                Set<ValidationException> exceptions = validateAnimal(animal);
+                Set<String> properties = new HashSet<>();
+                for(var i : exceptions)
+                    properties.add(i.type.toString());
+
+                return String.join(", ",properties);
+            }
+        ));
+    }
+
+
+
+
+
+
+    //methods and classes for tasks 19 and 20
+    static class ValidationException extends RuntimeException {
         private final String message;
         private final ValidationExceptionType type;
 
