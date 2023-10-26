@@ -95,10 +95,10 @@ public class Solutions {
     }
 
     //Сколько в списке животных, вес которых превышает рост -> Integer
-    public List<Animal> task12(List<Animal> animals) {
-        return animals.stream()
+    public int task12(List<Animal> animals) {
+        return (int) animals.stream()
             .filter(animal -> animal.weight() > animal.height())
-            .toList();
+            .count();
     }
 
     //Список животных, имена которых состоят из более чем двух слов -> List<Animal>
