@@ -63,9 +63,9 @@ public class Solutions {
     //K-е самое старое животное -> Animal
     public Animal task7(List<Animal> animals, int k) {
         return animals.stream()
-            .sorted(Comparator.comparing(Animal::age))
+            .sorted(new Task7Comparator())
             .toList()
-            .get(animals.size() - k);
+            .get(k);
     }
 
     //Самое тяжелое животное среди животных ниже k см -> Optional<Animal>
@@ -315,6 +315,32 @@ public class Solutions {
             exceptions.add(new ValidationException("Weight must be positive number",ValidationExceptionType.WEIGHT));
         }
         return exceptions;
+    }
+
+
+    static class Task7Comparator implements Comparator<Animal>{
+
+        @Override
+        public int compare(Animal an1, Animal an2) {
+            if(an1.weight() > an2.weight()){
+                return -1;
+            }
+            if (an1.weight() < an2.weight()){
+                return 1;
+            }
+
+
+            if(an1.age() > an2.age()){
+                return -1;
+            }
+
+            if(an1.age() < an2.age()){
+                return 1;
+            }
+
+
+            return an2.name().compareTo(an1.name());
+        }
     }
 }
 
