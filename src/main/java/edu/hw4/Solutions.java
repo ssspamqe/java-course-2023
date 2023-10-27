@@ -1,13 +1,11 @@
 package edu.hw4;
 
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -115,9 +113,9 @@ public class Solutions {
     }
 
     //Найти суммарный вес животных каждого вида, которым от k до l лет -> Integer
-    public Map<Type, Integer> task15(List<Animal> animals, int k, int i) {
+    public Map<Type, Integer> task15(List<Animal> animals, int k, int l) {
         return animals.stream()
-            .filter(animal -> animal.age() <= i && animal.age() >= k)
+            .filter(animal -> animal.age() <= l && animal.age() >= k)
             .collect(Collectors.groupingBy(
                 Animal::type,
                 Collectors.summingInt(Animal::weight)
@@ -173,17 +171,36 @@ public class Solutions {
         //получается, что мы пробегаем вначале по всем животным, а потом еще раз по листу с самой тяжелой рабкой
         //не лучше ли сделать просто for-each цикл, перед ним создав объект животного с -1 массой и так найти?
         return animalsSuperList.stream().max(
-                Comparator.comparingInt(list ->
+                Comparator.comparing(list ->
                     list.stream()
+                        .filter(a -> a.type() == Type.FISH)
                         .max(Comparator.comparing(Animal::weight))
-                        .get()
+                        .orElse(
+                            new Animal(
+                                "",
+                                Animal.Type.FISH,
+                                Animal.Sex.F,
+                                Integer.MIN_VALUE,
+                                Integer.MIN_VALUE,
+                                Integer.MIN_VALUE,
+                                false
+                            )
+                        )
                         .weight()
                 )
             ).orElseThrow()
             .stream()
+            .filter(a -> a.type() == Type.FISH)
             .max(Comparator.comparingInt(Animal::weight))
-            .orElseThrow();
-
+            .orElse(new Animal(
+                "",
+                Animal.Type.FISH,
+                Animal.Sex.F,
+                Integer.MIN_VALUE,
+                Integer.MIN_VALUE,
+                Integer.MIN_VALUE,
+                false
+            ));
     }
 
     //Животные, в записях о которых есть ошибки: вернуть имя и список ошибок -> Map<String, Set<ValidationError>>.
@@ -197,24 +214,20 @@ public class Solutions {
 
     //Сделать результат предыдущего задания более читабельным:
     // вернуть имя и названия полей с ошибками, объединенные в строку -> Map<String, String>
-    public Map<String,String> task20(List<Animal> animals){
+    public Map<String, String> task20(List<Animal> animals) {
         return animals.stream().collect(Collectors.toMap(
             Animal::name,
-            animal ->{
+            animal -> {
                 Set<ValidationException> exceptions = validateAnimal(animal);
                 Set<String> properties = new HashSet<>();
-                for(var i : exceptions)
+                for (var i : exceptions) {
                     properties.add(i.type.toString());
+                }
 
-                return String.join(", ",properties);
+                return String.join(", ", properties);
             }
         ));
     }
-
-
-
-
-
 
     //methods and classes for tasks 19 and 20
     static class ValidationException extends RuntimeException {
@@ -235,7 +248,7 @@ public class Solutions {
         }
     }
 
-    private Set<ValidationException> validateAnimal(Animal animal){
+    private Set<ValidationException> validateAnimal(Animal animal) {
         Set<ValidationException> exceptions = new HashSet<>();
 
         exceptions.addAll(validateName(animal.name()));
@@ -262,14 +275,18 @@ public class Solutions {
         Set<ValidationException> exceptions = new HashSet<>();
 
         if (name.charAt(0) != Character.toUpperCase(name.charAt(0))) {
-            exceptions.add(new ValidationException("Name must start with capital letter",
-                ValidationExceptionType.NAME));
+            exceptions.add(new ValidationException(
+                "Name must start with capital letter",
+                ValidationExceptionType.NAME
+            ));
         }
 
         for (int i = 0; i < name.length(); i++) {
             if (Character.isDigit(name.charAt(i))) {
-                exceptions.add(new ValidationException("Name must not contain any digis",
-                    ValidationExceptionType.NAME));
+                exceptions.add(new ValidationException(
+                    "Name must not contain any digis",
+                    ValidationExceptionType.NAME
+                ));
                 break;
             }
         }
@@ -296,48 +313,45 @@ public class Solutions {
     private Set<ValidationException> validateAge(int age) {
         Set<ValidationException> exceptions = new HashSet<>();
         if (age < 0) {
-            exceptions.add(new ValidationException("Age must be non negative",ValidationExceptionType.AGE));
+            exceptions.add(new ValidationException("Age must be non negative", ValidationExceptionType.AGE));
         }
         return exceptions;
     }
 
-    private Set<ValidationException> validateHeight(int height){
+    private Set<ValidationException> validateHeight(int height) {
         Set<ValidationException> exceptions = new HashSet<>();
-        if(height <= 0){
-            exceptions.add(new ValidationException("Height must be positive",ValidationExceptionType.HEIGHT));
+        if (height <= 0) {
+            exceptions.add(new ValidationException("Height must be positive", ValidationExceptionType.HEIGHT));
         }
         return exceptions;
     }
 
-    private Set<ValidationException> validateWeight(int weight){
+    private Set<ValidationException> validateWeight(int weight) {
         Set<ValidationException> exceptions = new HashSet<>();
-        if(weight<=0){
-            exceptions.add(new ValidationException("Weight must be positive number",ValidationExceptionType.WEIGHT));
+        if (weight <= 0) {
+            exceptions.add(new ValidationException("Weight must be positive number", ValidationExceptionType.WEIGHT));
         }
         return exceptions;
     }
 
-
-    static class Task7Comparator implements Comparator<Animal>{
+    static class Task7Comparator implements Comparator<Animal> {
 
         @Override
         public int compare(Animal an1, Animal an2) {
-            if(an1.weight() > an2.weight()){
+            if (an1.weight() > an2.weight()) {
                 return -1;
             }
-            if (an1.weight() < an2.weight()){
+            if (an1.weight() < an2.weight()) {
                 return 1;
             }
 
-
-            if(an1.age() > an2.age()){
+            if (an1.age() > an2.age()) {
                 return -1;
             }
 
-            if(an1.age() < an2.age()){
+            if (an1.age() < an2.age()) {
                 return 1;
             }
-
 
             return an2.name().compareTo(an1.name());
         }
