@@ -87,6 +87,7 @@ public class Solutions {
     }
 
     //Список животных, которые могут укусить (bites == null или true) и рост которых превышает 100 см -> List<Animal>
+    @SuppressWarnings("MagicNumber")
     public List<Animal> task11(List<Animal> animals) {
         return animals.stream()
             .filter(animal -> animal.bites() && animal.height() > 100)
@@ -124,6 +125,7 @@ public class Solutions {
     }
 
     //Список животных, отсортированный по виду, затем по полу, затем по имени -> List<Integer>
+    @SuppressWarnings("MagicNumber")
     public List<Animal> task16(List<Animal> animals) {
         return animals.stream()
             .sorted((a1, a2) -> {
@@ -154,7 +156,7 @@ public class Solutions {
             .count();
 
         int dogs = (int) animals.stream()
-            .filter(animal -> animal.type() == Type.SPIDER)
+            .filter(animal -> animal.type() == Type.DOG)
             .count();
         int bitingDogs = (int) animals.stream()
             .filter(animal -> animal.type() == Type.DOG && animal.bites())
@@ -231,36 +233,7 @@ public class Solutions {
     }
 
     //methods and classes for tasks 19 and 20
-    static class ValidationException extends RuntimeException {
-        private final String message;
-        private final ValidationExceptionType type;
 
-        ValidationException(String message, ValidationExceptionType type) {
-            this.message = message;
-            this.type = type;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-
-        public ValidationExceptionType getType() {
-            return type;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj) {
-                return true;
-            }
-            if (!(obj instanceof ValidationException)) {
-                return false;
-            }
-            return message.equals(((ValidationException) obj).getMessage()) &&
-                    type == ((ValidationException) obj).type;
-
-        }
-    }
 
     private Set<ValidationException> validateAnimal(Animal animal) {
         Set<ValidationException> exceptions = new HashSet<>();
@@ -366,8 +339,38 @@ public class Solutions {
             if (an1.age() < an2.age()) {
                 return 1;
             }
-
             return an2.name().compareTo(an1.name());
+        }
+    }
+
+    static class ValidationException extends RuntimeException {
+        private final String message;
+        private final ValidationExceptionType type;
+
+        ValidationException(String message, ValidationExceptionType type) {
+            this.message = message;
+            this.type = type;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+
+        public ValidationExceptionType getType() {
+            return type;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (!(obj instanceof ValidationException)) {
+                return false;
+            }
+            return message.equals(((ValidationException) obj).getMessage())
+                && type == ((ValidationException) obj).type;
+
         }
     }
 }
