@@ -15,32 +15,36 @@ public class SolutionTest {
     Solutions solutions = new Solutions();
     List<Animal> animals;
 
+    private List<Animal> getRandomAnimals(int size) {
+        List<Animal> animals = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            animals.add(getRandomAnimal());
+        }
+        return animals;
+    }
+
+    private Animal getRandomAnimal() {
+        Random rand = new Random();
+        String[] names = {"Fluffy", "Spot", "Polly", "Bubbles", "Fido", "One Two", "Two Three"};
+        String randomName = names[rand.nextInt(names.length)];
+
+        Animal.Type randomType = Animal.Type.values()[rand.nextInt(Animal.Type.values().length)];
+        Animal.Sex randomSex = Animal.Sex.values()[rand.nextInt(Animal.Sex.values().length)];
+
+        return new Animal(
+            randomName,
+            randomType,
+            randomSex,
+            rand.nextInt(40),
+            rand.nextInt(200),
+            rand.nextInt(200),
+            rand.nextBoolean()
+        );
+    }
+
     @BeforeEach
     void initializeAnimals() {
-        animals = new ArrayList<>();
-
-        Random rand = new Random();
-
-        for (int i = 0; i < 11; i++) {
-
-            String[] names = {"Fluffy", "Spot", "Polly", "Bubbles", "Fido","One Two","Two Three"};
-            String randomName = names[rand.nextInt(names.length)];
-
-            Animal.Type randomType = Animal.Type.values()[rand.nextInt(Animal.Type.values().length)];
-            Animal.Sex randomSex = Animal.Sex.values()[rand.nextInt(Animal.Sex.values().length)];
-
-            Animal animal = new Animal(
-                randomName,
-                randomType,
-                randomSex,
-                rand.nextInt(40),
-                rand.nextInt(200),
-                rand.nextInt(50),
-                rand.nextBoolean()
-            );
-
-            animals.add(animal);
-        }
+        animals = getRandomAnimals(11);
     }
 
     @Test
@@ -224,53 +228,155 @@ public class SolutionTest {
         List<Animal> correctAnimals = new ArrayList<>();
         List<Animal> returnedAnimals;
 
-
-        for(var i : animals){
-            if(i.height()>100 && i.bites())
+        for (var i : animals) {
+            if (i.height() > 100 && i.bites()) {
                 correctAnimals.add(i);
+            }
         }
 
         returnedAnimals = solutions.task11(animals);
-
 
         assertThat(correctAnimals).isEqualTo(returnedAnimals);
     }
 
     @Test
     @DisplayName("Task 12 should return amount of animals with weight>height")
-    void task12_should_returnAmount_ofAnimalsWithWeightGreaterThanHeight(){
+    void task12_should_returnAmount_ofAnimalsWithWeightGreaterThanHeight() {
 
-        int correctAmount=0;
+        int correctAmount = 0;
         int returnedAmount;
 
-
-        for(var i: animals){
-            if(i.weight() > i.height())
+        for (var i : animals) {
+            if (i.weight() > i.height()) {
                 correctAmount++;
+            }
         }
 
         returnedAmount = solutions.task12(animals);
-
 
         assertThat(correctAmount).isEqualTo(returnedAmount);
     }
 
     @Test
     @DisplayName("Task 13 should return list of animals with names contain 2+ words")
-    void task13_should_returnListOfAnimals_withNamesContainMoreThan1Word(){
+    void task13_should_returnListOfAnimals_withNamesContainMoreThan1Word() {
 
         List<Animal> correctAnimals = new ArrayList<>();
         List<Animal> returnedAnimals;
 
-
-        for(var i : animals){
-            if(i.name().split(" ").length > 1)
+        for (var i : animals) {
+            if (i.name().split(" ").length > 1) {
                 correctAnimals.add(i);
+            }
         }
 
         returnedAnimals = solutions.task13(animals);
 
-
         assertThat(correctAnimals).isEqualTo(returnedAnimals);
     }
+
+    @Test
+    @DisplayName("Task 14 should return the true if animals contain dog with height > k sm")
+    void task14_should_returnBoolean_listContainsDogHigherKSm() {
+
+        int k = 50;
+        boolean contains = false;
+        boolean returned;
+
+        for (var i : animals) {
+            if (i.type() == Animal.Type.DOG && i.height() > k) {
+                contains = true;
+                break;
+            }
+        }
+
+        returned = solutions.task14(animals, k);
+
+        assertThat(contains).isEqualTo(returned);
+    }
+
+    @Test
+    @DisplayName("Task 15 should return map with sum of weight animals with age in [k,l] of each type")
+    void task15_should_returnMap_keyIsAnimalType_valueIsSum_ofWeightOfAnimals_withAgeInRangeKL() {
+
+        Map<Animal.Type, Integer> correctMap = new HashMap<Animal.Type, Integer>();
+        Map<Animal.Type, Integer> returnedMap;
+        int k = 14, l = 30;
+
+        for (var i : animals) {
+            if (i.age() <= l && i.age() >= k) {
+                if (!correctMap.containsKey(i.type())) {
+                    correctMap.put(i.type(), 0);
+                }
+                correctMap.replace(i.type(), correctMap.get(i.type()) + i.weight());
+            }
+        }
+
+        returnedMap = solutions.task15(animals, k, l);
+
+        assertThat(correctMap).isEqualTo(returnedMap);
+    }
+
+    @Test
+    @DisplayName("Task 17 should return list of animals, sorted by type, sex,name")
+    void task16_should_returnListOfAnimals_sortedByTypeSexName() {
+
+        List<Animal> returnedList;
+
+        returnedList = solutions.task16(animals);
+
+        animals.sort((a1, a2) -> {
+            if (a1.type().ordinal() > a2.type().ordinal()) {
+                return 1;
+            }
+            if (a1.type().ordinal() < a2.type().ordinal()) {
+                return -1;
+            }
+
+            if (a1.sex().ordinal() > a2.sex().ordinal()) {
+                return 1;
+            }
+            if (a1.sex().ordinal() < a2.sex().ordinal()) {
+                return -1;
+            }
+
+            return a1.name().compareTo(a2.name());
+        });
+
+        assertThat(animals).isEqualTo(returnedList);
+    }
+
+    @Test
+    @DisplayName("Task 18 should return the heaviest fish in all lists")
+    void task18_should_returnTheHeaviestFish_amongAllLists() {
+
+        List<List<Animal>> superList = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            superList.add(getRandomAnimals(11));
+        }
+        Animal heaviestFish = new Animal(
+            "",
+            Animal.Type.FISH,
+            Animal.Sex.F,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            false
+        );
+        Animal returnedFish;
+
+        returnedFish = solutions.task18(superList);
+
+        for (var list : superList) {
+            for (var i : list) {
+                if (i.type() == Animal.Type.FISH && i.weight() >= heaviestFish.weight()) {
+                    heaviestFish = i;
+                }
+            }
+        }
+
+
+        assertThat(returnedFish).isEqualTo(heaviestFish);
+    }
+
 }
