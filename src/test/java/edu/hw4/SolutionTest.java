@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
@@ -173,20 +174,40 @@ public class SolutionTest {
         assertThat(specificOldestAnimal).isEqualTo(returnedAnimal);
     }
 
-    //TODO test 8
-//    @Test
-//    @DisplayName("Task 8 should return the heviest one among lower than k sm animals")
-//    void task8_should_returnTheHeaviestAnimalAmongLowerThanKSm(){
-//
-//        int k = 50;
-//        Animal heaviestAnimal = null;
-//
-//
-//        Optional<Animal> returnedAnimal = solutions.task8(animals,k);
-//
-//
-//
-//    }
+
+    @Test
+    @DisplayName("Task 8 should return the heaviest one among lower than k sm animals")
+    void task8_should_returnTheHeaviestAnimalAmongLowerThanKSm(){
+
+        int k = 50;
+        Animal heaviestAnimal = new Animal(
+            "template",
+            Animal.Type.DOG,
+            Animal.Sex.F,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            false
+        );
+        Optional<Animal> returnedAnimal;
+
+
+         returnedAnimal= solutions.task8(animals,k);
+         for(var i :animals){
+             if(i.height() < k && i.weight() > heaviestAnimal.weight())
+                 heaviestAnimal = i;
+         }
+
+
+        //тут animals рандомно генерируются так что if необходим
+        if(heaviestAnimal.name().equals("template")){
+            assertThat(returnedAnimal.isEmpty()).isTrue();
+        } else {
+            assertThat(returnedAnimal.get()).isEqualTo(heaviestAnimal);
+        }
+
+
+    }
 
     @Test
     @DisplayName("Task 9 must return sum of paws of all animals")
@@ -347,6 +368,8 @@ public class SolutionTest {
         assertThat(animals).isEqualTo(returnedList);
     }
 
+    
+
     @Test
     @DisplayName("Task 18 should return the heaviest fish in all lists")
     void task18_should_returnTheHeaviestFish_amongAllLists() {
@@ -430,7 +453,7 @@ public class SolutionTest {
 
     @Test
     @DisplayName("Task 20 should return names of property with mistakes of each animal")
-    void task20_should_returnNamesOfPropertyWithMistakes_ofEachAnimal(){
+     void task20_should_returnNamesOfPropertyWithMistakes_ofEachAnimal(){
 
         List<Animal> animalsWithIncorrectData = List.of(
             new Animal(
