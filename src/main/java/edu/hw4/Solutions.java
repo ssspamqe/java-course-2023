@@ -4,6 +4,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
@@ -43,7 +44,7 @@ public class Solutions {
     //Каких животных больше: самцов или самок -> Sex
     public Sex task5(List<Animal> animals) {
         int maleAmount = (int) animals.stream().filter(animal -> animal.sex() == Sex.M).count();
-        if (maleAmount >= animals.size() / 2) {
+        if (maleAmount > animals.size() / 2) {
             return Sex.M;
         }
         return Sex.F;
@@ -129,16 +130,12 @@ public class Solutions {
     public List<Animal> task16(List<Animal> animals) {
         return animals.stream()
             .sorted((a1, a2) -> {
-                if (a1.type().ordinal() > a2.type().ordinal()) {
-                    return 1;
-                } else if (a1.type().ordinal() < a2.type().ordinal()) {
-                    return -1;
+                if (a1.type().ordinal() != a2.type().ordinal()) {
+                    return Integer.compare(a1.type().ordinal(), a2.type().ordinal());
                 }
 
-                if (a1.sex().ordinal() > a2.sex().ordinal()) {
-                    return 1;
-                } else if (a1.sex().ordinal() < a2.sex().ordinal()) {
-                    return -1;
+                if (a1.sex().ordinal() != a2.sex().ordinal()) {
+                    return Integer.compare(a1.sex().ordinal(), a2.sex().ordinal());
                 }
 
                 return a1.name().compareTo(a2.name());
@@ -207,7 +204,8 @@ public class Solutions {
     }
 
     //Животные, в записях о которых есть ошибки: вернуть имя и список ошибок -> Map<String, Set<ValidationError>>.
-    //Класс ValidationError и набор потенциальных проверок нужно придумать самостоятельно. (поменяю на ValidationException)
+    //Класс ValidationError и набор потенциальных проверок нужно придумать самостоятельно.
+    // (поменяю на ValidationException)
     public Map<String, Set<ValidationException>> task19(List<Animal> animals) {
         return animals.stream().collect(Collectors.toMap(
             Animal::name,
@@ -233,7 +231,6 @@ public class Solutions {
     }
 
     //methods and classes for tasks 19 and 20
-
 
     private Set<ValidationException> validateAnimal(Animal animal) {
         Set<ValidationException> exceptions = new HashSet<>();
@@ -325,20 +322,15 @@ public class Solutions {
 
         @Override
         public int compare(Animal an1, Animal an2) {
-            if (an1.weight() > an2.weight()) {
-                return -1;
-            }
-            if (an1.weight() < an2.weight()) {
-                return 1;
+
+            if (an1.weight() != an2.weight()) {
+                return Integer.compare(an1.weight(), an2.weight());
             }
 
-            if (an1.age() > an2.age()) {
-                return -1;
+            if (an1.age() != an2.age()) {
+                return Integer.compare(an1.age(), an2.age());
             }
 
-            if (an1.age() < an2.age()) {
-                return 1;
-            }
             return an2.name().compareTo(an1.name());
         }
     }
@@ -368,9 +360,12 @@ public class Solutions {
             if (!(obj instanceof ValidationException)) {
                 return false;
             }
-            return message.equals(((ValidationException) obj).getMessage())
-                && type == ((ValidationException) obj).type;
+            return hashCode() == obj.hashCode();
+        }
 
+        @Override
+        public int hashCode() {
+            return Objects.hash(message, type);
         }
     }
 }
