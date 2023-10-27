@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -375,8 +376,83 @@ public class SolutionTest {
             }
         }
 
-
         assertThat(returnedFish).isEqualTo(heaviestFish);
+    }
+
+    @Test
+    @DisplayName("Task 19 should return a list with mistakes associated with anima's data")
+    void task19_should_returnMap_ofMistakesInData_byAnimalName() {
+
+        List<Animal> animalsWithIncorrectData = List.of(
+            new Animal(
+                "wrong name1",
+                Animal.Type.DOG,
+                Animal.Sex.M,
+                -1,
+                -1,
+                -1,
+                false
+            )
+        );
+        Map<String, Set<Solutions.ValidationException>> allExceptions;
+        Set<Solutions.ValidationException> exceptions;
+        Set<Solutions.ValidationException> correctExceptions;
+
+        allExceptions = solutions.task19(animalsWithIncorrectData);
+        exceptions = allExceptions.get("wrong name1");
+
+        correctExceptions = Set.of(
+            new Solutions.ValidationException(
+                "Name must start with capital letter",
+                Solutions.ValidationExceptionType.NAME
+            ),
+            new Solutions.ValidationException(
+                "Name must not contain any digits",
+                Solutions.ValidationExceptionType.NAME
+            ),
+            new Solutions.ValidationException(
+                "Age must be non negative",
+                Solutions.ValidationExceptionType.AGE
+            ),
+            new Solutions.ValidationException(
+                "Height must be positive",
+                Solutions.ValidationExceptionType.HEIGHT
+            ),
+            new Solutions.ValidationException(
+                "Weight must be positive number",
+                Solutions.ValidationExceptionType.WEIGHT
+            )
+        );
+
+        assertThat(exceptions).containsAnyElementsOf(correctExceptions);
+
+    }
+
+    @Test
+    @DisplayName("Task 20 should return names of property with mistakes of each animal")
+    void task20_should_returnNamesOfPropertyWithMistakes_ofEachAnimal(){
+
+        List<Animal> animalsWithIncorrectData = List.of(
+            new Animal(
+                "wrong name1",
+                Animal.Type.DOG,
+                Animal.Sex.M,
+                -1,
+                -1,
+                -1,
+                false
+            )
+        );
+        String correctLine = "AGE, HEIGHT, NAME, WEIGHT";
+
+        Map<String,String> returnedMap;
+        String returnedLine;
+
+        returnedMap = solutions.task20(animalsWithIncorrectData);
+        returnedLine = returnedMap.get("wrong name1");
+
+
+        assertThat(returnedLine).isEqualTo(correctLine);
     }
 
 }

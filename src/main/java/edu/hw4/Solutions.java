@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -219,7 +220,7 @@ public class Solutions {
             Animal::name,
             animal -> {
                 Set<ValidationException> exceptions = validateAnimal(animal);
-                Set<String> properties = new HashSet<>();
+                Set<String> properties = new TreeSet<>();
                 for (var i : exceptions) {
                     properties.add(i.type.toString());
                 }
@@ -245,6 +246,19 @@ public class Solutions {
 
         public ValidationExceptionType getType() {
             return type;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (!(obj instanceof ValidationException)) {
+                return false;
+            }
+            return message.equals(((ValidationException) obj).getMessage()) &&
+                    type == ((ValidationException) obj).type;
+
         }
     }
 
@@ -284,7 +298,7 @@ public class Solutions {
         for (int i = 0; i < name.length(); i++) {
             if (Character.isDigit(name.charAt(i))) {
                 exceptions.add(new ValidationException(
-                    "Name must not contain any digis",
+                    "Name must not contain any digits",
                     ValidationExceptionType.NAME
                 ));
                 break;
