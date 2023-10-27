@@ -174,10 +174,9 @@ public class SolutionTest {
         assertThat(specificOldestAnimal).isEqualTo(returnedAnimal);
     }
 
-
     @Test
     @DisplayName("Task 8 should return the heaviest one among lower than k sm animals")
-    void task8_should_returnTheHeaviestAnimalAmongLowerThanKSm(){
+    void task8_should_returnTheHeaviestAnimalAmongLowerThanKSm() {
 
         int k = 50;
         Animal heaviestAnimal = new Animal(
@@ -191,21 +190,19 @@ public class SolutionTest {
         );
         Optional<Animal> returnedAnimal;
 
-
-         returnedAnimal= solutions.task8(animals,k);
-         for(var i :animals){
-             if(i.height() < k && i.weight() > heaviestAnimal.weight())
-                 heaviestAnimal = i;
-         }
-
+        returnedAnimal = solutions.task8(animals, k);
+        for (var i : animals) {
+            if (i.height() < k && i.weight() > heaviestAnimal.weight()) {
+                heaviestAnimal = i;
+            }
+        }
 
         //тут animals рандомно генерируются так что if необходим
-        if(heaviestAnimal.name().equals("template")){
+        if (heaviestAnimal.name().equals("template")) {
             assertThat(returnedAnimal.isEmpty()).isTrue();
         } else {
             assertThat(returnedAnimal.get()).isEqualTo(heaviestAnimal);
         }
-
 
     }
 
@@ -340,7 +337,7 @@ public class SolutionTest {
     }
 
     @Test
-    @DisplayName("Task 17 should return list of animals, sorted by type, sex,name")
+    @DisplayName("Task 16 should return list of animals, sorted by type, sex,name")
     void task16_should_returnListOfAnimals_sortedByTypeSexName() {
 
         List<Animal> returnedList;
@@ -368,7 +365,41 @@ public class SolutionTest {
         assertThat(animals).isEqualTo(returnedList);
     }
 
-    
+    @Test
+    @DisplayName("Task 17 should state that spiders bite more frequent than dogs")
+    void task17_should_returnBoolean_of_spiderBiteMoreFrequentThanDogs() {
+
+        int dogs = 0;
+        int bitingDogs = 0;
+        int spiders = 0;
+        int bitingSpiders = 0;
+        boolean correctState;
+        boolean returnedState;
+
+        returnedState = solutions.task17(animals);
+
+        for (var i : animals) {
+            if (i.type() == Animal.Type.DOG) {
+                dogs++;
+                if (i.bites()) {
+                    bitingDogs++;
+                }
+            } else if (i.type() == Animal.Type.SPIDER) {
+                spiders++;
+                if (i.bites()) {
+                    bitingSpiders++;
+                }
+            }
+        }
+        if (dogs == 0 || spiders == 0) {
+            correctState = false;
+        } else {
+            correctState = (double) bitingSpiders / spiders > (double) bitingDogs / dogs;
+        }
+
+
+        assertThat(returnedState).isEqualTo(correctState);
+    }
 
     @Test
     @DisplayName("Task 18 should return the heaviest fish in all lists")
@@ -453,7 +484,7 @@ public class SolutionTest {
 
     @Test
     @DisplayName("Task 20 should return names of property with mistakes of each animal")
-     void task20_should_returnNamesOfPropertyWithMistakes_ofEachAnimal(){
+    void task20_should_returnNamesOfPropertyWithMistakes_ofEachAnimal() {
 
         List<Animal> animalsWithIncorrectData = List.of(
             new Animal(
@@ -468,12 +499,11 @@ public class SolutionTest {
         );
         String correctLine = "AGE, HEIGHT, NAME, WEIGHT";
 
-        Map<String,String> returnedMap;
+        Map<String, String> returnedMap;
         String returnedLine;
 
         returnedMap = solutions.task20(animalsWithIncorrectData);
         returnedLine = returnedMap.get("wrong name1");
-
 
         assertThat(returnedLine).isEqualTo(correctLine);
     }
