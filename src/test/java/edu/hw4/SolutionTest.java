@@ -14,40 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SolutionTest {
 
     Solutions solutions = new Solutions();
-    List<Animal> animals;
-
-    private List<Animal> getRandomAnimals(int size) {
-        List<Animal> animals = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
-            animals.add(getRandomAnimal());
-        }
-        return animals;
-    }
-
-    private Animal getRandomAnimal() {
-        Random rand = new Random();
-        String[] names = {"Fluffy", "Spot", "Polly", "Bubbles", "Fido", "One Two", "Two Three"};
-        String randomName = names[rand.nextInt(names.length)];
-
-        Animal.Type randomType = Animal.Type.values()[rand.nextInt(Animal.Type.values().length)];
-        Animal.Sex randomSex = Animal.Sex.values()[rand.nextInt(Animal.Sex.values().length)];
-
-        return new Animal(
-            randomName,
-            randomType,
-            randomSex,
-            rand.nextInt(40),
-            rand.nextInt(200),
-            rand.nextInt(200),
-            rand.nextBoolean()
-        );
-    }
-
-    @BeforeEach
-    void initializeAnimals() {
-        animals = getRandomAnimals(11);
-    }
-
+    
     @Test
     @DisplayName("Task1 should sort animals by height")
     void task1_should_sortAnimalsByHeight() {
@@ -83,7 +50,7 @@ public class SolutionTest {
         );
 
         List<Animal> animals = List.of(animalHeight2, animalHeight3, animalHeight1);
-        List<Animal> sortedAnimals = List.of(animalHeight1,animalHeight2,animalHeight3);
+        List<Animal> sortedAnimals = List.of(animalHeight1, animalHeight2, animalHeight3);
         List<Animal> returnedAnimals;
 
         returnedAnimals = solutions.task1(animals);
@@ -689,17 +656,15 @@ public class SolutionTest {
             50,
             false
         );
-        List<Animal> animals = List.of(animal1, animal2, animal3 , animal4);
+        List<Animal> animals = List.of(animal1, animal2, animal3, animal4);
 
         Map<Animal.Type, Integer> correctMap = new HashMap<>();
         correctMap.put(Animal.Type.DOG, 50);
-        correctMap.put(Animal.Type.SPIDER,100);
+        correctMap.put(Animal.Type.SPIDER, 100);
 
         Map<Animal.Type, Integer> returnedMap;
 
-
-        returnedMap = solutions.task15(animals,k,l);
-
+        returnedMap = solutions.task15(animals, k, l);
 
         assertThat(returnedMap).containsExactlyEntriesOf(correctMap);
     }
@@ -744,11 +709,10 @@ public class SolutionTest {
             Integer.MIN_VALUE,
             false
         );
-        List<Animal> animals = List.of(animal4, animal3,animal2,animal1);
-        List<Animal> sortedAnimals = List.of(animal1,animal2, animal3,animal4);
+        List<Animal> animals = List.of(animal4, animal3, animal2, animal1);
+        List<Animal> sortedAnimals = List.of(animal1, animal2, animal3, animal4);
 
         List<Animal> returnedAnimals;
-
 
         returnedAnimals = solutions.task16(animals);
 
@@ -795,13 +759,11 @@ public class SolutionTest {
             Integer.MIN_VALUE,
             false
         );
-        List<Animal> animals = List.of(animal4, animal3,animal2,animal1);
+        List<Animal> animals = List.of(animal4, animal3, animal2, animal1);
 
         boolean returnedStatement;
 
-
         returnedStatement = solutions.task17(animals);
-
 
         assertThat(returnedStatement).isTrue();
     }
@@ -832,9 +794,7 @@ public class SolutionTest {
 
         Animal returnedAnimal;
 
-
         returnedAnimal = solutions.task18(superList);
-
 
         assertThat(returnedAnimal).isEqualTo(animal2);
     }
@@ -880,9 +840,7 @@ public class SolutionTest {
 
         Set<Solutions.ValidationException> returnedExceptions;
 
-
         returnedExceptions = solutions.task19(animalsWithIncorrectData).get("wrong name1");
-
 
         assertThat(returnedExceptions).containsAnyElementsOf(correctExceptions);
 
@@ -907,9 +865,7 @@ public class SolutionTest {
 
         String returnedLine;
 
-
         returnedLine = solutions.task20(animalsWithIncorrectData).get("wrong name1");
-
 
         assertThat(returnedLine).isEqualTo(correctLine);
     }
