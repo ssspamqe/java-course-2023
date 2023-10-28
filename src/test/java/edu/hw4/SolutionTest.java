@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.groups.Tuple.tuple;
 
 public class SolutionTest {
 
@@ -53,77 +54,188 @@ public class SolutionTest {
     @DisplayName("Task1 should sort animals by height")
     void task1_should_sortAnimalsByHeight() {
 
-        List<Animal> sortedAnimals;
+        Animal animalHeight1 = new Animal(
+            "h1",
+            Animal.Type.DOG,
+            Animal.Sex.F,
+            Integer.MIN_VALUE,
+            1,
+            Integer.MIN_VALUE,
+            false
+        );
 
+        Animal animalHeight2 = new Animal(
+            "h2",
+            Animal.Type.DOG,
+            Animal.Sex.F,
+            Integer.MIN_VALUE,
+            2,
+            Integer.MIN_VALUE,
+            false
+        );
 
-        sortedAnimals = solutions.task1(animals);
+        Animal animalHeight3 = new Animal(
+            "h3",
+            Animal.Type.DOG,
+            Animal.Sex.F,
+            Integer.MIN_VALUE,
+            3,
+            Integer.MIN_VALUE,
+            false
+        );
 
+        List<Animal> animals = new ArrayList<>(List.of(animalHeight2, animalHeight3, animalHeight1));
 
-        for (int i = 1; i < sortedAnimals.size(); i++) {
-            assertThat(sortedAnimals.get(i).height())
-                .isGreaterThanOrEqualTo(sortedAnimals.get(i - 1).height());
-        }
+        List<Animal> returnedAnimals;
+
+        returnedAnimals = solutions.task1(animals);
+
+        assertThat(returnedAnimals.get(0)).isEqualTo(animalHeight1);
+        assertThat(returnedAnimals.get(1)).isEqualTo(animalHeight2);
+        assertThat(returnedAnimals.get(2)).isEqualTo(animalHeight3);
     }
 
     @Test
     @DisplayName("Task 2 should return list of k heaviest animals")
     void task2_should_returnList_ofKHeaviestAnimals() {
 
-        int k = 5;
-        List<Animal> heaviestAnimals;
+        int k = 2;
+
+        Animal animalWeight1 = new Animal(
+            "h1",
+            Animal.Type.DOG,
+            Animal.Sex.F,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            1,
+            false
+        );
+
+        Animal animalWeight2 = new Animal(
+            "h1",
+            Animal.Type.DOG,
+            Animal.Sex.F,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            2,
+            false
+        );
+
+        Animal animalWeight3 = new Animal(
+            "h1",
+            Animal.Type.DOG,
+            Animal.Sex.F,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            3,
+            false
+        );
+
+        Animal animalWeight4 = new Animal(
+            "h1",
+            Animal.Type.DOG,
+            Animal.Sex.F,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            4,
+            false
+        );
+        List<Animal> animals = new ArrayList<>(List.of(animalWeight1, animalWeight2, animalWeight3, animalWeight4));
+        List<Animal> returnedAnimals;
 
 
-        heaviestAnimals= solutions.task2(animals, 5);
+        returnedAnimals = solutions.task2(animals, k);
 
 
-        assertThat(heaviestAnimals).hasSize(5);   //кстати не думаю что так можно затестировать
-        for (int i = 1; i < k; i++) {
-            assertThat(heaviestAnimals.get(i).weight())
-                .isLessThanOrEqualTo(heaviestAnimals.get(i - 1).weight());
-        }
+        assertThat(returnedAnimals).containsExactly(animalWeight4,animalWeight3);
     }
 
     @Test
     @DisplayName("Task3 should count animals by their type")
     void task3_should_returnMap_thatRepresentsAmountOfAnimalsOfEachType() {
 
-        Map<Animal.Type, Long> count = new HashMap<>();
-        Map<Animal.Type, Long> amountOfAnimalsByTypes;
+        Animal dog1 = new Animal(
+            "h1",
+            Animal.Type.DOG,
+            Animal.Sex.F,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            1,
+            false
+        );
+        Animal dog2 = new Animal(
+            "h1",
+            Animal.Type.DOG,
+            Animal.Sex.F,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            1,
+            false
+        );
+        Animal spider1 = new Animal(
+            "h1",
+            Animal.Type.SPIDER,
+            Animal.Sex.F,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            1,
+            false
+        );
+        List<Animal> animals = new ArrayList<>(List.of(dog1, dog2,spider1));
+
+        Map<Animal.Type,Long> correctMap = new HashMap<>();
+        correctMap.put(Animal.Type.DOG,2L);
+        correctMap.put(Animal.Type.SPIDER,1L);
+
+        Map<Animal.Type,Long> returnedMap;
 
 
-        for (var i : animals) {
-            if (!count.containsKey(i.type())) {
-                count.put(i.type(), 0L);
-            }
-            count.replace(i.type(), count.get(i.type()) + 1);
-        }
-
-        amountOfAnimalsByTypes = solutions.task3(animals);
+        returnedMap = solutions.task3(animals);
 
 
-        for (var i : count.keySet()) {
-            assertThat(amountOfAnimalsByTypes.get(i)).isEqualTo(count.get(i));
-        }
+        assertThat(returnedMap).containsExactlyEntriesOf(correctMap);
     }
 
     @Test
     @DisplayName("Task4 should return animal with the longest name")
     void task4_should_returnAnimal_withTheLongestName() {
 
-        Animal animalWithTheLongestName = animals.get(0);
+        Animal animal1 = new Animal(
+            "a",
+            Animal.Type.DOG,
+            Animal.Sex.F,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            false
+        );
+        Animal animal2 = new Animal(
+            "aba",
+            Animal.Type.DOG,
+            Animal.Sex.F,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            false
+        );
+        Animal animal3 = new Animal(
+            "abacaba",
+            Animal.Type.DOG,
+            Animal.Sex.F,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            false
+        );
+        List<Animal> animals = new ArrayList<>(List.of(animal1,animal2,animal3));
+
         Animal returnedAnimal;
 
-
-        for (var i : animals) {
-            if (i.name().length() > animalWithTheLongestName.name().length()) {
-                animalWithTheLongestName = i;
-            }
-        }
 
         returnedAnimal = solutions.task4(animals);
 
 
-        assertThat(returnedAnimal).isEqualTo(animalWithTheLongestName);
+        assertThat(returnedAnimal).isEqualTo(animal3);
     }
 
     @Test
@@ -133,7 +245,6 @@ public class SolutionTest {
         Animal.Sex mostFrequentSex = Animal.Sex.M;
         int maleCount = 0;
         Animal.Sex returnedSex;
-
 
         for (var i : animals) {
             if (i.sex() == Animal.Sex.M) {
@@ -146,7 +257,6 @@ public class SolutionTest {
 
         returnedSex = solutions.task5(animals);
 
-
         assertThat(returnedSex).isEqualTo(mostFrequentSex);
     }
 
@@ -156,7 +266,6 @@ public class SolutionTest {
 
         Map<Animal.Type, Animal> heaviestAnimal = new HashMap<>();
         Map<Animal.Type, Animal> returnedMap;
-
 
         for (var i : animals) {
             if (!heaviestAnimal.containsKey(i.type())) {
@@ -168,7 +277,6 @@ public class SolutionTest {
         }
 
         returnedMap = solutions.task6(animals);
-
 
         for (var i : heaviestAnimal.keySet()) {
             assertThat(returnedMap.get(i)).isEqualTo(heaviestAnimal.get(i));
@@ -182,12 +290,10 @@ public class SolutionTest {
         int k = 5;
         Animal returnedAnimal;
 
-
         returnedAnimal = solutions.task7(animals, k);
 
         animals.sort(new Solutions.Task7Comparator());
         Animal specificOldestAnimal = animals.get(k);
-
 
         assertThat(returnedAnimal).isEqualTo(specificOldestAnimal);
     }
@@ -208,7 +314,6 @@ public class SolutionTest {
         );
         Optional<Animal> returnedAnimal;
 
-
         returnedAnimal = solutions.task8(animals, k);
 
         for (var i : animals) {
@@ -216,7 +321,6 @@ public class SolutionTest {
                 heaviestAnimal = i;
             }
         }
-
 
         //тут animals рандомно генерируются так что if необходим
         if (heaviestAnimal.name().equals("template")) {
@@ -234,13 +338,11 @@ public class SolutionTest {
         int sum = 0;
         int returnedSum;
 
-
         for (var i : animals) {
             sum += i.paws();
         }
 
         returnedSum = solutions.task9(animals);
-
 
         assertThat(returnedSum).isEqualTo(sum);
     }
@@ -252,7 +354,6 @@ public class SolutionTest {
         List<Animal> animalsWithDifferentAmountOfPawsAndAge = new ArrayList<>();
         List<Animal> returnedList;
 
-
         for (var i : animals) {
             if (i.paws() != i.age()) {
                 animalsWithDifferentAmountOfPawsAndAge.add(i);
@@ -260,7 +361,6 @@ public class SolutionTest {
         }
 
         returnedList = solutions.task10(animals);
-
 
         assertThat(returnedList).isEqualTo(animalsWithDifferentAmountOfPawsAndAge);
     }
@@ -272,7 +372,6 @@ public class SolutionTest {
         List<Animal> correctAnimals = new ArrayList<>();
         List<Animal> returnedAnimals;
 
-
         for (var i : animals) {
             if (i.height() > 100 && i.bites()) {
                 correctAnimals.add(i);
@@ -280,7 +379,6 @@ public class SolutionTest {
         }
 
         returnedAnimals = solutions.task11(animals);
-
 
         assertThat(returnedAnimals).isEqualTo(correctAnimals);
     }
@@ -292,7 +390,6 @@ public class SolutionTest {
         int correctAmount = 0;
         int returnedAmount;
 
-
         for (var i : animals) {
             if (i.weight() > i.height()) {
                 correctAmount++;
@@ -300,7 +397,6 @@ public class SolutionTest {
         }
 
         returnedAmount = solutions.task12(animals);
-
 
         assertThat(returnedAmount).isEqualTo(correctAmount);
     }
@@ -312,7 +408,6 @@ public class SolutionTest {
         List<Animal> correctAnimals = new ArrayList<>();
         List<Animal> returnedAnimals;
 
-
         for (var i : animals) {
             if (i.name().split(" ").length > 1) {
                 correctAnimals.add(i);
@@ -320,7 +415,6 @@ public class SolutionTest {
         }
 
         returnedAnimals = solutions.task13(animals);
-
 
         assertThat(returnedAnimals).isEqualTo(correctAnimals);
     }
@@ -333,7 +427,6 @@ public class SolutionTest {
         boolean contains = false;
         boolean returned;
 
-
         for (var i : animals) {
             if (i.type() == Animal.Type.DOG && i.height() > k) {
                 contains = true;
@@ -342,7 +435,6 @@ public class SolutionTest {
         }
 
         returned = solutions.task14(animals, k);
-
 
         assertThat(returned).isEqualTo(contains);
     }
@@ -355,7 +447,6 @@ public class SolutionTest {
         Map<Animal.Type, Integer> returnedMap;
         int k = 14, l = 30;
 
-
         for (var i : animals) {
             if (i.age() <= l && i.age() >= k) {
                 if (!correctMap.containsKey(i.type())) {
@@ -367,7 +458,6 @@ public class SolutionTest {
 
         returnedMap = solutions.task15(animals, k, l);
 
-
         assertThat(returnedMap).isEqualTo(correctMap);
     }
 
@@ -376,7 +466,6 @@ public class SolutionTest {
     void task16_should_returnListOfAnimals_sortedByTypeSexName() {
 
         List<Animal> returnedList;
-
 
         returnedList = solutions.task16(animals);
 
@@ -398,7 +487,6 @@ public class SolutionTest {
             return a1.name().compareTo(a2.name());
         });
 
-
         assertThat(returnedList).isEqualTo(animals);
     }
 
@@ -412,7 +500,6 @@ public class SolutionTest {
         int bitingSpiders = 0;
         boolean correctState;
         boolean returnedState;
-
 
         returnedState = solutions.task17(animals);
 
@@ -435,7 +522,6 @@ public class SolutionTest {
             correctState = (double) bitingSpiders / spiders > (double) bitingDogs / dogs;
         }
 
-
         assertThat(returnedState).isEqualTo(correctState);
     }
 
@@ -455,7 +541,6 @@ public class SolutionTest {
         );
         Animal returnedFish;
 
-
         for (int i = 0; i < 5; i++) {
             superList.add(getRandomAnimals(11));
         }
@@ -468,7 +553,6 @@ public class SolutionTest {
         }
 
         returnedFish = solutions.task18(superList);
-
 
         assertThat(returnedFish).isEqualTo(heaviestFish);
     }
@@ -491,7 +575,6 @@ public class SolutionTest {
         Map<String, Set<Solutions.ValidationException>> allExceptions;
         Set<Solutions.ValidationException> exceptions;
         Set<Solutions.ValidationException> correctExceptions;
-
 
         allExceptions = solutions.task19(animalsWithIncorrectData);
         exceptions = allExceptions.get("wrong name1");
@@ -519,7 +602,6 @@ public class SolutionTest {
             )
         );
 
-
         assertThat(exceptions).containsAnyElementsOf(correctExceptions);
 
     }
@@ -543,11 +625,9 @@ public class SolutionTest {
         Map<String, String> returnedMap;
         String returnedLine;
 
-
         correctLine = "AGE, HEIGHT, NAME, WEIGHT";
         returnedMap = solutions.task20(animalsWithIncorrectData);
         returnedLine = returnedMap.get("wrong name1");
-
 
         assertThat(returnedLine).isEqualTo(correctLine);
     }
