@@ -1,5 +1,6 @@
 package edu.hw4;
 
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -23,7 +24,10 @@ public class Solutions {
 
     //Отсортировать животных по весу от самого тяжелого к самому легкому, выбрать k первых -> List<Animal>
     public List<Animal> task2(List<Animal> animals, int k) {
-        return animals.stream().sorted((o1, o2) -> Integer.compare(o2.weight(), o1.weight())).limit(k).toList();
+        return animals.stream()
+            .sorted((animal1, animal2) -> Integer.compare(animal2.weight(), animal1.weight()))
+            .limit(k)
+            .toList();
     }
 
     //Сколько животных каждого вида -> Map<Animal.Type, Integer>
@@ -37,7 +41,7 @@ public class Solutions {
     //У какого животного самое длинное имя -> Animal
     public Animal task4(List<Animal> animals) {
         return animals.stream()
-            .max(Comparator.comparing(a -> a.name().length()))
+            .max(Comparator.comparing(animal -> animal.name().length()))
             .orElseThrow();
     }
 
@@ -64,14 +68,15 @@ public class Solutions {
     public Animal task7(List<Animal> animals, int k) {
         return animals.stream()
             .sorted(new Task7Comparator())
-            .toList()
-            .get(k);
+            .skip(k)
+            .findFirst()
+            .orElse(null);
     }
 
     //Самое тяжелое животное среди животных ниже k см -> Optional<Animal>
     public Optional<Animal> task8(List<Animal> animals, int k) {
         return animals.stream()
-            .filter(it -> it.height() < k)
+            .filter(animal -> animal.height() < k)
             .max(Comparator.comparing(Animal::weight));
     }
 
@@ -129,17 +134,7 @@ public class Solutions {
     @SuppressWarnings("MagicNumber")
     public List<Animal> task16(List<Animal> animals) {
         return animals.stream()
-            .sorted((a1, a2) -> {
-                if (a1.type().ordinal() != a2.type().ordinal()) {
-                    return Integer.compare(a1.type().ordinal(), a2.type().ordinal());
-                }
-
-                if (a1.sex().ordinal() != a2.sex().ordinal()) {
-                    return Integer.compare(a1.sex().ordinal(), a2.sex().ordinal());
-                }
-
-                return a1.name().compareTo(a2.name());
-            })
+            .sorted(new Task16Comparator())
             .toList();
     }
 
@@ -168,39 +163,11 @@ public class Solutions {
 
     //Найти самую тяжелую рыбку в 2-х или более списках -> Animal
     public Animal task18(List<List<Animal>> animalsSuperList) {
-        //получается, что мы пробегаем вначале по всем животным, а потом еще раз по листу с самой тяжелой рабкой
-        //не лучше ли сделать просто for-each цикл, перед ним создав объект животного с -1 массой и так найти?
-        return animalsSuperList.stream().max(
-                Comparator.comparing(list ->
-                    list.stream()
-                        .filter(a -> a.type() == Type.FISH)
-                        .max(Comparator.comparing(Animal::weight))
-                        .orElse(
-                            new Animal(
-                                "",
-                                Animal.Type.FISH,
-                                Animal.Sex.F,
-                                Integer.MIN_VALUE,
-                                Integer.MIN_VALUE,
-                                Integer.MIN_VALUE,
-                                false
-                            )
-                        )
-                        .weight()
-                )
-            ).orElseThrow()
-            .stream()
-            .filter(a -> a.type() == Type.FISH)
+        return animalsSuperList.stream()
+            .flatMap(Collection::stream)
+            .filter(animal -> animal.type() == Type.FISH)
             .max(Comparator.comparingInt(Animal::weight))
-            .orElse(new Animal(
-                "",
-                Animal.Type.FISH,
-                Animal.Sex.F,
-                Integer.MIN_VALUE,
-                Integer.MIN_VALUE,
-                Integer.MIN_VALUE,
-                false
-            ));
+            .orElse(null);
     }
 
     //Животные, в записях о которых есть ошибки: вернуть имя и список ошибок -> Map<String, Set<ValidationError>>.
@@ -321,17 +288,17 @@ public class Solutions {
     static class Task7Comparator implements Comparator<Animal> {
 
         @Override
-        public int compare(Animal an1, Animal an2) {
+        public int compare(Animal animal1, Animal animal2) {
 
-            if (an1.weight() != an2.weight()) {
-                return Integer.compare(an1.weight(), an2.weight());
+            if (animal1.weight() != animal2.weight()) {
+                return Integer.compare(animal1.weight(), animal2.weight());
             }
 
-            if (an1.age() != an2.age()) {
-                return Integer.compare(an1.age(), an2.age());
+            if (animal1.age() != animal2.age()) {
+                return Integer.compare(animal1.age(), animal2.age());
             }
 
-            return an2.name().compareTo(an1.name());
+            return animal2.name().compareTo(animal1.name());
         }
     }
 
@@ -366,6 +333,22 @@ public class Solutions {
         @Override
         public int hashCode() {
             return Objects.hash(message, type);
+        }
+    }
+
+    static class Task16Comparator implements Comparator<Animal> {
+
+        @Override
+        public int compare(Animal animal1, Animal animal2) {
+            if (animal1.type().ordinal() != animal2.type().ordinal()) {
+                return Integer.compare(animal1.type().ordinal(), animal2.type().ordinal());
+            }
+
+            if (animal1.sex().ordinal() != animal2.sex().ordinal()) {
+                return Integer.compare(animal1.sex().ordinal(), animal2.sex().ordinal());
+            }
+
+            return animal1.name().compareTo(animal2.name());
         }
     }
 }
