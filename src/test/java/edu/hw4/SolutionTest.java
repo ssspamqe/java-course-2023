@@ -759,92 +759,103 @@ public class SolutionTest {
     @DisplayName("Task 17 should state that spiders bite more frequent than dogs")
     void task17_should_returnBoolean_of_spiderBiteMoreFrequentThanDogs() {
 
-        int dogs = 0;
-        int bitingDogs = 0;
-        int spiders = 0;
-        int bitingSpiders = 0;
-        boolean correctState;
-        boolean returnedState;
+        Animal animal1 = new Animal(
+            "aba",
+            Animal.Type.SPIDER,
+            Animal.Sex.M,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            true
+        );
+        Animal animal2 = new Animal(
+            "aba",
+            Animal.Type.SPIDER,
+            Animal.Sex.M,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            true
+        );
+        Animal animal3 = new Animal(
+            "aba",
+            Animal.Type.SPIDER,
+            Animal.Sex.M,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            true
+        );
+        Animal animal4 = new Animal(
+            "aba",
+            Animal.Type.DOG,
+            Animal.Sex.M,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            false
+        );
+        List<Animal> animals = List.of(animal4, animal3,animal2,animal1);
 
-        returnedState = solutions.task17(animals);
+        boolean returnedStatement;
 
-        for (var i : animals) {
-            if (i.type() == Animal.Type.DOG) {
-                dogs++;
-                if (i.bites()) {
-                    bitingDogs++;
-                }
-            } else if (i.type() == Animal.Type.SPIDER) {
-                spiders++;
-                if (i.bites()) {
-                    bitingSpiders++;
-                }
-            }
-        }
-        if (dogs == 0 || spiders == 0) {
-            correctState = false;
-        } else {
-            correctState = (double) bitingSpiders / spiders > (double) bitingDogs / dogs;
-        }
 
-        assertThat(returnedState).isEqualTo(correctState);
+        returnedStatement = solutions.task17(animals);
+
+
+        assertThat(returnedStatement).isTrue();
     }
 
     @Test
     @DisplayName("Task 18 should return the heaviest fish in all lists")
     void task18_should_returnTheHeaviestFish_amongAllLists() {
 
-        List<List<Animal>> superList = new ArrayList<>();
-        Animal heaviestFish = new Animal(
-            "",
+        Animal animal1 = new Animal(
+            "aba",
             Animal.Type.FISH,
-            Animal.Sex.F,
+            Animal.Sex.M,
             Integer.MIN_VALUE,
             Integer.MIN_VALUE,
-            Integer.MIN_VALUE,
-            false
+            -1,
+            true
         );
-        Animal returnedFish;
+        Animal animal2 = new Animal(
+            "aba",
+            Animal.Type.FISH,
+            Animal.Sex.M,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            9999,
+            true
+        );
+        List<List<Animal>> superList = List.of(List.of(animal1), List.of(animal2));
 
-        for (int i = 0; i < 5; i++) {
-            superList.add(getRandomAnimals(11));
-        }
-        for (var list : superList) {
-            for (var i : list) {
-                if (i.type() == Animal.Type.FISH && i.weight() >= heaviestFish.weight()) {
-                    heaviestFish = i;
-                }
-            }
-        }
+        Animal returnedAnimal;
 
-        returnedFish = solutions.task18(superList);
 
-        assertThat(returnedFish).isEqualTo(heaviestFish);
+        returnedAnimal = solutions.task18(superList);
+
+
+        assertThat(returnedAnimal).isEqualTo(animal2);
     }
 
     @Test
     @DisplayName("Task 19 should return a list with mistakes associated with anima's data")
     void task19_should_returnMap_ofMistakesInData_byAnimalName() {
 
-        List<Animal> animalsWithIncorrectData = List.of(
-            new Animal(
-                "wrong name1",
-                Animal.Type.DOG,
-                Animal.Sex.M,
-                -1,
-                -1,
-                -1,
-                false
-            )
+        Animal animal = new Animal(
+            "wrong name1",
+            Animal.Type.DOG,
+            Animal.Sex.M,
+            -1,
+            -1,
+            -1,
+            false
         );
-        Map<String, Set<Solutions.ValidationException>> allExceptions;
-        Set<Solutions.ValidationException> exceptions;
-        Set<Solutions.ValidationException> correctExceptions;
 
-        allExceptions = solutions.task19(animalsWithIncorrectData);
-        exceptions = allExceptions.get("wrong name1");
+        List<Animal> animalsWithIncorrectData = List.of(animal);
 
-        correctExceptions = Set.of(
+        Set<Solutions.ValidationException> correctExceptions = Set.of(
             new Solutions.ValidationException(
                 "Name must start with capital letter",
                 Solutions.ValidationExceptionType.NAME
@@ -867,7 +878,13 @@ public class SolutionTest {
             )
         );
 
-        assertThat(exceptions).containsAnyElementsOf(correctExceptions);
+        Set<Solutions.ValidationException> returnedExceptions;
+
+
+        returnedExceptions = solutions.task19(animalsWithIncorrectData).get("wrong name1");
+
+
+        assertThat(returnedExceptions).containsAnyElementsOf(correctExceptions);
 
     }
 
@@ -875,24 +892,24 @@ public class SolutionTest {
     @DisplayName("Task 20 should return names of property with mistakes of each animal")
     void task20_should_returnNamesOfPropertyWithMistakes_ofEachAnimal() {
 
-        List<Animal> animalsWithIncorrectData = List.of(
-            new Animal(
-                "wrong name1",
-                Animal.Type.DOG,
-                Animal.Sex.M,
-                -1,
-                -1,
-                -1,
-                false
-            )
+        Animal animal = new Animal(
+            "wrong name1",
+            Animal.Type.DOG,
+            Animal.Sex.M,
+            -1,
+            -1,
+            -1,
+            false
         );
-        String correctLine;
-        Map<String, String> returnedMap;
+        List<Animal> animalsWithIncorrectData = List.of(animal);
+
+        String correctLine = "AGE, HEIGHT, NAME, WEIGHT";
+
         String returnedLine;
 
-        correctLine = "AGE, HEIGHT, NAME, WEIGHT";
-        returnedMap = solutions.task20(animalsWithIncorrectData);
-        returnedLine = returnedMap.get("wrong name1");
+
+        returnedLine = solutions.task20(animalsWithIncorrectData).get("wrong name1");
+
 
         assertThat(returnedLine).isEqualTo(correctLine);
     }
