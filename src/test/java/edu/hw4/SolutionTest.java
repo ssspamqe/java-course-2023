@@ -242,69 +242,8 @@ public class SolutionTest {
     @DisplayName("Task 5 should return most frequent sex")
     void task5_should_returnMostFrequentSex() {
 
-        Animal.Sex mostFrequentSex = Animal.Sex.M;
-        int maleCount = 0;
-        Animal.Sex returnedSex;
-
-        for (var i : animals) {
-            if (i.sex() == Animal.Sex.M) {
-                maleCount++;
-            }
-        }
-        if (maleCount <= animals.size() / 2) {
-            mostFrequentSex = Animal.Sex.F;
-        }
-
-        returnedSex = solutions.task5(animals);
-
-        assertThat(returnedSex).isEqualTo(mostFrequentSex);
-    }
-
-    @Test
-    @DisplayName("Task 6 should return the heaviest animal of each type")
-    void task6_should_returnTheHeaviestAnimal_ofEachType() {
-
-        Map<Animal.Type, Animal> heaviestAnimal = new HashMap<>();
-        Map<Animal.Type, Animal> returnedMap;
-
-        for (var i : animals) {
-            if (!heaviestAnimal.containsKey(i.type())) {
-                heaviestAnimal.put(i.type(), i);
-            }
-            if (heaviestAnimal.get(i.type()).weight() < i.weight()) {
-                heaviestAnimal.replace(i.type(), i);
-            }
-        }
-
-        returnedMap = solutions.task6(animals);
-
-        for (var i : heaviestAnimal.keySet()) {
-            assertThat(returnedMap.get(i)).isEqualTo(heaviestAnimal.get(i));
-        }
-    }
-
-    @Test
-    @DisplayName("Task 7 should return k-th the oldest animal")
-    void task7_should_returnSpecificTheOldestAnimal() {
-
-        int k = 5;
-        Animal returnedAnimal;
-
-        returnedAnimal = solutions.task7(animals, k);
-
-        animals.sort(new Solutions.Task7Comparator());
-        Animal specificOldestAnimal = animals.get(k);
-
-        assertThat(returnedAnimal).isEqualTo(specificOldestAnimal);
-    }
-
-    @Test
-    @DisplayName("Task 8 should return the heaviest one among lower than k sm animals")
-    void task8_should_returnTheHeaviestAnimalAmongLowerThanKSm() {
-
-        int k = 50;
-        Animal heaviestAnimal = new Animal(
-            "template",
+        Animal animal1 = new Animal(
+            "aba",
             Animal.Type.DOG,
             Animal.Sex.F,
             Integer.MIN_VALUE,
@@ -312,23 +251,177 @@ public class SolutionTest {
             Integer.MIN_VALUE,
             false
         );
-        Optional<Animal> returnedAnimal;
+        Animal animal2 = new Animal(
+            "aba",
+            Animal.Type.DOG,
+            Animal.Sex.F,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            false
+        );
+        Animal animal3 = new Animal(
+            "aba",
+            Animal.Type.DOG,
+            Animal.Sex.M,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            false
+        );
+        List<Animal> animals = new ArrayList<>(List.of(animal1, animal2, animal3));
 
-        returnedAnimal = solutions.task8(animals, k);
+        Animal.Sex returnedSex;
 
-        for (var i : animals) {
-            if (i.height() < k && i.weight() > heaviestAnimal.weight()) {
-                heaviestAnimal = i;
-            }
-        }
 
-        //тут animals рандомно генерируются так что if необходим
-        if (heaviestAnimal.name().equals("template")) {
-            assertThat(returnedAnimal.isEmpty()).isTrue();
-        } else {
-            assertThat(returnedAnimal.get()).isEqualTo(heaviestAnimal);
-        }
+        returnedSex = solutions.task5(animals);
 
+
+        assertThat(returnedSex).isEqualTo(Animal.Sex.F);
+    }
+
+    @Test
+    @DisplayName("Task 6 should return the heaviest animal of each type")
+    void task6_should_returnTheHeaviestAnimal_ofEachType() {
+
+        Animal dogWeight1 = new Animal(
+            "aba",
+            Animal.Type.DOG,
+            Animal.Sex.M,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            1,
+            false
+        );
+        Animal dogWeight2 = new Animal(
+            "aba",
+            Animal.Type.DOG,
+            Animal.Sex.M,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            2,
+            false
+        );
+        Animal spiderWeight1 = new Animal(
+            "aba",
+            Animal.Type.SPIDER,
+            Animal.Sex.M,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            1,
+            false
+        );
+        List<Animal> animals = new ArrayList<>(List.of(dogWeight1,dogWeight2,spiderWeight1));
+
+        Map<Animal.Type, Animal> correctMap = new HashMap<>();
+        correctMap.put(Animal.Type.SPIDER,spiderWeight1);
+        correctMap.put(Animal.Type.DOG,dogWeight2);
+
+        Map<Animal.Type, Animal> returnedMap;
+
+
+        returnedMap = solutions.task6(animals);
+
+
+        assertThat(returnedMap).containsExactlyEntriesOf(correctMap);
+    }
+
+    @Test
+    @DisplayName("Task 7 should return k-th the oldest animal")
+    void task7_should_returnSpecificTheOldestAnimal() {
+
+        int k = 2;
+
+        Animal animalAge1 = new Animal(
+            "aba",
+            Animal.Type.SPIDER,
+            Animal.Sex.M,
+            1,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            false
+        );
+        Animal animalAge2 = new Animal(
+            "aba",
+            Animal.Type.SPIDER,
+            Animal.Sex.M,
+            2,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            false
+        );
+        Animal animalAge3 = new Animal(
+            "aba",
+            Animal.Type.SPIDER,
+            Animal.Sex.M,
+            3,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            false
+        );
+        Animal animalAge4 = new Animal(
+            "aba",
+            Animal.Type.SPIDER,
+            Animal.Sex.M,
+            4,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            false
+        );
+
+        List<Animal> animals = new ArrayList<>(List.of(animalAge1,animalAge2,animalAge3,animalAge4));
+
+        Animal returnedAnimal;
+
+
+        returnedAnimal = solutions.task7(animals,k);
+
+
+        assertThat(returnedAnimal).isEqualTo(animalAge3);
+    }
+
+    @Test
+    @DisplayName("Task 8 should return the heaviest one among lower than k sm animals")
+    void task8_should_returnTheHeaviestAnimalAmongLowerThanKSm() {
+
+        int k =100;
+
+        Animal animal1 = new Animal(
+            "aba",
+            Animal.Type.SPIDER,
+            Animal.Sex.M,
+            Integer.MIN_VALUE,
+            100,
+            50,
+            false
+        );
+        Animal animal2 = new Animal(
+            "aba",
+            Animal.Type.SPIDER,
+            Animal.Sex.M,
+            Integer.MIN_VALUE,
+            99,
+            40,
+            false
+        );
+        Animal animal3 = new Animal(
+            "aba",
+            Animal.Type.SPIDER,
+            Animal.Sex.M,
+            Integer.MIN_VALUE,
+            50,
+            10,
+            false
+        );
+        List<Animal> animals = new ArrayList<>(List.of(animal1, animal2,animal3));
+
+        Animal returnedAnimal;
+
+
+        returnedAnimal = solutions.task8(animals,k).get();
+
+
+        assertThat(returnedAnimal).isEqualTo(animal2);
     }
 
     @Test
