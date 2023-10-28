@@ -84,7 +84,7 @@ public class SolutionTest {
             false
         );
 
-        List<Animal> animals = new ArrayList<>(List.of(animalHeight2, animalHeight3, animalHeight1));
+        List<Animal> animals = List.of(animalHeight2, animalHeight3, animalHeight1);
 
         List<Animal> returnedAnimals;
 
@@ -140,7 +140,7 @@ public class SolutionTest {
             4,
             false
         );
-        List<Animal> animals = new ArrayList<>(List.of(animalWeight1, animalWeight2, animalWeight3, animalWeight4));
+        List<Animal> animals = List.of(animalWeight1, animalWeight2, animalWeight3, animalWeight4);
         List<Animal> returnedAnimals;
 
 
@@ -181,7 +181,7 @@ public class SolutionTest {
             1,
             false
         );
-        List<Animal> animals = new ArrayList<>(List.of(dog1, dog2,spider1));
+        List<Animal> animals = List.of(dog1, dog2,spider1);
 
         Map<Animal.Type,Long> correctMap = new HashMap<>();
         correctMap.put(Animal.Type.DOG,2L);
@@ -227,7 +227,7 @@ public class SolutionTest {
             Integer.MIN_VALUE,
             false
         );
-        List<Animal> animals = new ArrayList<>(List.of(animal1,animal2,animal3));
+        List<Animal> animals = List.of(animal1,animal2,animal3);
 
         Animal returnedAnimal;
 
@@ -269,7 +269,7 @@ public class SolutionTest {
             Integer.MIN_VALUE,
             false
         );
-        List<Animal> animals = new ArrayList<>(List.of(animal1, animal2, animal3));
+        List<Animal> animals = List.of(animal1, animal2, animal3);
 
         Animal.Sex returnedSex;
 
@@ -311,7 +311,7 @@ public class SolutionTest {
             1,
             false
         );
-        List<Animal> animals = new ArrayList<>(List.of(dogWeight1,dogWeight2,spiderWeight1));
+        List<Animal> animals = List.of(dogWeight1,dogWeight2,spiderWeight1);
 
         Map<Animal.Type, Animal> correctMap = new HashMap<>();
         correctMap.put(Animal.Type.SPIDER,spiderWeight1);
@@ -369,7 +369,7 @@ public class SolutionTest {
             false
         );
 
-        List<Animal> animals = new ArrayList<>(List.of(animalAge1,animalAge2,animalAge3,animalAge4));
+        List<Animal> animals = List.of(animalAge1,animalAge2,animalAge3,animalAge4);
 
         Animal returnedAnimal;
 
@@ -413,7 +413,7 @@ public class SolutionTest {
             10,
             false
         );
-        List<Animal> animals = new ArrayList<>(List.of(animal1, animal2,animal3));
+        List<Animal> animals = List.of(animal1, animal2,animal3);
 
         Animal returnedAnimal;
 
@@ -428,70 +428,168 @@ public class SolutionTest {
     @DisplayName("Task 9 must return sum of paws of all animals")
     void task9_should_returnSum_ofPawsOfAllAnimals() {
 
-        int sum = 0;
+        Animal animal1= new Animal(
+            "aba",
+            Animal.Type.SPIDER,
+            Animal.Sex.M,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            false
+        );
+        Animal animal2= new Animal(
+            "aba",
+            Animal.Type.DOG,
+            Animal.Sex.M,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            false
+        );
+        List<Animal> animals = List.of(animal1,animal2);
+
         int returnedSum;
 
-        for (var i : animals) {
-            sum += i.paws();
-        }
 
         returnedSum = solutions.task9(animals);
 
-        assertThat(returnedSum).isEqualTo(sum);
+
+        assertThat(returnedSum).isEqualTo(12);
     }
 
     @Test
     @DisplayName("Task 10 must return list of animals with different amount of paws and age")
     void task10_should_returnListOfAnimals_withDifferentAmountOfPawsAndAge() {
 
-        List<Animal> animalsWithDifferentAmountOfPawsAndAge = new ArrayList<>();
-        List<Animal> returnedList;
+        Animal animal1= new Animal(
+            "aba",
+            Animal.Type.SPIDER,
+            Animal.Sex.M,
+            8,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            false
+        );
 
-        for (var i : animals) {
-            if (i.paws() != i.age()) {
-                animalsWithDifferentAmountOfPawsAndAge.add(i);
-            }
-        }
+        Animal animal2= new Animal(
+            "aba",
+            Animal.Type.DOG,
+            Animal.Sex.M,
+            8,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            false
+        );
 
-        returnedList = solutions.task10(animals);
+        Animal animal3= new Animal(
+            "aba",
+            Animal.Type.FISH,
+            Animal.Sex.M,
+            8,
+            Integer.MIN_VALUE,
+            Integer.MIN_VALUE,
+            false
+        );
+        List<Animal> animals = List.of(animal1, animal2,animal3);
 
-        assertThat(returnedList).isEqualTo(animalsWithDifferentAmountOfPawsAndAge);
+        List<Animal> returnedAnimals;
+
+
+        returnedAnimals = solutions.task10(animals);
+
+
+        assertThat(returnedAnimals).containsExactly(animal2,animal3);
     }
 
     @Test
     @DisplayName("Task 11 should return list of animal that are higher than 1m and bite")
     void task11_should_returnListOfAnimals_thatAreHigherThan1mAndBite() {
 
-        List<Animal> correctAnimals = new ArrayList<>();
+        Animal animal1= new Animal(
+            "aba",
+            Animal.Type.SPIDER,
+            Animal.Sex.M,
+            Integer.MIN_VALUE,
+            100,
+            Integer.MIN_VALUE,
+            false
+        );
+
+        Animal animal2= new Animal(
+            "aba",
+            Animal.Type.SPIDER,
+            Animal.Sex.M,
+            Integer.MIN_VALUE,
+            101,
+            Integer.MIN_VALUE,
+            true
+        );
+
+        Animal animal3= new Animal(
+            "aba",
+            Animal.Type.SPIDER,
+            Animal.Sex.M,
+            Integer.MIN_VALUE,
+            99,
+            Integer.MIN_VALUE,
+            true
+        );
+
+        List<Animal> animals = List.of(animal1, animal2,animal3);
+
         List<Animal> returnedAnimals;
 
-        for (var i : animals) {
-            if (i.height() > 100 && i.bites()) {
-                correctAnimals.add(i);
-            }
-        }
 
         returnedAnimals = solutions.task11(animals);
 
-        assertThat(returnedAnimals).isEqualTo(correctAnimals);
+
+        assertThat(returnedAnimals).containsExactly(animal2);
     }
 
     @Test
     @DisplayName("Task 12 should return amount of animals with weight>height")
     void task12_should_returnAmount_ofAnimalsWithWeightGreaterThanHeight() {
 
-        int correctAmount = 0;
+
+        Animal animal1= new Animal(
+            "aba",
+            Animal.Type.SPIDER,
+            Animal.Sex.M,
+            Integer.MIN_VALUE,
+            100,
+            1,
+            false
+        );
+
+        Animal animal2= new Animal(
+            "aba",
+            Animal.Type.SPIDER,
+            Animal.Sex.M,
+            Integer.MIN_VALUE,
+            100,
+            100,
+            false
+        );
+
+        Animal animal3= new Animal(
+            "aba",
+            Animal.Type.SPIDER,
+            Animal.Sex.M,
+            Integer.MIN_VALUE,
+            100,
+            1001,
+            false
+        );
+
+        List<Animal> animals = List.of(animal1,animal2,animal3);
+
         int returnedAmount;
 
-        for (var i : animals) {
-            if (i.weight() > i.height()) {
-                correctAmount++;
-            }
-        }
 
         returnedAmount = solutions.task12(animals);
 
-        assertThat(returnedAmount).isEqualTo(correctAmount);
+
+        assertThat(returnedAmount).isEqualTo(1);
     }
 
     @Test
