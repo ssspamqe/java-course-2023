@@ -26,7 +26,7 @@ public class Solutions {
     public List<Animal> task2(List<Animal> animals, int k) {
         return animals.stream()
             .sorted(Comparator.comparingInt(Animal::weight))
-            .skip(animals.size()-k)
+            .skip(animals.size() - k)
             .toList();
     }
 
