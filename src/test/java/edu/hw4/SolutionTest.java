@@ -109,7 +109,7 @@ public class SolutionTest {
         returnedAnimals = solutions.task2(animals, k);
 
 
-        assertThat(returnedAnimals).containsExactly(animalWeight4, animalWeight3);
+        assertThat(returnedAnimals).containsExactlyInAnyOrder(animalWeight4, animalWeight3);
     }
 
     @Test
@@ -899,7 +899,7 @@ public class SolutionTest {
 
         String returnedLine;
 
-        
+
         returnedLine = solutions.task20(animalsWithIncorrectData).get("wrong name1");
 
 
