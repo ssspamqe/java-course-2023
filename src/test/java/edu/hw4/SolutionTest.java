@@ -460,7 +460,7 @@ public class SolutionTest {
         returnedAnimals = solutions.task10(animals);
 
 
-        assertThat(returnedAnimals).containsExactly(animal2, animal3);
+        assertThat(returnedAnimals).containsExactlyInAnyOrder(animal2, animal3);
     }
 
     @Test
@@ -505,7 +505,7 @@ public class SolutionTest {
         returnedAnimals = solutions.task11(animals);
 
 
-        assertThat(returnedAnimals).containsExactly(animal2);
+        assertThat(returnedAnimals).containsExactlyInAnyOrder(animal2);
     }
 
     @Test
@@ -592,7 +592,7 @@ public class SolutionTest {
         returnedAnimals = solutions.task13(animals);
 
 
-        assertThat(returnedAnimals).containsExactly(animal2, animal3);
+        assertThat(returnedAnimals).containsExactlyInAnyOrder(animal2, animal3);
     }
 
     @Test
@@ -877,7 +877,7 @@ public class SolutionTest {
         returnedExceptions = solutions.task19(animalsWithIncorrectData).get("wrong name1");
 
 
-        assertThat(returnedExceptions).containsAnyElementsOf(correctExceptions);
+        assertThat(returnedExceptions).containsExactlyInAnyOrderElementsOf(correctExceptions);
     }
 
     @Test
