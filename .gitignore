@@ -32,3 +32,4 @@ build/
 .vscode/
 src/main/java/edu/project2/Launcher.kt
 src/main/java/edu/project2/Launcher.kt
+src/main/java/edu/start.kt
