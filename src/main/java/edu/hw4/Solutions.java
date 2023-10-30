@@ -25,8 +25,8 @@ public class Solutions {
     //Отсортировать животных по весу от самого тяжелого к самому легкому, выбрать k первых -> List<Animal>
     public List<Animal> task2(List<Animal> animals, int k) {
         return animals.stream()
-            .sorted(Comparator.comparingInt(Animal::weight))
-            .skip(animals.size() - k)
+            .sorted(Comparator.comparingInt(Animal::weight).reversed())
+            .limit(k)
             .toList();
     }
 
