@@ -5,9 +5,9 @@ import java.util.*
 
 class Task3 {
 
-    public fun parseDate(line: String): Optional<LocalDate> {
-        return parseDashDate(line)
-    }
+    public fun parseDate(line: String): Optional<LocalDate> =
+        parseDashDate(line)
+
 
     private fun parseDashDate(line: String): Optional<LocalDate> {
         return try {
