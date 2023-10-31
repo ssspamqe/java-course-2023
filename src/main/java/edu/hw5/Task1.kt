@@ -27,8 +27,7 @@ class Task1 {
 
     public fun getDuration(line: String): kotlin.time.Duration {
 
-        val checkingRegex = "\\d{4}-\\d{2}-\\d{2}, \\d{2}:\\d{2} - \\d{4}-\\d{2}-\\d{2}, \\d{2}:\\d{2}".toRegex()
-        if (!checkingRegex.matches(line))
+        if (!line.matches("\\d{4}-\\d{2}-\\d{2}, \\d{2}:\\d{2} - \\d{4}-\\d{2}-\\d{2}, \\d{2}:\\d{2}".toRegex()))
             throw IllegalArgumentException("Illegal line")
 
         val borders = line.split(" - ")
