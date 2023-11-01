@@ -21,7 +21,7 @@ class Task2 {
 
     }
 
-    public fun getNextFriday13th(date:LocalDate?): LocalDate? {
+    private fun getNextFriday13th(date:LocalDate?): LocalDate? {
 
         var currentDate = date
 

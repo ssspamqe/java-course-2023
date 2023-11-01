@@ -24,7 +24,7 @@ class Task1 {
         return "${hours}h ${minutes}m"
     }
 
-    public fun getDuration(line: String): kotlin.time.Duration {
+    private fun getDuration(line: String): kotlin.time.Duration {
 
         if (!line.matches("\\d{4}-\\d{2}-\\d{2}, \\d{2}:\\d{2} - \\d{4}-\\d{2}-\\d{2}, \\d{2}:\\d{2}".toRegex()))
             throw IllegalArgumentException("Illegal line")
