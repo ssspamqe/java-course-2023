@@ -84,7 +84,7 @@ class Task3 {
 
 
     private fun String.addLeadingZeroes(neededSize: Int): String {
-        return this.padStart(neededSize - this.length, '0')
+        return this.padStart(neededSize, '0')
     }
 
 
