@@ -22,7 +22,6 @@ class Task1 {
         val minutes = totalDuration.inWholeMinutes - totalDuration.inWholeHours * 60;
 
         return "${hours}h ${minutes}m"
-
     }
 
     public fun getDuration(line: String): kotlin.time.Duration {
@@ -44,8 +43,6 @@ class Task1 {
         val end = LocalDateTime.parse("${endDate}T${endTime}:00")
 
         return Duration.between(start, end).toKotlinDuration()
-
-
     }
 
 }
