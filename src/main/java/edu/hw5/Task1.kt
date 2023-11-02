@@ -8,8 +8,7 @@ import kotlin.time.toKotlinDuration
 
 class Task1 {
 
-    public fun getStringAverageDuration(vararg lines: String):String {
-
+    public fun getStringAverageDuration(lines:List<String>):String{
         var totalDuration = 0.hours
 
         lines.forEach {
@@ -23,6 +22,8 @@ class Task1 {
 
         return "${hours}h ${minutes}m"
     }
+
+    public fun getStringAverageDuration(vararg lines: String):String  = getStringAverageDuration(lines.toList())
 
     private fun getDuration(line: String): kotlin.time.Duration {
 

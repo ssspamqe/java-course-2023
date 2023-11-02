@@ -42,7 +42,7 @@ class Task7Test:ShouldSpec({
             result shouldBe true
         }
 
-        should("return false if string have different start and end symbols"){
+        should("return  false if string have different start and end symbols"){
             val string = "101010110"
 
             val result = task.haveSameStartAndEnd(string)

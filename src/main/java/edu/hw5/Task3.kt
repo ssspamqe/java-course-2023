@@ -71,7 +71,7 @@ class Task3 {
 
     private fun parseNDaysAgo(line: String): Optional<LocalDate> {
         return try {
-            if (!line.matches("\\d+ (?:day)s? \\w+".toRegex()))
+            if (!line.matches("\\d+ (?:day)s? ago".toRegex()))
                 throw Exception()
 
             val days = line.split(" ")[0].toLong()

@@ -12,7 +12,7 @@ class Task3Test:ShouldSpec({
     context("parseDate()"){
         should("return Optional.of(date) if given 2020-10-10"){
             val date= "2020-10-10"
-            val correctDate = Optional.of(LocalDate.parse("2020-10-10"))
+            val correctDate = Optional.of(LocalDate.of(2020,10,10))
 
             val result = task.parseDate(date)
 
@@ -21,7 +21,7 @@ class Task3Test:ShouldSpec({
 
         should("return Optional.of(date) if given 2020-1-1"){
             val date = "2020-1-1"
-            val correctDate = Optional.of(LocalDate.parse("2020-01-01"))
+            val correctDate = Optional.of(LocalDate.of(2020,1,1))
 
             val result = task.parseDate(date)
 
@@ -30,7 +30,7 @@ class Task3Test:ShouldSpec({
 
         should("return Optional.of(date) if give 10/11/2020"){
             val date = "10/11/2020"
-            val correctDate = Optional.of(LocalDate.parse("2020-11-10"))
+            val correctDate = Optional.of(LocalDate.of(2020,11,10))
 
             val result = task.parseDate(date)
 
@@ -39,7 +39,7 @@ class Task3Test:ShouldSpec({
 
         should("return Optional.of(date) if given 1/1/2020"){
             val date = "1/1/2020"
-            val correctDate = Optional.of(LocalDate.parse("2020-01-01"))
+            val correctDate = Optional.of(LocalDate.of(2020,1,1))
 
             val result = task.parseDate(date)
 
