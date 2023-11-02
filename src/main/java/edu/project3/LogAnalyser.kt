@@ -19,4 +19,16 @@ class LogAnalyser {
         return occurrences.filter { it.value == max }.map { it.key!! }.toList()
     }
 
+    fun getTheMostPopularStatuses(logs:List<Map<String,String>>):List<String>{
+
+        val occurrences = logs
+            .map{it["status"]}
+            .groupingBy { it }
+            .eachCount()
+
+        val max = occurrences.map{it.value}.max()
+
+        return occurrences.filter { it.value == max }.map { it.key!! }.toList()
+
+    }
 }
