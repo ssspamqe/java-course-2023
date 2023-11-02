@@ -1,7 +1,9 @@
 package edu.hw5
 
 import java.time.Duration
+import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.toKotlinDuration
 
@@ -32,16 +34,10 @@ class Task1 {
 
         val borders = line.split(" - ")
 
-        val dateRegex = "(.*),".toRegex()
-        val startDate = dateRegex.find(borders[0])!!.groupValues[1]
-        val endDate = dateRegex.find(borders[1])!!.groupValues[1]
+        val pattern = DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm")
 
-        val timeRegex = " (.*)".toRegex()
-        val startTime = timeRegex.find(borders[0])!!.groupValues[1]
-        val endTime = timeRegex.find(borders[1])!!.groupValues[1]
-
-        val start = LocalDateTime.parse("${startDate}T${startTime}:00")
-        val end = LocalDateTime.parse("${endDate}T${endTime}:00")
+        val start = LocalDateTime.parse(borders[0],pattern)
+        val end = LocalDateTime.parse(borders[1],pattern)
 
         return Duration.between(start, end).toKotlinDuration()
     }
