@@ -1,5 +1,6 @@
 package edu.project3
 
+import java.net.InetAddress
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -72,6 +73,23 @@ class LogAnalyser {
 
         return sortedLogs
             .subList(0,min(sortedLogs.size, amount))
+            .toMap()
+    }
+
+    fun getTheMostActiveUsers(
+        logs:List<Map<String,String>>,
+        amount:Int = Int.MAX_VALUE
+    ) : Map<InetAddress, Int> {
+
+        val sortedLogs = logs
+            .map{InetAddress.getByName(it["remote_addr"])}
+            .groupingBy { it }
+            .eachCount()
+            .toList()
+            .sortedBy { it.second }
+
+        return sortedLogs
+            .subList(0, min(sortedLogs.size, amount))
             .toMap()
     }
 
