@@ -14,7 +14,7 @@ class LogParser {
 
     fun parseLog(log: String): Optional<Map<String, String>> {
         val regex =
-            "(\\d{1,4}\\.\\d{1,4}\\.\\d{1,4}\\.\\d{1,4}) - (.+) \\[(.+)\\] \"(\\w+) (.+)\" (\\d{1,}) (\\d{1,}) \"(.+)\" \"(.+)\"".toRegex()
+            "(\\d{1,4}\\.\\d{1,4}\\.\\d{1,4}\\.\\d{1,4}) - (.+) \\[(.+)\\] \"(\\w+) (.+) (.+)\" (\\d+) (\\d+) \"(.+)\" \"(.+)\"".toRegex()
         if (!log.matches(regex))
             return Optional.empty()
 
@@ -29,6 +29,7 @@ class LogParser {
             "time_local",
             "request_type",
             "request",
+            "protocol",
             "status",
             "body_bytes_sent",
             "http_referer",

@@ -97,7 +97,7 @@ class LogAnalyser {
             .toMap()
     }
 
-    fun setDateConstraints(
+    fun getDateConstrainedLogs(
         logs: List<Map<String, String>>,
         from: LocalDate? = null,
         to: LocalDate? = null

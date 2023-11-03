@@ -16,7 +16,9 @@ val logParser = LogParser()
 fun main(params: Array<String>) {
     parseParams(params)
 
-    val logs = logParser.parseAllLogs(getNonParsedSources())
+    var logs = logParser.parseAllLogs(getNonParsedSources())
+    logs = logAnalyser.getDateConstrainedLogs(logs,from,to)
+
 
 
 }
