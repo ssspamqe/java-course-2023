@@ -2,33 +2,36 @@ package edu.project3
 
 class LogAnalyser {
 
-    fun getRequestsAmount(logs:List<Map<String,String>>):Int =
+    fun getRequestsAmount(logs: List<Map<String, String>>): Int =
         logs.size
 
 
-    fun getTheMostPopularGETResources(logs:List<Map<String,String>>):List<String>{
-
-        val occurrences = logs
-            .filter { it["request_type"] == "GET" }
+    fun getTheMostPopularResources(
+        logs: List<Map<String, String>>,
+        amount: Int = -1,
+        request: String = "GET"
+    ): Map<String?, Int> =
+        logs
+            .filter { it["request_type"] == request }
             .map { it["request"] }
             .groupingBy { it }
             .eachCount()
+            .toList()
+            .sortedBy { it.second }
+            .subList(0, amount)
+            .toMap()
 
-        val max = occurrences.map { it.value }.max()
 
-        return occurrences.filter { it.value == max }.map { it.key!! }.toList()
-    }
-
-    fun getTheMostPopularStatuses(logs:List<Map<String,String>>):List<String>{
-
-        val occurrences = logs
-            .map{it["status"]}
+    fun getTheMostPopularStatuses(
+        logs: List<Map<String, String>>,
+        amount: Int = -1,
+    ): Map<String?, Int> =
+        logs
+            .map { it["status"] }
             .groupingBy { it }
             .eachCount()
-
-        val max = occurrences.map{it.value}.max()
-
-        return occurrences.filter { it.value == max }.map { it.key!! }.toList()
-
-    }
+            .toList()
+            .sortedBy { it.second }
+            .subList(0, amount)
+            .toMap()
 }
