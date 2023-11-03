@@ -42,6 +42,7 @@ class LogAnalyser {
             .eachCount()
             .toList()
             .sortedBy { it.second }
+            .reversed()
 
         return sortedLogs
             .subList(0, min(sortedLogs.size, amount))
@@ -70,6 +71,7 @@ class LogAnalyser {
                 .eachCount()
                 .toList()
                 .sortedBy { it.second }
+                .reversed()
 
         return sortedLogs
             .subList(0,min(sortedLogs.size, amount))
@@ -87,6 +89,7 @@ class LogAnalyser {
             .eachCount()
             .toList()
             .sortedBy { it.second }
+            .reversed()
 
         return sortedLogs
             .subList(0, min(sortedLogs.size, amount))

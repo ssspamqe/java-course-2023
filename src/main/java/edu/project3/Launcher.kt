@@ -19,6 +19,7 @@ fun main(params: Array<String>) {
 
     val logs = logParser.parseAllLogs(getNonParsedSources())
 
+    print(logAnalyser.getTheMostActiveUsers(logs))
 
 }
 
