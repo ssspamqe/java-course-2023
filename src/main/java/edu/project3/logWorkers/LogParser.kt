@@ -1,7 +1,6 @@
-package edu.project3
+package edu.project3.logWorkers
 
 import java.util.Optional
-import kotlin.math.log
 
 class LogParser {
 

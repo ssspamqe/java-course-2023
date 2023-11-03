@@ -1,5 +1,8 @@
 package edu.project3
 
+import edu.project3.logWorkers.LogAnalyser
+import edu.project3.logWorkers.LogParser
+import edu.project3.tablePrinters.MarkdownTablePrinter
 import java.io.File
 import java.net.URL
 import java.time.LocalDate
@@ -19,8 +22,7 @@ fun main(params: Array<String>) {
     var logs = logParser.parseAllLogs(getNonParsedSources())
     logs = logAnalyser.getDateConstrainedLogs(logs,from,to)
 
-
-
+    MarkdownTablePrinter().printListOfMaps(logs)
 }
 
 private fun parseParams(params: Array<String>) {
