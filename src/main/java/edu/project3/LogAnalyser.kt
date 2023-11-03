@@ -1,5 +1,7 @@
 package edu.project3
 
+import kotlin.math.min
+
 class LogAnalyser {
 
     fun getRequestsAmount(logs: List<Map<String, String>>): Int =
@@ -8,30 +10,39 @@ class LogAnalyser {
 
     fun getTheMostPopularResources(
         logs: List<Map<String, String>>,
-        amount: Int = -1,
+        amount: Int = Int.MAX_VALUE,
         request: String = "GET"
-    ): Map<String?, Int> =
-        logs
+    ): Map<String?, Int> {
+        val sortedLogs = logs
             .filter { it["request_type"] == request }
             .map { it["request"] }
             .groupingBy { it }
             .eachCount()
             .toList()
             .sortedBy { it.second }
-            .subList(0, amount)
+
+        return sortedLogs
+            .subList(0, min(sortedLogs.size, amount))
             .toMap()
+    }
 
 
     fun getTheMostPopularStatuses(
         logs: List<Map<String, String>>,
-        amount: Int = -1,
-    ): Map<String?, Int> =
-        logs
+        amount: Int = Int.MAX_VALUE,
+    ): Map<String?, Int> {
+
+        val sortedLogs = logs
             .map { it["status"] }
             .groupingBy { it }
             .eachCount()
             .toList()
             .sortedBy { it.second }
-            .subList(0, amount)
+
+        return sortedLogs
+            .subList(0,min(sortedLogs.size, amount))
             .toMap()
+    }
+
+
 }
