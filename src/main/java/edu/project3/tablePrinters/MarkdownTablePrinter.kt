@@ -5,7 +5,7 @@ import kotlin.math.min
 
 class MarkdownTablePrinter : TablePrinter() {
 
-    val LOGGER = LogManager.getLogger()
+    private val LOGGER = LogManager.getLogger()
 
     public override fun printListOfMaps(table: List<Map<String, String>>, amount: Int) {
         printColumnNames(table)
@@ -20,7 +20,7 @@ class MarkdownTablePrinter : TablePrinter() {
         LOGGER.info(buildString {
             append("|")
             for (i in columnNames.indices)
-                append(columnNames[i].padStart(columnLengths[i], ' ') + "|")
+                append(columnNames[i].center(columnLengths[i])+ "|")
         })
     }
 
@@ -31,7 +31,7 @@ class MarkdownTablePrinter : TablePrinter() {
         LOGGER.info(buildString {
             append("|")
             columnLengths.forEach {
-                append("-".repeat(it - 1) + ":" + "|")
+                append(":"+"-".repeat(it - 2) + ":" + "|")
             }
         })
     }
@@ -45,7 +45,7 @@ class MarkdownTablePrinter : TablePrinter() {
             LOGGER.info(buildString {
                 append("|")
                 for (i in columnNames.indices) {
-                    append(table[line][columnNames[i]]!!.padStart(columnLengths[i]) + "|")
+                    append(table[line][columnNames[i]]!!.center(columnLengths[i]) + "|")
                 }
             })
         }
