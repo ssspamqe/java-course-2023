@@ -44,5 +44,15 @@ class LogAnalyser {
             .toMap()
     }
 
+    fun getAverageResponseSize(logs: List<Map<String, String>>): Double =
+        logs
+            .filter { it["body_bytes_sent"]!!.toDoubleOrNull() != null }
+            .map { it["body_bytes_sent"]!!.toDouble() }
+            .average()
+
+//    fun getTheMostHighLoadedDays(
+//        logs: List<Map<String, String>>,
+//        amount: Int = -1
+//    )
 
 }
