@@ -2,6 +2,7 @@ package edu.project3
 
 import edu.project3.logWorkers.LogAnalyser
 import edu.project3.logWorkers.LogParser
+import edu.project3.tablePrinters.ADocTablePrinter
 import edu.project3.tablePrinters.MarkdownTablePrinter
 import java.io.File
 import java.net.URL
@@ -22,7 +23,7 @@ fun main(params: Array<String>) {
     var logs = logParser.parseAllLogs(getNonParsedSources())
     logs = logAnalyser.getDateConstrainedLogs(logs,from,to)
 
-    MarkdownTablePrinter().printListOfMaps(logs)
+    ADocTablePrinter().printListOfMaps(logs)
 }
 
 private fun parseParams(params: Array<String>) {
