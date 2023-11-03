@@ -57,34 +57,17 @@ class LogAnalyser {
 
     fun getTheMostHighLoadedDays(
         logs: List<Map<String, String>>,
-        amount:Int = Int.MAX_VALUE
+        amount: Int = Int.MAX_VALUE
     ): Map<LocalDate, Int> {
-        val sortedLogs = logs
-                .map {
-                    LocalDateTime.parse(
-                        it["time_local"],
-                        DateTimeFormatter.ofPattern("dd/MMM/yyyy:HH:mm:ss Z")
-                    )
-                        .toLocalDate()
-                }
-                .groupingBy { it }
-                .eachCount()
-                .toList()
-                .sortedBy { it.second }
-                .reversed()
-
-        return sortedLogs
-            .subList(0,min(sortedLogs.size, amount))
-            .toMap()
-    }
-
-    fun getTheMostActiveUsers(
-        logs:List<Map<String,String>>,
-        amount:Int = Int.MAX_VALUE
-    ) : Map<InetAddress, Int> {
 
         val sortedLogs = logs
-            .map{InetAddress.getByName(it["remote_addr"])}
+            .map {
+                LocalDateTime.parse(
+                    it["time_local"],
+                    DateTimeFormatter.ofPattern("dd/MMM/yyyy:HH:mm:ss Z")
+                )
+                    .toLocalDate()
+            }
             .groupingBy { it }
             .eachCount()
             .toList()
@@ -95,5 +78,63 @@ class LogAnalyser {
             .subList(0, min(sortedLogs.size, amount))
             .toMap()
     }
+
+    fun getTheMostActiveUsers(
+        logs: List<Map<String, String>>,
+        amount: Int = Int.MAX_VALUE
+    ): Map<InetAddress, Int> {
+
+        val sortedLogs = logs
+            .map { InetAddress.getByName(it["remote_addr"]) }
+            .groupingBy { it }
+            .eachCount()
+            .toList()
+            .sortedBy { it.second }
+            .reversed()
+
+        return sortedLogs
+            .subList(0, min(sortedLogs.size, amount))
+            .toMap()
+    }
+
+    fun setDateConstraints(
+        logs: List<Map<String, String>>,
+        from: LocalDate? = null,
+        to: LocalDate? = null
+    ): List<Map<String, String>> {
+
+        var constrainedLogs = logs;
+
+        if(from != null)
+            constrainedLogs = setFromDateConstraint(constrainedLogs,from)
+        if(to!=null)
+            constrainedLogs = setToDateConstraint(constrainedLogs,to)
+
+        return constrainedLogs
+    }
+
+    private fun setFromDateConstraint(
+        logs: List<Map<String, String>>,
+        from: LocalDate
+    ): List<Map<String, String>> =
+        logs.filter {
+            LocalDateTime.parse(
+                it["time_local"],
+                DateTimeFormatter.ofPattern("dd/MMM/yyyy:HH:mm:ss Z")
+            )
+                .toLocalDate() >= from
+        }
+
+    private fun setToDateConstraint(
+        logs: List<Map<String, String>>,
+        to: LocalDate
+    ): List<Map<String, String>> =
+        logs.filter {
+            LocalDateTime.parse(
+                it["time_local"],
+                DateTimeFormatter.ofPattern("dd/MMM/yyyy:HH:mm:ss Z")
+            )
+                .toLocalDate() <= to
+        }
 
 }
