@@ -1,14 +1,15 @@
 package edu.project3.logWorkers
 
-import java.util.Optional
+import edu.project3.Table
+import java.util.*
 
 class LogParser {
 
-    fun parseAllLogs(logs: List<String>): List<Map<String, String>> =
-        logs
+    fun parseAllLogs(logs: List<String>): Table =
+        Table(logs
             .map { parseLog(it) }
             .filter { it.isPresent }
-            .map { it.get() }
+            .map { it.get() })
 
 
     fun parseLog(log: String): Optional<Map<String, String>> {
