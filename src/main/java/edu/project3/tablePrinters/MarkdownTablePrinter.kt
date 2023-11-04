@@ -1,5 +1,6 @@
 package edu.project3.tablePrinters
 
+import edu.project3.Table
 import org.apache.logging.log4j.LogManager
 import kotlin.math.min
 
@@ -7,49 +8,55 @@ class MarkdownTablePrinter : TablePrinter() {
 
     private val LOGGER = LogManager.getLogger()
 
-    public override fun printListOfMaps(table: List<Map<String, String>>, amount: Int) {
+    public override fun printTable(table: Table, amount: Int, heading:String) {
+
+        if(heading!="")
+            LOGGER.info("#### $heading")
+
         printColumnNames(table)
         printHeadSeparator(table)
         printTableItems(table, amount)
     }
 
-    private fun printColumnNames(table: List<Map<String, String>>) {
-        val columnNames = getColumnNames(table)
-        val columnLengths = getColumnLengths(table)
+    private fun printColumnNames(table: Table) {
+        val columns = table.columns
+        val columnLengths = table.getColumnsLengths()
 
         LOGGER.info(buildString {
             append("|")
-            for (i in columnNames.indices)
-                append(columnNames[i].center(columnLengths[i])+ "|")
+
+            columns.forEach { column->
+                append(column.center(columnLengths[column]!!)+"|")
+            }
         })
     }
 
-    private fun printHeadSeparator(table: List<Map<String, String>>) {
-        val columnLengths = getColumnLengths(table)
+    private fun printHeadSeparator(table: Table) {
+        val columnLengths = table.getColumnsLengths()
 
 
         LOGGER.info(buildString {
             append("|")
             columnLengths.forEach {
-                append(":"+"-".repeat(it - 2) + ":" + "|")
+                append(":"+"-".repeat(it.value - 2) + ":" + "|")
             }
         })
     }
 
-    private fun printTableItems(table: List<Map<String, String>>, amount: Int = Int.MAX_VALUE) {
-        val columnLengths = getColumnLengths(table)
-        val columnNames = getColumnNames(table)
+    private fun printTableItems(table:Table, amount: Int = Int.MAX_VALUE) {
+        val columnLengths = table.getColumnsLengths()
+        val columns = table.columns
 
-        for (line in 0 until min(amount, table.size)) {
-
+        for (line in 0 until min(amount, table.getSize())) {
             LOGGER.info(buildString {
                 append("|")
-                for (i in columnNames.indices) {
-                    append(table[line][columnNames[i]]!!.center(columnLengths[i]) + "|")
+                columns.forEach { column->
+                    append(table.getCell(line, column).center(columnLengths[column]!!)+"|")
                 }
             })
         }
     }
+
 }
 
 
