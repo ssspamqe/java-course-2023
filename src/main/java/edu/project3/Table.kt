@@ -3,9 +3,7 @@ package edu.project3
 import kotlin.math.max
 
 data class Table(private var rows: List<Map<String, String>>) {
-    private var columns: List<String> = rows[0].keys.toList()
-        get() = field
-
+    val columns: List<String> = rows[0].keys.toList()
     fun addAll(newRows: List<Map<String, String>>) {
         val mutableRows = rows.toMutableList()
         mutableRows.addAll(newRows)
@@ -19,6 +17,8 @@ data class Table(private var rows: List<Map<String, String>>) {
     }
 
     fun getColumnsLengths():Map<String,Int> {
+        val a = "a"
+        a.length
         return columns.associateWith { getMaxLengthOfItemInColumn(it) }
     }
 
@@ -27,5 +27,11 @@ data class Table(private var rows: List<Map<String, String>>) {
             throw IllegalArgumentException("No such column")
         return max(rows.maxOf { it[column]!!.length },column.length)
     }
+
+    fun getRow(line:Int)= rows[line]
+
+    fun getCell(line:Int, column:String) = rows[line][column]!!
+
+    fun getSize() = rows.size
 }
 

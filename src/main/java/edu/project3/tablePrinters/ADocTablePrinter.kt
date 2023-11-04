@@ -1,5 +1,6 @@
 package edu.project3.tablePrinters
 
+import edu.project3.Table
 import org.apache.logging.log4j.LogManager
 import kotlin.math.min
 
@@ -7,7 +8,11 @@ class ADocTablePrinter : TablePrinter() {
 
     private val LOGGER = LogManager.getLogger()
 
-    override fun printListOfMaps(table: List<Map<String, String>>, amount: Int) {
+    override fun printTable(table: Table, amount: Int, heading:String) {
+
+        if(heading!="")
+            LOGGER.info("= $heading")
+
         LOGGER.info("|===")
 
         printColumnNames(table)
@@ -16,30 +21,28 @@ class ADocTablePrinter : TablePrinter() {
         LOGGER.info("|===")
     }
 
-    private fun printColumnNames(table: List<Map<String, String>>) {
+    private fun printColumnNames(table: Table) {
 
-        val columnNames = getColumnNames(table)
-        val columnLengths = getColumnLengths(table)
+        val columns = table.columns
+        val columnLengths = table.getColumnsLengths()
 
         LOGGER.info(buildString {
-            for (i in columnNames.indices) {
-                append("|" + columnNames[i].center(columnLengths[i]))
+            columns.forEach {
+                append("|"+it.center(columnLengths[it]!!))
             }
         })
 
         LOGGER.info("")
     }
 
-    private fun printTableItems(table: List<Map<String, String>>, amount: Int) {
-        val columnLengths = getColumnLengths(table)
-        val columnNames = getColumnNames(table)
+    private fun printTableItems(table: Table, amount: Int) {
+        val columns = table.columns
+        val columnLengths = table.getColumnsLengths()
 
-        for (line in 0 until min(amount, table.size)) {
-
+        for (line in 0 until min(amount, table.getSize())) {
             LOGGER.info(buildString {
-
-                for (i in columnNames.indices) {
-                    append("|" + table[line][columnNames[i]]!!.center(columnLengths[i]))
+                columns.forEach{column ->
+                    append("|" + table.getCell(line,column).center(columnLengths[column]!!))
                 }
             })
         }
