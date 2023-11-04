@@ -8,10 +8,10 @@ class ADocTablePrinter : TablePrinter() {
 
     private val LOGGER = LogManager.getLogger()
 
-    override fun printTable(table: Table, amount: Int, heading:String) {
+    override fun printTable(table: Table, amount: Int, header:String) {
 
-        if(heading!="")
-            LOGGER.info("= $heading")
+        if(header!="")
+            LOGGER.info("= $header")
 
         LOGGER.info("|===")
 

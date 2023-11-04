@@ -8,10 +8,10 @@ class MarkdownTablePrinter : TablePrinter() {
 
     private val LOGGER = LogManager.getLogger()
 
-    public override fun printTable(table: Table, amount: Int, heading:String) {
+    public override fun printTable(table: Table, amount: Int, header:String) {
 
-        if(heading!="")
-            LOGGER.info("#### $heading")
+        if(header!="")
+            LOGGER.info("#### $header")
 
         printColumnNames(table)
         printHeadSeparator(table)

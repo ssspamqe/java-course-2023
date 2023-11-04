@@ -22,6 +22,7 @@ val LOGGER = LogManager.getLogger()
 
 var tablePrinter:TablePrinter = MarkdownTablePrinter()
 
+var maxLinesInTable = 5
 fun main(params: Array<String>) {
     parseParams(params)
 
@@ -29,7 +30,14 @@ fun main(params: Array<String>) {
     logs = logAnalyser.getDateConstrainedLogs(logs,from,to)
 
     printOverallInfo(logs)
-
+    LOGGER.info("")
+    printTheMostPopularResources(logs)
+    LOGGER.info("")
+    printTheMostPopularStatuses(logs)
+    LOGGER.info("")
+    printTheMostHighLoadedDays(logs)
+    LOGGER.info("")
+    printTheMostActiveUsers(logs)
 
 }
 
@@ -60,6 +68,11 @@ private fun parseParams(params: Array<String>) {
             "--format" -> {
                 if(params[i+1] == "adoc")
                     tablePrinter = ADocTablePrinter()
+                i++
+            }
+
+            "--lines" ->{
+                maxLinesInTable = params[i+1].toInt()
                 i++
             }
 
@@ -98,5 +111,25 @@ private fun printOverallInfo(logs:Table){
         mapOf("metrics" to "Average response size", "value" to logAnalyser.getAverageResponseSize(logs).toString())
     ))
 
-    tablePrinter.printTable(table, heading = "Overall information")
+    tablePrinter.printTable(table, header = "Overall information")
+}
+
+private fun printTheMostPopularResources(logs:Table){
+    val resources = logAnalyser.getTheMostPopularResources(logs, maxLinesInTable)
+    tablePrinter.printTable(resources, header = "The most popular resources")
+}
+
+private fun printTheMostPopularStatuses(logs:Table){
+    val statuses = logAnalyser.getTheMostPopularStatuses(logs, maxLinesInTable)
+    tablePrinter.printTable(statuses, header = "The most popular statuses")
+}
+
+private fun printTheMostHighLoadedDays(logs:Table){
+    val days = logAnalyser.getTheMostHighLoadedDays(logs, maxLinesInTable)
+    tablePrinter.printTable(days, header = "The most highloaded days")
+}
+
+private fun printTheMostActiveUsers(logs:Table){
+    val users =logAnalyser.getTheMostActiveUsers(logs, maxLinesInTable)
+    tablePrinter.printTable(users, header = "The most active users")
 }

@@ -9,7 +9,7 @@ import kotlin.math.min
 
 class LogAnalyser {
 
-    fun getRequestsAmount(logs:Table): Int =
+    fun getRequestsAmount(logs: Table): Int =
         logs.getSize()
 
 
@@ -24,7 +24,7 @@ class LogAnalyser {
             .groupingBy { it }
             .eachCount()
             .toList()
-            .sortedBy { it.second }
+            .sortedByDescending { it.second }
 
         return Table(sortedLogs
             .subList(0, min(sortedLogs.size, amount))
@@ -107,7 +107,7 @@ class LogAnalyser {
         to: LocalDate? = null
     ): Table {
 
-        var constrainedLogs = logs;
+        var constrainedLogs = logs
 
         if (from != null)
             constrainedLogs = setFromDateConstraint(constrainedLogs, from)
@@ -123,13 +123,13 @@ class LogAnalyser {
     ): Table =
         Table(
             logs.getRows()
-            .filter {
-                LocalDateTime.parse(
-                    it["time_local"],
-                    DateTimeFormatter.ofPattern("dd/MMM/yyyy:HH:mm:ss Z")
-                )
-                    .toLocalDate() >= from
-            }
+                .filter {
+                    LocalDateTime.parse(
+                        it["time_local"],
+                        DateTimeFormatter.ofPattern("dd/MMM/yyyy:HH:mm:ss Z")
+                    )
+                        .toLocalDate() >= from
+                }
         )
 
     private fun setToDateConstraint(
@@ -138,8 +138,7 @@ class LogAnalyser {
     ): Table =
 
         Table(
-            logs.getRows().
-            filter {
+            logs.getRows().filter {
                 LocalDateTime.parse(
                     it["time_local"],
                     DateTimeFormatter.ofPattern("dd/MMM/yyyy:HH:mm:ss Z")
@@ -147,7 +146,6 @@ class LogAnalyser {
                     .toLocalDate() <= to
             }
         )
-
 
 
 }
