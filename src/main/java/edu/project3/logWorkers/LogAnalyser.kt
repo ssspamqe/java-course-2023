@@ -1,5 +1,6 @@
 package edu.project3.logWorkers
 
+import edu.project3.Table
 import java.net.InetAddress
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -8,16 +9,16 @@ import kotlin.math.min
 
 class LogAnalyser {
 
-    fun getRequestsAmount(logs: List<Map<String, String>>): Int =
-        logs.size
+    fun getRequestsAmount(logs:Table): Int =
+        logs.getSize()
 
 
     fun getTheMostPopularResources(
-        logs: List<Map<String, String>>,
+        logs: Table,
         amount: Int = Int.MAX_VALUE,
         request: String = "GET"
-    ): Map<String?, Int> {
-        val sortedLogs = logs
+    ): Table {
+        val sortedLogs = logs.getRows()
             .filter { it["request_type"] == request }
             .map { it["request"] }
             .groupingBy { it }
@@ -25,42 +26,43 @@ class LogAnalyser {
             .toList()
             .sortedBy { it.second }
 
-        return sortedLogs
+        return Table(sortedLogs
             .subList(0, min(sortedLogs.size, amount))
-            .toMap()
+            .map { mapOf("resource" to it.first!!, "value" to it.second.toString()) })
+
     }
 
 
     fun getTheMostPopularStatuses(
-        logs: List<Map<String, String>>,
+        logs: Table,
         amount: Int = Int.MAX_VALUE,
-    ): Map<String?, Int> {
+    ): Table {
 
-        val sortedLogs = logs
+        val sortedLogs = logs.getRows()
             .map { it["status"] }
             .groupingBy { it }
             .eachCount()
             .toList()
-            .sortedBy { it.second }
-            .reversed()
+            .sortedByDescending { it.second }
 
-        return sortedLogs
+        return Table(sortedLogs
             .subList(0, min(sortedLogs.size, amount))
-            .toMap()
+            .map { mapOf("status" to it.first!!, "responses" to it.second.toString()) }
+            .toList())
     }
 
-    fun getAverageResponseSize(logs: List<Map<String, String>>): Double =
-        logs
+    fun getAverageResponseSize(logs: Table): Double =
+        logs.getRows()
             .filter { it["body_bytes_sent"]!!.toDoubleOrNull() != null }
             .map { it["body_bytes_sent"]!!.toDouble() }
             .average()
 
     fun getTheMostHighLoadedDays(
-        logs: List<Map<String, String>>,
+        logs: Table,
         amount: Int = Int.MAX_VALUE
-    ): Map<LocalDate, Int> {
+    ): Table {
 
-        val sortedLogs = logs
+        val sortedLogs = logs.getRows()
             .map {
                 LocalDateTime.parse(
                     it["time_local"],
@@ -71,20 +73,21 @@ class LogAnalyser {
             .groupingBy { it }
             .eachCount()
             .toList()
-            .sortedBy { it.second }
-            .reversed()
+            .sortedByDescending { it.second }
 
-        return sortedLogs
+
+        return Table(sortedLogs
             .subList(0, min(sortedLogs.size, amount))
-            .toMap()
+            .map { mapOf("day" to it.first!!.toString(), "requests" to it.second.toString()) }
+            .toList())
     }
 
     fun getTheMostActiveUsers(
-        logs: List<Map<String, String>>,
+        logs: Table,
         amount: Int = Int.MAX_VALUE
-    ): Map<InetAddress, Int> {
+    ): Table {
 
-        val sortedLogs = logs
+        val sortedLogs = logs.getRows()
             .map { InetAddress.getByName(it["remote_addr"]) }
             .groupingBy { it }
             .eachCount()
@@ -92,49 +95,59 @@ class LogAnalyser {
             .sortedBy { it.second }
             .reversed()
 
-        return sortedLogs
+        return Table(sortedLogs
             .subList(0, min(sortedLogs.size, amount))
-            .toMap()
+            .map { mapOf("user_ip" to it.first.toString(), "requests" to it.second.toString()) }
+            .toList())
     }
 
     fun getDateConstrainedLogs(
-        logs: List<Map<String, String>>,
+        logs: Table,
         from: LocalDate? = null,
         to: LocalDate? = null
-    ): List<Map<String, String>> {
+    ): Table {
 
         var constrainedLogs = logs;
 
-        if(from != null)
-            constrainedLogs = setFromDateConstraint(constrainedLogs,from)
-        if(to!=null)
-            constrainedLogs = setToDateConstraint(constrainedLogs,to)
+        if (from != null)
+            constrainedLogs = setFromDateConstraint(constrainedLogs, from)
+        if (to != null)
+            constrainedLogs = setToDateConstraint(constrainedLogs, to)
 
         return constrainedLogs
     }
 
     private fun setFromDateConstraint(
-        logs: List<Map<String, String>>,
+        logs: Table,
         from: LocalDate
-    ): List<Map<String, String>> =
-        logs.filter {
-            LocalDateTime.parse(
-                it["time_local"],
-                DateTimeFormatter.ofPattern("dd/MMM/yyyy:HH:mm:ss Z")
-            )
-                .toLocalDate() >= from
-        }
+    ): Table =
+        Table(
+            logs.getRows()
+            .filter {
+                LocalDateTime.parse(
+                    it["time_local"],
+                    DateTimeFormatter.ofPattern("dd/MMM/yyyy:HH:mm:ss Z")
+                )
+                    .toLocalDate() >= from
+            }
+        )
 
     private fun setToDateConstraint(
-        logs: List<Map<String, String>>,
+        logs: Table,
         to: LocalDate
-    ): List<Map<String, String>> =
-        logs.filter {
-            LocalDateTime.parse(
-                it["time_local"],
-                DateTimeFormatter.ofPattern("dd/MMM/yyyy:HH:mm:ss Z")
-            )
-                .toLocalDate() <= to
-        }
+    ): Table =
+
+        Table(
+            logs.getRows().
+            filter {
+                LocalDateTime.parse(
+                    it["time_local"],
+                    DateTimeFormatter.ofPattern("dd/MMM/yyyy:HH:mm:ss Z")
+                )
+                    .toLocalDate() <= to
+            }
+        )
+
+
 
 }

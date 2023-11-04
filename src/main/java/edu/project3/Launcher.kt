@@ -4,6 +4,7 @@ import edu.project3.logWorkers.LogAnalyser
 import edu.project3.logWorkers.LogParser
 import edu.project3.tablePrinters.ADocTablePrinter
 import edu.project3.tablePrinters.MarkdownTablePrinter
+import edu.project3.tablePrinters.TablePrinter
 import org.apache.logging.log4j.LogManager
 import java.io.File
 import java.net.URL
@@ -13,12 +14,13 @@ import java.time.LocalDate
 var sources: List<String> = mutableListOf()
 var from: LocalDate? = null
 var to: LocalDate? = null
-var format: String? = null
 
 val logAnalyser = LogAnalyser()
 val logParser = LogParser()
 
 val LOGGER = LogManager.getLogger()
+
+var tablePrinter:TablePrinter = MarkdownTablePrinter()
 
 fun main(params: Array<String>) {
     parseParams(params)
@@ -26,11 +28,7 @@ fun main(params: Array<String>) {
     var logs = logParser.parseAllLogs(getNonParsedSources())
     logs = logAnalyser.getDateConstrainedLogs(logs,from,to)
 
-    MarkdownTablePrinter().printListOfMaps(logs)
-
-    LOGGER.info("\n")
-
-    printOverallData(logs)
+    printOverallInfo(logs)
 
 
 }
@@ -60,7 +58,8 @@ private fun parseParams(params: Array<String>) {
             }
 
             "--format" -> {
-                format = params[i + 1]
+                if(params[i+1] == "adoc")
+                    tablePrinter = ADocTablePrinter()
                 i++
             }
 
@@ -89,11 +88,9 @@ private fun getNonParsedSources():List<String>{
     return nonParsedSources.toList()
 }
 
-private fun printOverallData(logs:List<Map<String,String>>){
+private fun printOverallInfo(logs:Table){
 
-    val table = mutableListOf<Map<String,String>>()
-
-    table.addAll(listOf(
+    val table = Table(listOf(
         mapOf("metrics" to "Files", "value" to sources.toString()),
         mapOf("metrics" to "Start date", "value" to from.toString()),
         mapOf("metrics" to "End date", "value" to to.toString()),
@@ -101,10 +98,5 @@ private fun printOverallData(logs:List<Map<String,String>>){
         mapOf("metrics" to "Average response size", "value" to logAnalyser.getAverageResponseSize(logs).toString())
     ))
 
-    printTable(table)
+    tablePrinter.printTable(table, heading = "Overall information")
 }
-
-private fun printTable(table:List<Map<String,String>>){
-    MarkdownTablePrinter().printListOfMaps(table)
-}
-

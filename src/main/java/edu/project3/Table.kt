@@ -33,5 +33,7 @@ data class Table(private var rows: List<Map<String, String>>) {
     fun getCell(line:Int, column:String) = rows[line][column]!!
 
     fun getSize() = rows.size
+
+    fun getRows() = rows
 }
 
