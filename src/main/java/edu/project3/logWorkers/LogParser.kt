@@ -23,7 +23,6 @@ class LogParser {
         val parsedLog = mutableMapOf<String, String>()
 
         val columnNames = listOf(
-            "",
             "remote_addr",
             "remote_user",
             "time_local",
@@ -37,7 +36,7 @@ class LogParser {
         )
 
         for (i in 1 until capturedGroups.size)
-            parsedLog[columnNames[i]] = capturedGroups[i]
+            parsedLog[columnNames[i-1]] = capturedGroups[i]
 
         return Optional.of(parsedLog)
     }

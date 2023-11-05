@@ -24,7 +24,7 @@ class ADocTablePrinter : TablePrinter() {
     private fun printColumnNames(table: Table) {
 
         val columns = table.columns
-        val columnLengths = table.getColumnsLengths()
+        val columnLengths = table.getAllColumnLengths()
 
         LOGGER.info(buildString {
             columns.forEach {
@@ -37,7 +37,7 @@ class ADocTablePrinter : TablePrinter() {
 
     private fun printTableItems(table: Table, amount: Int) {
         val columns = table.columns
-        val columnLengths = table.getColumnsLengths()
+        val columnLengths = table.getAllColumnLengths()
 
         for (line in 0 until min(amount, table.getSize())) {
             LOGGER.info(buildString {

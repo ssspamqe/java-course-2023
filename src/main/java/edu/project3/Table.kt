@@ -10,7 +10,7 @@ data class Table(
     val columns: List<String>
 
     init {
-        val keys = rows[0].keys as MutableSet<String>
+        val keys = rows[0].keys.toMutableSet()
         rows.forEach {
             keys.addAll(it.keys)
         }
@@ -29,13 +29,13 @@ data class Table(
         rows = mutableRows.toList()
     }
 
-    fun getColumnsLengths(): Map<String, Int> {
+    fun getAllColumnLengths(): Map<String, Int> {
         val a = "a"
         a.length
-        return columns.associateWith { getMaxLengthOfItemInColumn(it) }
+        return columns.associateWith { getColumnLength(it) }
     }
 
-    fun getMaxLengthOfItemInColumn(column: String): Int {
+    fun getColumnLength(column: String): Int {
         if (column !in columns)
             throw IllegalArgumentException("No such column")
         return max(rows.maxOf {

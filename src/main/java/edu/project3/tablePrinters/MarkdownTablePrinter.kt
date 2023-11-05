@@ -20,7 +20,7 @@ class MarkdownTablePrinter : TablePrinter() {
 
     private fun printColumnNames(table: Table) {
         val columns = table.columns
-        val columnLengths = table.getColumnsLengths()
+        val columnLengths = table.getAllColumnLengths()
 
         LOGGER.info(buildString {
             append("|")
@@ -32,7 +32,7 @@ class MarkdownTablePrinter : TablePrinter() {
     }
 
     private fun printHeadSeparator(table: Table) {
-        val columnLengths = table.getColumnsLengths()
+        val columnLengths = table.getAllColumnLengths()
 
 
         LOGGER.info(buildString {
@@ -44,7 +44,7 @@ class MarkdownTablePrinter : TablePrinter() {
     }
 
     private fun printTableItems(table: Table, amount: Int = Int.MAX_VALUE) {
-        val columnLengths = table.getColumnsLengths()
+        val columnLengths = table.getAllColumnLengths()
         val columns = table.columns
 
         for (line in 0 until min(amount, table.getSize())) {
