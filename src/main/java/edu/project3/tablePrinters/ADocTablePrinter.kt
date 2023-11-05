@@ -8,15 +8,15 @@ class ADocTablePrinter : TablePrinter() {
 
     private val LOGGER = LogManager.getLogger()
 
-    override fun printTable(table: Table, amount: Int, header:String) {
+    override fun printTable(table: Table, amount: Int, header: String) {
 
-        if(header!="")
+        if (header != "")
             LOGGER.info("= $header")
 
         LOGGER.info("|===")
 
         printColumnNames(table)
-        printTableItems(table,amount)
+        printTableItems(table, amount)
 
         LOGGER.info("|===")
     }
@@ -28,7 +28,7 @@ class ADocTablePrinter : TablePrinter() {
 
         LOGGER.info(buildString {
             columns.forEach {
-                append("|"+it.center(columnLengths[it]!!))
+                append("|" + it.center(columnLengths[it]!!))
             }
         })
 
@@ -41,8 +41,11 @@ class ADocTablePrinter : TablePrinter() {
 
         for (line in 0 until min(amount, table.getSize())) {
             LOGGER.info(buildString {
-                columns.forEach{column ->
-                    append("|" + table.getCell(line,column).center(columnLengths[column]!!))
+                columns.forEach { column ->
+                    if(table.getCell(line,column) == null)
+                        append("|" + "null".center(columnLengths[column]!!))
+                    else
+                        append("|" + table.getCell(line,column)!!.center(columnLengths[column]!!))
                 }
             })
         }

@@ -20,14 +20,15 @@ val logParser = LogParser()
 
 val LOGGER = LogManager.getLogger()
 
-var tablePrinter:TablePrinter = MarkdownTablePrinter()
+var tablePrinter: TablePrinter = MarkdownTablePrinter()
 
 var maxLinesInTable = 5
+
 fun main(params: Array<String>) {
     parseParams(params)
 
     var logs = logParser.parseAllLogs(getNonParsedSources())
-    logs = logAnalyser.getDateConstrainedLogs(logs,from,to)
+    logs = logAnalyser.getDateConstrainedLogs(logs, from, to)
 
     printOverallInfo(logs)
     LOGGER.info("")
@@ -66,13 +67,13 @@ private fun parseParams(params: Array<String>) {
             }
 
             "--format" -> {
-                if(params[i+1] == "adoc")
+                if (params[i + 1] == "adoc")
                     tablePrinter = ADocTablePrinter()
                 i++
             }
 
-            "--lines" ->{
-                maxLinesInTable = params[i+1].toInt()
+            "--lines" -> {
+                maxLinesInTable = params[i + 1].toInt()
                 i++
             }
 
@@ -83,14 +84,14 @@ private fun parseParams(params: Array<String>) {
     sources = sources.toList()
 }
 
-private fun getNonParsedSources():List<String>{
+private fun getNonParsedSources(): List<String> {
     val nonParsedSources = mutableListOf<String>()
 
     sources.forEach { src ->
 
         val urlRegex = "(?:http)s?:\\/\\/.*".toRegex()
 
-        if(src.matches(urlRegex))
+        if (src.matches(urlRegex))
             nonParsedSources.addAll(URL(src).readText().split("\n"))
         else
             File(src).useLines {
@@ -101,35 +102,37 @@ private fun getNonParsedSources():List<String>{
     return nonParsedSources.toList()
 }
 
-private fun printOverallInfo(logs:Table){
+private fun printOverallInfo(logs: Table) {
 
-    val table = Table(listOf(
-        mapOf("metrics" to "Files", "value" to sources.toString()),
-        mapOf("metrics" to "Start date", "value" to from.toString()),
-        mapOf("metrics" to "End date", "value" to to.toString()),
-        mapOf("metrics" to "Requests","value" to logAnalyser.getRequestsAmount(logs).toString()),
-        mapOf("metrics" to "Average response size", "value" to logAnalyser.getAverageResponseSize(logs).toString())
-    ))
+    val table = Table(
+        listOf(
+            mapOf("metrics" to "Files", "value" to sources.toString()),
+            mapOf("metrics" to "Start date", "value" to from.toString()),
+            mapOf("metrics" to "End date", "value" to to.toString()),
+            mapOf("metrics" to "Requests", "value" to logAnalyser.getRequestsAmount(logs).toString()),
+            mapOf("metrics" to "Average response size", "value" to logAnalyser.getAverageResponseSize(logs).toString())
+        )
+    )
 
     tablePrinter.printTable(table, header = "Overall information")
 }
 
-private fun printTheMostPopularResources(logs:Table){
+private fun printTheMostPopularResources(logs: Table) {
     val resources = logAnalyser.getTheMostPopularResources(logs, maxLinesInTable)
     tablePrinter.printTable(resources, header = "The most popular resources")
 }
 
-private fun printTheMostPopularStatuses(logs:Table){
+private fun printTheMostPopularStatuses(logs: Table) {
     val statuses = logAnalyser.getTheMostPopularStatuses(logs, maxLinesInTable)
     tablePrinter.printTable(statuses, header = "The most popular statuses")
 }
 
-private fun printTheMostHighLoadedDays(logs:Table){
+private fun printTheMostHighLoadedDays(logs: Table) {
     val days = logAnalyser.getTheMostHighLoadedDays(logs, maxLinesInTable)
     tablePrinter.printTable(days, header = "The most highloaded days")
 }
 
-private fun printTheMostActiveUsers(logs:Table){
-    val users =logAnalyser.getTheMostActiveUsers(logs, maxLinesInTable)
+private fun printTheMostActiveUsers(logs: Table) {
+    val users = logAnalyser.getTheMostActiveUsers(logs, maxLinesInTable)
     tablePrinter.printTable(users, header = "The most active users")
 }

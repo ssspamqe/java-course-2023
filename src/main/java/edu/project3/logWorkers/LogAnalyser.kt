@@ -1,6 +1,7 @@
 package edu.project3.logWorkers
 
 import edu.project3.Table
+import jakarta.validation.constraints.NotNull
 import java.net.InetAddress
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -9,7 +10,7 @@ import kotlin.math.min
 
 class LogAnalyser {
 
-    fun getRequestsAmount(logs: Table): Int =
+    fun getRequestsAmount(@NotNull logs: Table): Int =
         logs.getSize()
 
 
