@@ -20,6 +20,7 @@ class LogAnalyser {
         request: String = "GET"
     ): Table {
         val sortedLogs = logs.getRows()
+            .filter { it["request_type"] != null }
             .filter { it["request_type"] == request }
             .map { it["request"] }
             .groupingBy { it }
@@ -40,6 +41,7 @@ class LogAnalyser {
     ): Table {
 
         val sortedLogs = logs.getRows()
+            .filter { it["status"] != null }
             .map { it["status"] }
             .groupingBy { it }
             .eachCount()
@@ -54,7 +56,7 @@ class LogAnalyser {
 
     fun getAverageResponseSize(logs: Table): Double =
         logs.getRows()
-            .filter { it["body_bytes_sent"]!!.toDoubleOrNull() != null }
+            .filter { it["body_bytes_sent"] != null }
             .map { it["body_bytes_sent"]!!.toDouble() }
             .average()
 
@@ -64,6 +66,7 @@ class LogAnalyser {
     ): Table {
 
         val sortedLogs = logs.getRows()
+            .filter { it["time_local"] != null }
             .map {
                 LocalDateTime.parse(
                     it["time_local"],
@@ -89,6 +92,7 @@ class LogAnalyser {
     ): Table {
 
         val sortedLogs = logs.getRows()
+            .filter { it["remote_addr"] != null }
             .map { InetAddress.getByName(it["remote_addr"]) }
             .groupingBy { it }
             .eachCount()
@@ -124,6 +128,7 @@ class LogAnalyser {
     ): Table =
         Table(
             logs.getRows()
+                .filter { it["time_local"] != null }
                 .filter {
                     LocalDateTime.parse(
                         it["time_local"],
@@ -139,7 +144,9 @@ class LogAnalyser {
     ): Table =
 
         Table(
-            logs.getRows().filter {
+            logs.getRows()
+                .filter { it["time_local"] != null }
+                .filter {
                 LocalDateTime.parse(
                     it["time_local"],
                     DateTimeFormatter.ofPattern("dd/MMM/yyyy:HH:mm:ss Z")
