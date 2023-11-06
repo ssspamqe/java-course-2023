@@ -48,42 +48,34 @@ fun main(params: Array<String>) {
 }
 
 private fun parseParams(params: Array<String>) {
-
     var i = 0
     while (i != params.size) {
-
         when (params[i]) {
             "--sources" -> {
-                i++
-                while (i != params.size && params[i] !in listOf("--from", "--format","--format","--lines")) {
+                while (i+1 != params.size && params[i+1] !in listOf("--from", "--format","--format","--lines")) {
+                    i++
                     (sources as MutableList<String>).add(params[i])
-                    i++;
                 }
             }
 
             "--from" -> {
                 from = LocalDate.parse(params[i + 1])
-                i++
             }
 
             "--to" -> {
                 to = LocalDate.parse(params[i + 1])
-                i++
             }
 
             "--format" -> {
                 if (params[i + 1] == "adoc")
                     tablePrinter = ADocTablePrinter()
-                i++
             }
 
             "--lines" -> {
                 maxLinesInTable = params[i + 1].toInt()
-                i++
             }
-
-            else -> i++
         }
+        i++
     }
 
     sources = sources.toList()
@@ -93,7 +85,6 @@ private fun getNonParsedLogs(): List<String> {
     val nonParsedSources = mutableListOf<String>()
 
     sources.forEach { src ->
-
         val urlRegex = "(?:http)s?:\\/\\/.*".toRegex()
 
         if (src.matches(urlRegex))

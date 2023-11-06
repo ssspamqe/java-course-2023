@@ -9,7 +9,6 @@ class MarkdownTablePrinter : TablePrinter() {
     private val LOGGER = LogManager.getLogger()
 
     public override fun printTable(table: Table, amount: Int, header: String) {
-
         if (header != "")
             LOGGER.info("#### $header")
 
@@ -33,7 +32,6 @@ class MarkdownTablePrinter : TablePrinter() {
 
     private fun printHeadSeparator(table: Table) {
         val columnLengths = table.getAllColumnLengths()
-
 
         LOGGER.info(buildString {
             append("|")

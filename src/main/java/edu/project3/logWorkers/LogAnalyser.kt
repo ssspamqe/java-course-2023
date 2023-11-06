@@ -30,7 +30,6 @@ class LogAnalyser {
         return Table(sortedLogs
             .subList(0, min(sortedLogs.size, amount))
             .map { mapOf("resource" to it.first!!, "value" to it.second.toString()) })
-
     }
 
 
@@ -38,7 +37,6 @@ class LogAnalyser {
         logs: Table,
         amount: Int = Int.MAX_VALUE,
     ): Table {
-
         val sortedLogs = logs.getRows()
             .filter { it["status"] != null }
             .map { it["status"] }
@@ -63,7 +61,6 @@ class LogAnalyser {
         logs: Table,
         amount: Int = Int.MAX_VALUE
     ): Table {
-
         val sortedLogs = logs.getRows()
             .filter { it["time_local"] != null }
             .map {
@@ -89,7 +86,6 @@ class LogAnalyser {
         logs: Table,
         amount: Int = Int.MAX_VALUE
     ): Table {
-
         val sortedLogs = logs.getRows()
             .filter { it["remote_addr"] != null }
             .map { it["remote_addr"] }
@@ -114,7 +110,6 @@ class LogAnalyser {
         from: LocalDate? = null,
         to: LocalDate? = null
     ): Table {
-
         var constrainedLogs = logs
 
         if (from != null)
@@ -145,7 +140,6 @@ class LogAnalyser {
         logs: Table,
         to: LocalDate
     ): Table =
-
         Table(
             logs.getRows()
                 .filter { it["time_local"] != null }

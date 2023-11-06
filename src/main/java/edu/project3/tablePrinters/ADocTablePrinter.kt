@@ -9,7 +9,6 @@ class ADocTablePrinter : TablePrinter() {
     private val LOGGER = LogManager.getLogger()
 
     override fun printTable(table: Table, amount: Int, header: String) {
-
         if (header != "")
             LOGGER.info("= $header")
 
@@ -22,7 +21,6 @@ class ADocTablePrinter : TablePrinter() {
     }
 
     private fun printColumnNames(table: Table) {
-
         val columns = table.columns
         val columnLengths = table.getAllColumnLengths()
 
