@@ -18,6 +18,12 @@ class LogParser {
         "http_user_agent"
     )
 
+    val dateTimeRegex = "\\d{2}/[A-Z][a-z]{2}/\\d{4}:\\d{2}:\\d{2}:\\d{2} [\\-|\\+]\\d{4}".toRegex()
+
+    val logRegex =
+        "(\\d{1,4}\\.\\d{1,4}\\.\\d{1,4}\\.\\d{1,4}) - ([^ ]+) \\[($dateTimeRegex)\\] \\\"(\\w+) {1}(.+) (HTTP/.+)\\\" (\\d+) (\\d+) \\\"(.+)\\\" \\\"(.+)\\\""
+            .toRegex()
+
     fun parseAllLogs(logs: List<String>): Table =
         Table(logs
             .map { parseLog(it) }
@@ -26,12 +32,11 @@ class LogParser {
 
 
     fun parseLog(log: String): Optional<Map<String, String>> {
-        val regex =
-            "(\\d{1,4}\\.\\d{1,4}\\.\\d{1,4}\\.\\d{1,4}) - (.+) \\[(.+)\\] \"(\\w+) (.+) (.+)\" (\\d+) (\\d+) \"(.+)\" \"(.+)\"".toRegex()
-        if (!log.matches(regex))
+
+        if (!log.matches(logRegex))
             return Optional.empty()
 
-        val capturedGroups = regex.findAll(log).toList()[0].groupValues
+        val capturedGroups = logRegex.findAll(log).toList()[0].groupValues
 
         val parsedLog = mutableMapOf<String, String>()
 
