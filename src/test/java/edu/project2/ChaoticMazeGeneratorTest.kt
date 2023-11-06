@@ -3,7 +3,6 @@ package edu.project2
 import edu.project2.generators.chaoticMaze.ChaoticMazeGenerator
 import io.kotest.assertions.throwables.shouldThrowAny
 import io.kotest.core.spec.style.ShouldSpec
-import io.kotest.core.spec.style.StringSpec
 import io.kotest.property.Arb
 import io.kotest.property.arbitrary.int
 import io.kotest.property.checkAll

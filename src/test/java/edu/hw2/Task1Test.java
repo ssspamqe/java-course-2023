@@ -1,9 +1,12 @@
 package edu.hw2;
 
-import edu.hw2.Task1.Expr;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import static edu.hw2.Task1.Expr.*;
+import static edu.hw2.Task1.Expr.Addition;
+import static edu.hw2.Task1.Expr.Constant;
+import static edu.hw2.Task1.Expr.Exponent;
+import static edu.hw2.Task1.Expr.Multiplication;
+import static edu.hw2.Task1.Expr.Negate;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class Task1Test {
@@ -20,9 +23,7 @@ public class Task1Test {
         var exp = new Exponent(mult, 2);
         var res = new Addition(exp, new Constant(1));
 
-
         double computedValue = res.evaluate();
-
 
         assertThat(computedValue).isEqualTo(37);
     }
