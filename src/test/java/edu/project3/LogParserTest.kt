@@ -39,10 +39,10 @@ class LogParserTest : ShouldSpec({
             result shouldBe correctlyParsedLog
         }
 
-        should("return empty Optional if log is not NGINX") {
+        should("return empty null if log is not NGINX") {
             val result = parser.parseLog(incorrectLog)
 
-            result shouldBe Optional.empty()
+            result shouldBe null
         }
     }
 

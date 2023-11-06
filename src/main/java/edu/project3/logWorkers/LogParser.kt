@@ -1,6 +1,9 @@
 package edu.project3.logWorkers
 
 import edu.project3.Table
+import edu.project3.sources
+import java.io.File
+import java.net.URL
 import java.util.*
 
 class LogParser {
@@ -41,6 +44,23 @@ class LogParser {
             parsedLog[columnNames[i - 1]] = capturedGroups[i]
 
         return parsedLog
+    }
+
+    public fun combineLogs(sources:List<String>): List<String> {
+        val nonParsedSources = mutableListOf<String>()
+
+        sources.forEach { src ->
+            val urlRegex = "(?:http)s?:\\/\\/.*".toRegex()
+
+            if (src.matches(urlRegex))
+                nonParsedSources.addAll(URL(src).readText().split("\n"))
+            else
+                File(src).useLines {
+                    nonParsedSources.addAll(it.toList())
+                }
+        }
+
+        return nonParsedSources.toList()
     }
 
 
