@@ -1,10 +1,8 @@
 package edu.project3.logWorkers
 
 import edu.project3.Table
-import edu.project3.sources
 import java.io.File
 import java.net.URL
-import java.util.*
 
 class LogParser {
 
@@ -46,7 +44,7 @@ class LogParser {
         return parsedLog
     }
 
-    public fun combineLogs(sources:List<String>): List<String> {
+    public fun combineLogs(sources: List<String>): List<String> {
         val nonParsedSources = mutableListOf<String>()
 
         sources.forEach { src ->

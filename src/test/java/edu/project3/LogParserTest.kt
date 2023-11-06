@@ -4,7 +4,6 @@ import edu.project3.logWorkers.LogParser
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.collections.shouldNotContain
 import io.kotest.matchers.shouldBe
-import java.util.*
 
 class LogParserTest : ShouldSpec({
 
@@ -18,22 +17,21 @@ class LogParserTest : ShouldSpec({
         val incorrectLog =
             "93.180.71.0 - - [17/May/2015:08:05:32 +0000] \"/downloads/product_1 HTTP/1.1\" 304 0 \"-\" \"Debian APT-HTTP/1.3 (0.8.16~exp12ubuntu10.21)\""
 
-        val correctlyParsedLog = Optional.of(
-            mapOf(
-                "remote_addr" to "93.180.71.3",
-                "remote_user" to "-",
-                "time_local" to "17/May/2015:08:05:32 +0000",
-                "request_type" to "GET",
-                "request" to "/downloads/product_1",
-                "protocol" to "HTTP/1.1",
-                "status" to "304",
-                "body_bytes_sent" to "0",
-                "http_referer" to "-",
-                "http_user_agent" to "Debian APT-HTTP/1.3 (0.8.16~exp12ubuntu10.21)"
-            )
+        val correctlyParsedLog = mapOf(
+            "remote_addr" to "93.180.71.3",
+            "remote_user" to "-",
+            "time_local" to "17/May/2015:08:05:32 +0000",
+            "request_type" to "GET",
+            "request" to "/downloads/product_1",
+            "protocol" to "HTTP/1.1",
+            "status" to "304",
+            "body_bytes_sent" to "0",
+            "http_referer" to "-",
+            "http_user_agent" to "Debian APT-HTTP/1.3 (0.8.16~exp12ubuntu10.21)"
         )
 
-        should("return an Optional instance of line of Table") {
+
+        should("return a line of Table") {
             val result = parser.parseLog(log)
 
             result shouldBe correctlyParsedLog
@@ -128,7 +126,7 @@ class LogParserTest : ShouldSpec({
             "80.91.33.133 - - [21/May/2015:08:05:55 +0000] \"GET /downloads/product_1 HTTP/1.1\" 404 513 \"-\" \"Debian APT-HTTP/1.3 (0.8.16~exp12ubuntu10.16)\"",
             "173.203.139.108 - - [17/May/2015:08:05:53 +0000] \"GET /downloads/product_1 HTTP/1.1\" 304 100 \"-\" \"Debian APT-HTTP/1.3 (0.9.7.9)\"",
             "127.0.0.1 - - [23/May/2015:08:05:32 +0001] \"GET /downloads/product_2 HTTP/1.1\" 304 102 \"-\" \"Debian APT-HTTP/1.3 (1.0.1ubuntu2)\"",
-            "46.4ee.83.163 - - [17/May/2015:08:05:52 +0000] \"POST /rootFile HTTP/1.1\" 304 0 \"-\" \"Debian APT-HTTP/1.3 (0.9.7.9)\"",
+            "46.4.83.163 - - [17/May/2015:08:05:52 +0000] \"POST /rootFile HTTP/1.1\" 304 0 \"-\" \"Debian APT-HTTP/1.3 (0.9.7.9)\"",
             "91.234.194.89 - - [06/Sep/2018:08:05:18 +0000] \"GET /downloads/product_2 HTTP/1.1\" 304 0 \"-\" \"Debian APT-HTTP/1.3 (0.9.7.9)\"",
             "31.22.86.126 - - [02/May/2015:08:05:24 +0000] \"PUT /downloads/product_1 HTTP/1.1\" 304 0 \"-\" \"Debian APT-HTTP/1.3 (0.8.16~exp12ubuntu10.16)\"",
             "217.168.17.5 - - [03/Aug/2015:08:05:25 +0000] \"GET /bigSecret.txt HTTP/1.0\" 200 3301 \"-\" \"-\""
@@ -144,6 +142,7 @@ class LogParserTest : ShouldSpec({
         should("match to the correct NGINX logs") {
             val result = correctLogs.map { it.matches(regex) }
 
+            print(result)
             result shouldNotContain false
         }
 
