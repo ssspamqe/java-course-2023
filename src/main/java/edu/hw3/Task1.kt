@@ -13,19 +13,18 @@ class Task1 {
         }
     }
 
-    fun atbash(s: String): String  =
+    fun atbash(s: String): String =
         buildString {
-            for(i in s)
+            for (i in s)
                 append(
-                    if(i.isLatinLower())
+                    if (i.isLatinLower())
                         lowers[25 - (i.code - lowersStart)]
-                    else if(i.isLatinUpper())
+                    else if (i.isLatinUpper())
                         uppers[25 - (i.code - uppersStart)]
                     else
                         i
                 )
         }
-
 
 
     //because 'ф'.isLetter() == true

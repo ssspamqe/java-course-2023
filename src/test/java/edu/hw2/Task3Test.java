@@ -3,7 +3,6 @@ package edu.hw2;
 import edu.hw2.Task3.DefaultConnectionManager;
 import edu.hw2.Task3.FaultyConnection;
 import edu.hw2.Task3.FaultyConnectionManager;
-import edu.hw2.Task3.PopularCommandExecutor;
 import edu.hw2.Task3.interfaces.Connection;
 import edu.hw2.Task3.interfaces.ConnectionManager;
 import org.junit.jupiter.api.DisplayName;
@@ -17,9 +16,7 @@ public class Task3Test {
     void check_DefaultConnectionManager_getConnection() {
         ConnectionManager connectionManager = new DefaultConnectionManager();
 
-
         Connection connection = connectionManager.getConnection();
-
 
         assertThat(connection).isInstanceOf(Connection.class);
     }
@@ -29,9 +26,7 @@ public class Task3Test {
     void check_FaultyConnectionManager_getConnection() {
         ConnectionManager connectionManager = new FaultyConnectionManager();
 
-
         Connection connection = connectionManager.getConnection();
-
 
         assertThat(connection).isInstanceOf(FaultyConnection.class);
     }

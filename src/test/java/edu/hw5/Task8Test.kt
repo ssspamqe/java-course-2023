@@ -3,12 +3,12 @@ package edu.hw5
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.shouldBe
 
-class Task8Test: ShouldSpec({
+class Task8Test : ShouldSpec({
 
     val task = Task8()
 
-    context("Check0"){
-        should("return true if string have odd length"){
+    context("Check0") {
+        should("return true if string have odd length") {
             val string = "011"
 
             val result = task.check0(string)
@@ -16,7 +16,7 @@ class Task8Test: ShouldSpec({
             result shouldBe true
         }
 
-        should("return false if string have even length"){
+        should("return false if string have even length") {
             val string = "0111"
 
             val result = task.check0(string)
@@ -25,8 +25,8 @@ class Task8Test: ShouldSpec({
         }
     }
 
-    context("check1"){
-        should("return true if string starts with 0 and have odd length"){
+    context("check1") {
+        should("return true if string starts with 0 and have odd length") {
             val string = "011"
 
             val result = task.check1(string)
@@ -34,7 +34,7 @@ class Task8Test: ShouldSpec({
             result shouldBe true
         }
 
-        should("return true if string starts with 1 and have even length"){
+        should("return true if string starts with 1 and have even length") {
             val string = "1101"
 
             val result = task.check1(string)
@@ -42,7 +42,7 @@ class Task8Test: ShouldSpec({
             result shouldBe true
         }
 
-        should("return false if string starts with 0 and have even length"){
+        should("return false if string starts with 0 and have even length") {
             val string = "0000"
 
             val result = task.check1(string)
@@ -50,7 +50,7 @@ class Task8Test: ShouldSpec({
             result shouldBe false
         }
 
-        should("return false if string starts with 1 and have odd length"){
+        should("return false if string starts with 1 and have odd length") {
             val string = "100"
 
             val result = task.check1(string)

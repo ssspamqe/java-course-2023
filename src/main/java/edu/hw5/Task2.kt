@@ -6,14 +6,14 @@ import java.time.temporal.TemporalAdjusters
 
 class Task2 {
 
-    public fun getAllFriday13th(year:Int) : List<LocalDate>{
-        var date:LocalDate? = LocalDate.of(year,1,1);
+    public fun getAllFriday13th(year: Int): List<LocalDate> {
+        var date: LocalDate? = LocalDate.of(year, 1, 1);
 
         val fridays = mutableListOf<LocalDate>()
 
-        while(date!=null){
+        while (date != null) {
             date = getNextFriday13th(date)
-            if(date != null)
+            if (date != null)
                 fridays.add(date)
         }
 
@@ -21,14 +21,14 @@ class Task2 {
 
     }
 
-    private fun getNextFriday13th(date:LocalDate?): LocalDate? {
+    private fun getNextFriday13th(date: LocalDate?): LocalDate? {
 
         var currentDate = date
 
-        while(currentDate!!.year==date!!.year){
+        while (currentDate!!.year == date!!.year) {
             currentDate = currentDate.with(TemporalAdjusters.firstDayOfNextMonth()).plusDays(12)
 
-            if(currentDate.dayOfWeek == DayOfWeek.FRIDAY)
+            if (currentDate.dayOfWeek == DayOfWeek.FRIDAY)
                 return currentDate
         }
         return null

@@ -64,7 +64,7 @@ class IdealMazeGenerator : MazeGenerator {
 
                 trace.add(nextCell)
 
-                changeTransitionCellTypeToPassage(currentCell,getCellShift(currentCell, nextCell))
+                changeTransitionCellTypeToPassage(currentCell, getCellShift(currentCell, nextCell))
 
                 currentCell = nextCell
             } else
@@ -72,7 +72,7 @@ class IdealMazeGenerator : MazeGenerator {
         }
     }
 
-    private fun changeTransitionCellTypeToPassage(currentCell:Cell, shift: Shift){
+    private fun changeTransitionCellTypeToPassage(currentCell: Cell, shift: Shift) {
         when (shift) {
             Shift.UP ->
                 maze.setCellType(Cell(currentCell.row - 1, currentCell.column), CellType.PASSAGE)

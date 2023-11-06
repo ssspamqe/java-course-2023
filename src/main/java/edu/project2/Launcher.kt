@@ -24,8 +24,8 @@ class Launcher {
 
 
     private var generator: MazeGenerator = IdealMazeGenerator()
-    private var maze: Maze = Maze(0,0)
-    private var solvedMaze: Maze = Maze(0,0)
+    private var maze: Maze = Maze(0, 0)
+    private var solvedMaze: Maze = Maze(0, 0)
     private var solver: MazeSolver = BFSSolver()
 
 
@@ -156,8 +156,9 @@ class Launcher {
         end = Cell(row, column)
     }
 
-    private fun chooseMazeGenerator(){
-        LOGGER.info("""
+    private fun chooseMazeGenerator() {
+        LOGGER.info(
+            """
         Select maze generating algorithm:
             1 for chaotic maze
             2 for ideal maze
@@ -181,7 +182,7 @@ class Launcher {
 
     }
 
-    private fun chooseSolvingAlgo(){
+    private fun chooseSolvingAlgo() {
         LOGGER.info(
             """
         Select maze solving algorithm:

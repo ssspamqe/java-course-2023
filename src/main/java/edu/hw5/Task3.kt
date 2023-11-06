@@ -25,7 +25,7 @@ class Task3 {
             val pattern = DateTimeFormatter
                 .ofPattern("y".repeat(lengths[0]) + "-" + "M".repeat(lengths[1]) + "-" + "d".repeat(lengths[2]))
 
-            Optional.of(LocalDate.parse(line,pattern))
+            Optional.of(LocalDate.parse(line, pattern))
         } catch (ex: Exception) {
             parseSlashDate(line)
         }
@@ -46,7 +46,7 @@ class Task3 {
             val pattern = DateTimeFormatter
                 .ofPattern("d".repeat(lengths[0]) + "/" + "M".repeat(lengths[1]) + "/" + "y".repeat(lengths[2]))
 
-            Optional.of(LocalDate.parse(line,pattern))
+            Optional.of(LocalDate.parse(line, pattern))
         } catch (ex: Exception) {
             parseOneWordDate(line)
         }
