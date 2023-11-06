@@ -1,12 +1,10 @@
 package edu.project1;
 
-import org.junit.jupiter.api.BeforeAll;
+import java.util.HashSet;
+import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.platform.commons.util.StringUtils;
-import java.util.HashSet;
-import java.util.Set;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class SessionTest {

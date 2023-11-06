@@ -5,7 +5,7 @@ import org.apache.logging.log4j.LogManager
 data class Maze(
     val height: Int,
     val width: Int
-) :Cloneable {
+) : Cloneable {
 
     private val LOGGER = LogManager.getLogger()
 
