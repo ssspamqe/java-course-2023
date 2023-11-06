@@ -5,6 +5,19 @@ import java.util.*
 
 class LogParser {
 
+    val columnNames = listOf(
+        "remote_addr",
+        "remote_user",
+        "time_local",
+        "request_type",
+        "request",
+        "protocol",
+        "status",
+        "body_bytes_sent",
+        "http_referer",
+        "http_user_agent"
+    )
+
     fun parseAllLogs(logs: List<String>): Table =
         Table(logs
             .map { parseLog(it) }
@@ -21,19 +34,6 @@ class LogParser {
         val capturedGroups = regex.findAll(log).toList()[0].groupValues
 
         val parsedLog = mutableMapOf<String, String>()
-
-        val columnNames = listOf(
-            "remote_addr",
-            "remote_user",
-            "time_local",
-            "request_type",
-            "request",
-            "protocol",
-            "status",
-            "body_bytes_sent",
-            "http_referer",
-            "http_user_agent"
-        )
 
         for (i in 1 until capturedGroups.size)
             parsedLog[columnNames[i - 1]] = capturedGroups[i]
