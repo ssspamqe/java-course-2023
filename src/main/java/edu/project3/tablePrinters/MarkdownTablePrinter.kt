@@ -51,7 +51,7 @@ class MarkdownTablePrinter : TablePrinter() {
             LOGGER.info(buildString {
                 append("|")
                 columns.forEach { column ->
-                    if(table.getCell(line,column) == null)
+                    if (table.getCell(line, column) == null)
                         append("null".center(columnLengths[column]!!) + "|")
                     else
                         append(table.getCell(line, column)!!.center(columnLengths[column]!!) + "|")

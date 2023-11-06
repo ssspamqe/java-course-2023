@@ -39,7 +39,7 @@ data class Table(
         if (column !in columns)
             throw IllegalArgumentException("No such column")
         return max(rows.maxOf {
-            if(it[column] == null)
+            if (it[column] == null)
                 4
             else
                 it[column]!!.length

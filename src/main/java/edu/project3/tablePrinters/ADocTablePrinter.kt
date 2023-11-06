@@ -42,10 +42,10 @@ class ADocTablePrinter : TablePrinter() {
         for (line in 0 until min(amount, table.getSize())) {
             LOGGER.info(buildString {
                 columns.forEach { column ->
-                    if(table.getCell(line,column) == null)
+                    if (table.getCell(line, column) == null)
                         append("|" + "null".center(columnLengths[column]!!))
                     else
-                        append("|" + table.getCell(line,column)!!.center(columnLengths[column]!!))
+                        append("|" + table.getCell(line, column)!!.center(columnLengths[column]!!))
                 }
             })
         }

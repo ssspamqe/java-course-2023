@@ -36,7 +36,7 @@ class LogParser {
         )
 
         for (i in 1 until capturedGroups.size)
-            parsedLog[columnNames[i-1]] = capturedGroups[i]
+            parsedLog[columnNames[i - 1]] = capturedGroups[i]
 
         return Optional.of(parsedLog)
     }
