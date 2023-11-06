@@ -7,7 +7,15 @@ data class Table(
     @NotEmpty
     private var rows: List<Map<String, String?>>
 ) {
-    val columns: List<String>
+
+    public val tableRows
+        get() = rows
+
+
+    public val columns: List<String>
+
+    val size: Int
+        get() = rows.size
 
     init {
         val keys = rows[0].keys.toMutableSet()
@@ -46,12 +54,6 @@ data class Table(
         }, column.length)
     }
 
-    fun getRow(line: Int) = rows[line]
-
     fun getCell(line: Int, column: String) = rows[line][column]
-
-    fun getSize() = rows.size
-
-    fun getRows() = rows
 }
 

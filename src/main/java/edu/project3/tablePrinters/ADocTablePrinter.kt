@@ -37,7 +37,7 @@ class ADocTablePrinter : TablePrinter() {
         val columns = table.columns
         val columnLengths = table.getAllColumnLengths()
 
-        for (line in 0 until min(amount, table.getSize())) {
+        for (line in 0 until min(amount, table.size)) {
             LOGGER.info(buildString {
                 columns.forEach { column ->
                     if (table.getCell(line, column) == null)

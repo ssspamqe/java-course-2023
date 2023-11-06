@@ -45,7 +45,7 @@ class MarkdownTablePrinter : TablePrinter() {
         val columnLengths = table.getAllColumnLengths()
         val columns = table.columns
 
-        for (line in 0 until min(amount, table.getSize())) {
+        for (line in 0 until min(amount, table.size)) {
             LOGGER.info(buildString {
                 append("|")
                 columns.forEach { column ->

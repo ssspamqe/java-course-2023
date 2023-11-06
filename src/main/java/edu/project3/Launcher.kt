@@ -52,7 +52,7 @@ private fun parseParams(params: Array<String>) {
     while (i != params.size) {
         when (params[i]) {
             "--sources" -> {
-                while (i+1 != params.size && params[i+1] !in listOf("--from", "--format","--format","--lines")) {
+                while (i + 1 != params.size && params[i + 1] !in listOf("--from", "--format", "--format", "--lines")) {
                     i++
                     (sources as MutableList<String>).add(params[i])
                 }

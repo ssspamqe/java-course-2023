@@ -10,7 +10,7 @@ import kotlin.math.min
 class LogAnalyser {
 
     fun getRequestsAmount(@NotNull logs: Table): Int =
-        logs.getSize()
+        logs.size
 
 
     fun getTheMostPopularResources(
@@ -18,7 +18,7 @@ class LogAnalyser {
         amount: Int = Int.MAX_VALUE,
         request: String = "GET"
     ): Table {
-        val sortedLogs = logs.getRows()
+        val sortedLogs = logs.tableRows
             .filter { it["request_type"] != null }
             .filter { it["request_type"] == request }
             .map { it["request"] }
@@ -37,7 +37,7 @@ class LogAnalyser {
         logs: Table,
         amount: Int = Int.MAX_VALUE,
     ): Table {
-        val sortedLogs = logs.getRows()
+        val sortedLogs = logs.tableRows
             .filter { it["status"] != null }
             .map { it["status"] }
             .groupingBy { it }
@@ -52,7 +52,7 @@ class LogAnalyser {
     }
 
     fun getAverageResponseSize(logs: Table): Double =
-        logs.getRows()
+        logs.tableRows
             .filter { it["body_bytes_sent"] != null }
             .map { it["body_bytes_sent"]!!.toDouble() }
             .average()
@@ -61,7 +61,7 @@ class LogAnalyser {
         logs: Table,
         amount: Int = Int.MAX_VALUE
     ): Table {
-        val sortedLogs = logs.getRows()
+        val sortedLogs = logs.tableRows
             .filter { it["time_local"] != null }
             .map {
                 LocalDateTime.parse(
@@ -86,7 +86,7 @@ class LogAnalyser {
         logs: Table,
         amount: Int = Int.MAX_VALUE
     ): Table {
-        val sortedLogs = logs.getRows()
+        val sortedLogs = logs.tableRows
             .filter { it["remote_addr"] != null }
             .map { it["remote_addr"] }
             .map {
@@ -125,7 +125,7 @@ class LogAnalyser {
         from: LocalDate
     ): Table =
         Table(
-            logs.getRows()
+            logs.tableRows
                 .filter { it["time_local"] != null }
                 .filter {
                     LocalDateTime.parse(
@@ -141,7 +141,7 @@ class LogAnalyser {
         to: LocalDate
     ): Table =
         Table(
-            logs.getRows()
+            logs.tableRows
                 .filter { it["time_local"] != null }
                 .filter {
                     LocalDateTime.parse(
