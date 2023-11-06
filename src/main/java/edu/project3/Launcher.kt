@@ -27,7 +27,12 @@ var maxLinesInTable = 5
 fun main(params: Array<String>) {
     parseParams(params)
 
-    var logs = logParser.parseAllLogs(getNonParsedSources())
+    val nonParsedLogs = getNonParsedLogs()
+    if (nonParsedLogs.isEmpty()) {
+        LOGGER.info("No logs passed to program")
+        return
+    }
+    var logs = logParser.parseAllLogs(nonParsedLogs)
     logs = logAnalyser.getDateConstrainedLogs(logs, from, to)
 
     printOverallInfo(logs)
@@ -48,9 +53,9 @@ private fun parseParams(params: Array<String>) {
     while (i != params.size) {
 
         when (params[i]) {
-            "--path" -> {
+            "--sources" -> {
                 i++
-                while (i != params.size && params[i] !in listOf("--from", "--format")) {
+                while (i != params.size && params[i] !in listOf("--from", "--format","--format","--lines")) {
                     (sources as MutableList<String>).add(params[i])
                     i++;
                 }
@@ -84,7 +89,7 @@ private fun parseParams(params: Array<String>) {
     sources = sources.toList()
 }
 
-private fun getNonParsedSources(): List<String> {
+private fun getNonParsedLogs(): List<String> {
     val nonParsedSources = mutableListOf<String>()
 
     sources.forEach { src ->
