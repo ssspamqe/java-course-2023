@@ -29,7 +29,12 @@ class LogAnalyser {
 
         return Table(sortedLogs
             .subList(0, min(sortedLogs.size, amount))
-            .map { mapOf("resource" to it.first!!, "value" to it.second.toString()) })
+            .map {
+                mapOf(
+                    "resource" to it.first!!,
+                    "value" to it.second.toString()
+                )
+            })
     }
 
 
@@ -47,8 +52,12 @@ class LogAnalyser {
 
         return Table(sortedLogs
             .subList(0, min(sortedLogs.size, amount))
-            .map { mapOf("status" to it.first!!, "responses" to it.second.toString()) }
-            .toList())
+            .map {
+                mapOf(
+                    "status" to it.first!!,
+                    "responses" to it.second.toString()
+                )
+            })
     }
 
     fun getAverageResponseSize(logs: Table): Double =
@@ -78,7 +87,12 @@ class LogAnalyser {
 
         return Table(sortedLogs
             .subList(0, min(sortedLogs.size, amount))
-            .map { mapOf("day" to it.first!!.toString(), "requests" to it.second.toString()) }
+            .map {
+                mapOf(
+                    "day" to it.first!!.toString(),
+                    "requests" to it.second.toString()
+                )
+            }
             .toList())
     }
 
@@ -101,7 +115,12 @@ class LogAnalyser {
 
         return Table(sortedLogs
             .subList(0, min(sortedLogs.size, amount))
-            .map { mapOf("user_ip" to it.first, "requests" to it.second.toString()) }
+            .map {
+                mapOf(
+                    "user_ip" to it.first,
+                    "requests" to it.second.toString()
+                )
+            }
             .toList())
     }
 

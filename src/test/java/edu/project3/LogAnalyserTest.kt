@@ -14,16 +14,31 @@ class LogAnalyserTest : ShouldSpec({
 
             val logs = Table(
                 listOf(
-                    mapOf("request_type" to "GET", "request" to "file1"),
-                    mapOf("request_type" to "GET", "request" to "file2"),
-                    mapOf("request_type" to "GET", "request" to "file1")
+                    mapOf(
+                        "request_type" to "GET",
+                        "request" to "file1"
+                    ),
+                    mapOf(
+                        "request_type" to "GET",
+                        "request" to "file2"
+                    ),
+                    mapOf(
+                        "request_type" to "GET",
+                        "request" to "file1"
+                    )
                 )
             )
 
             val sortedResources = Table(
                 listOf(
-                    mapOf("resource" to "file1", "value" to "2"),
-                    mapOf("resource" to "file2", "value" to "1")
+                    mapOf(
+                        "resource" to "file1",
+                        "value" to "2"
+                    ),
+                    mapOf(
+                        "resource" to "file2",
+                        "value" to "1"
+                    )
                 )
             )
 
@@ -47,8 +62,14 @@ class LogAnalyserTest : ShouldSpec({
 
             val sortedStatuses = Table(
                 listOf(
-                    mapOf("status" to "200", "responses" to "2"),
-                    mapOf("status" to "504", "responses" to "1")
+                    mapOf(
+                        "status" to "200",
+                        "responses" to "2"
+                    ),
+                    mapOf(
+                        "status" to "504",
+                        "responses" to "1"
+                    )
                 )
             )
 
@@ -92,9 +113,18 @@ class LogAnalyserTest : ShouldSpec({
 
             val sortedDays = Table(
                 listOf(
-                    mapOf("day" to "2015-05-17", "requests" to "2"),
-                    mapOf("day" to "2015-05-18", "requests" to "1"),
-                    mapOf("day" to "2015-05-19", "requests" to "1")
+                    mapOf(
+                        "day" to "2015-05-17",
+                        "requests" to "2"
+                    ),
+                    mapOf(
+                        "day" to "2015-05-18",
+                        "requests" to "1"
+                    ),
+                    mapOf(
+                        "day" to "2015-05-19",
+                        "requests" to "1"
+                    )
                 )
             )
 
@@ -118,8 +148,14 @@ class LogAnalyserTest : ShouldSpec({
 
             val sortedUsers = Table(
                 listOf(
-                    mapOf("user_ip" to "127.0.0.1", "requests" to "2"),
-                    mapOf("user_ip" to "8.8.8.8", "requests" to "1")
+                    mapOf(
+                        "user_ip" to "127.0.0.1",
+                        "requests" to "2"
+                    ),
+                    mapOf(
+                        "user_ip" to "8.8.8.8",
+                        "requests" to "1"
+                    )
                 )
             )
 

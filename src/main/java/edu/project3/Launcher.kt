@@ -102,11 +102,26 @@ private fun printOverallInfo(logs: Table) {
 
     val table = Table(
         listOf(
-            mapOf("metrics" to "Files", "value" to sources.toString()),
-            mapOf("metrics" to "Start date", "value" to from.toString()),
-            mapOf("metrics" to "End date", "value" to to.toString()),
-            mapOf("metrics" to "Requests", "value" to logAnalyser.getRequestsAmount(logs).toString()),
-            mapOf("metrics" to "Average response size", "value" to logAnalyser.getAverageResponseSize(logs).toString())
+            mapOf(
+                "metrics" to "Files",
+                "value" to sources.toString()
+            ),
+            mapOf(
+                "metrics" to "Start date",
+                "value" to from.toString()
+            ),
+            mapOf(
+                "metrics" to "End date",
+                "value" to to.toString()
+            ),
+            mapOf(
+                "metrics" to "Requests",
+                "value" to logAnalyser.getRequestsAmount(logs).toString()
+            ),
+            mapOf(
+                "metrics" to "Average response size",
+                "value" to logAnalyser.getAverageResponseSize(logs).toString()
+            )
         )
     )
 
