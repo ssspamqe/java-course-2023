@@ -2,7 +2,6 @@ package edu.project3.logWorkers
 
 import edu.project3.Table
 import jakarta.validation.constraints.NotNull
-import java.net.InetAddress
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -93,7 +92,11 @@ class LogAnalyser {
 
         val sortedLogs = logs.getRows()
             .filter { it["remote_addr"] != null }
-            .map { InetAddress.getByName(it["remote_addr"]) }
+            .map { it["remote_addr"] }
+            .map {
+                if (it == "localhost") "127.0.0.1"
+                else it
+            }
             .groupingBy { it }
             .eachCount()
             .toList()
@@ -102,7 +105,7 @@ class LogAnalyser {
 
         return Table(sortedLogs
             .subList(0, min(sortedLogs.size, amount))
-            .map { mapOf("user_ip" to it.first.toString(), "requests" to it.second.toString()) }
+            .map { mapOf("user_ip" to it.first, "requests" to it.second.toString()) }
             .toList())
     }
 
@@ -147,12 +150,12 @@ class LogAnalyser {
             logs.getRows()
                 .filter { it["time_local"] != null }
                 .filter {
-                LocalDateTime.parse(
-                    it["time_local"],
-                    DateTimeFormatter.ofPattern("dd/MMM/yyyy:HH:mm:ss Z")
-                )
-                    .toLocalDate() <= to
-            }
+                    LocalDateTime.parse(
+                        it["time_local"],
+                        DateTimeFormatter.ofPattern("dd/MMM/yyyy:HH:mm:ss Z")
+                    )
+                        .toLocalDate() <= to
+                }
         )
 
 
