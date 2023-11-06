@@ -25,16 +25,13 @@ class LogParser {
             .toRegex()
 
     fun parseAllLogs(logs: List<String>): Table =
-        Table(logs
-            .map { parseLog(it) }
-            .filter { it.isPresent }
-            .map { it.get() })
+        Table(logs.mapNotNull { parseLog(it) })
 
 
-    fun parseLog(log: String): Optional<Map<String, String>> {
+    fun parseLog(log: String): Map<String, String?>? {
 
         if (!log.matches(logRegex))
-            return Optional.empty()
+            return null
 
         val capturedGroups = logRegex.findAll(log).toList()[0].groupValues
 
@@ -43,7 +40,7 @@ class LogParser {
         for (i in 1 until capturedGroups.size)
             parsedLog[columnNames[i - 1]] = capturedGroups[i]
 
-        return Optional.of(parsedLog)
+        return parsedLog
     }
 
 

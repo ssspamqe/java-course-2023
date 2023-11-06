@@ -128,7 +128,7 @@ class LogParserTest : ShouldSpec({
             "80.91.33.133 - - [21/May/2015:08:05:55 +0000] \"GET /downloads/product_1 HTTP/1.1\" 404 513 \"-\" \"Debian APT-HTTP/1.3 (0.8.16~exp12ubuntu10.16)\"",
             "173.203.139.108 - - [17/May/2015:08:05:53 +0000] \"GET /downloads/product_1 HTTP/1.1\" 304 100 \"-\" \"Debian APT-HTTP/1.3 (0.9.7.9)\"",
             "127.0.0.1 - - [23/May/2015:08:05:32 +0001] \"GET /downloads/product_2 HTTP/1.1\" 304 102 \"-\" \"Debian APT-HTTP/1.3 (1.0.1ubuntu2)\"",
-            "46.4.83.163 - - [17/May/2015:08:05:52 +0000] \"POST /rootFile HTTP/1.1\" 304 0 \"-\" \"Debian APT-HTTP/1.3 (0.9.7.9)\"",
+            "46.4ee.83.163 - - [17/May/2015:08:05:52 +0000] \"POST /rootFile HTTP/1.1\" 304 0 \"-\" \"Debian APT-HTTP/1.3 (0.9.7.9)\"",
             "91.234.194.89 - - [06/Sep/2018:08:05:18 +0000] \"GET /downloads/product_2 HTTP/1.1\" 304 0 \"-\" \"Debian APT-HTTP/1.3 (0.9.7.9)\"",
             "31.22.86.126 - - [02/May/2015:08:05:24 +0000] \"PUT /downloads/product_1 HTTP/1.1\" 304 0 \"-\" \"Debian APT-HTTP/1.3 (0.8.16~exp12ubuntu10.16)\"",
             "217.168.17.5 - - [03/Aug/2015:08:05:25 +0000] \"GET /bigSecret.txt HTTP/1.0\" 200 3301 \"-\" \"-\""
