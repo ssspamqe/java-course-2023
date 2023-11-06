@@ -1,12 +1,9 @@
 package edu.hw1;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.*;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 public class Task1Test {
 
@@ -21,13 +18,13 @@ public class Task1Test {
     @Test
     @DisplayName("Seconds must be under 60")
     void should_throwException_when_secondsGreaterOrEqualThan60() {
-        assertThatThrownBy(()-> task.minutesToSeconds("00:60")).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> task.minutesToSeconds("00:60")).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     @DisplayName("Minutes must be non negative")
     void should_throwException_when_minutesNegative() {
-        assertThatThrownBy(()-> task.minutesToSeconds("-1:07")).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> task.minutesToSeconds("-1:07")).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
