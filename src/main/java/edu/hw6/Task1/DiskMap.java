@@ -25,7 +25,7 @@ public class DiskMap implements Map<String, String> {
 
     private int size;
 
-    private final String DELIMITER = " ^$^ ";
+    private static final String DELIMITER = " ^$^ ";
 
     public DiskMap(String fileName) throws IOException {
         mapFile = new File(fileName);

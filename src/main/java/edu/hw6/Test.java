@@ -1,12 +1,14 @@
 package edu.hw6;
 
 import edu.hw6.Task4.Task4;
+import edu.hw6.Task5.HackerNews;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 public class Test {
 
-    public static void main(String[] params) throws IOException {
-        var a = new Task4();
-        a.solution("./sampleFiles/file.txt", "my text");
+    public static void main(String[] params) throws IOException, URISyntaxException, InterruptedException {
+        HackerNews hackerNews = new HackerNews();
+        hackerNews.getHackerNewsTopStories();
     }
 }
