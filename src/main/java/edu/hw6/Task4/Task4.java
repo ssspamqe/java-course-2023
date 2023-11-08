@@ -13,17 +13,17 @@ public class Task4 {
 
     public void solution(String fileName, String message) throws IOException {
         try (var outputStream = new FileOutputStream(fileName)) {
-            try (var checkedOutputStream = new CheckedOutputStream(outputStream, new CRC32())) {
-                try (var bufferedOutputStream = new BufferedOutputStream(checkedOutputStream)) {
-                    try (
-                        var outputStreamWriter = new OutputStreamWriter(bufferedOutputStream, StandardCharsets.UTF_8)
-                    ) {
-                        try (var printWriter = new PrintWriter(outputStreamWriter)) {
-                            printWriter.println(message);
-                        }
-                    }
-                }
-            }
+            var checkedOutputStream = new CheckedOutputStream(outputStream, new CRC32());
+            var bufferedOutputStream = new BufferedOutputStream(checkedOutputStream);
+            var outputStreamWriter = new OutputStreamWriter(bufferedOutputStream, StandardCharsets.UTF_8);
+            var printWriter = new PrintWriter(outputStreamWriter);
+
+            printWriter.println(message);
+
+            printWriter.close();
+            outputStreamWriter.close();
+            bufferedOutputStream.close();
+            checkedOutputStream.close();
         }
     }
 

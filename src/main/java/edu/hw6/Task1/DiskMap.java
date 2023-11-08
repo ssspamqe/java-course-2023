@@ -23,6 +23,8 @@ public class DiskMap implements Map<String, String> {
 
     private static final String DELIMITER = " ^$^ ";
 
+    private static final String UNSUCCESSFUL_READING_FILE = "Unsuccessful tryout of reading ";
+
     public DiskMap(String fileName) throws IOException {
         mapFile = new File(fileName);
         mapFile.createNewFile();
@@ -59,7 +61,7 @@ public class DiskMap implements Map<String, String> {
             return false;
 
         } catch (Exception ex) {
-            throw new RuntimeException("Unsuccessful tryout of reading " + mapFile);
+            throw new RuntimeException(UNSUCCESSFUL_READING_FILE + mapFile);
         }
     }
 
@@ -78,7 +80,7 @@ public class DiskMap implements Map<String, String> {
             return null;
 
         } catch (Exception ex) {
-            throw new RuntimeException("Unsuccessful tryout of reading " + mapFile);
+            throw new RuntimeException(UNSUCCESSFUL_READING_FILE + mapFile);
         }
     }
 
@@ -143,7 +145,7 @@ public class DiskMap implements Map<String, String> {
             fileWriter.write("");
             size = 0;
         } catch (IOException e) {
-            throw new RuntimeException("Unsuccessful tryout of reading " + mapFile);
+            throw new RuntimeException(UNSUCCESSFUL_READING_FILE + mapFile);
         }
     }
 
@@ -163,7 +165,7 @@ public class DiskMap implements Map<String, String> {
             return keys;
 
         } catch (Exception ex) {
-            throw new RuntimeException("Unsuccessful tryout of reading " + mapFile);
+            throw new RuntimeException(UNSUCCESSFUL_READING_FILE + mapFile);
         }
     }
 
@@ -181,7 +183,7 @@ public class DiskMap implements Map<String, String> {
             return values;
 
         } catch (Exception ex) {
-            throw new RuntimeException("Unsuccessful tryout of reading " + mapFile);
+            throw new RuntimeException(UNSUCCESSFUL_READING_FILE + mapFile);
         }
     }
 
@@ -199,7 +201,7 @@ public class DiskMap implements Map<String, String> {
             return entries;
 
         } catch (Exception ex) {
-            throw new RuntimeException("Unsuccessful tryout of reading " + mapFile);
+            throw new RuntimeException(UNSUCCESSFUL_READING_FILE + mapFile);
         }
     }
 

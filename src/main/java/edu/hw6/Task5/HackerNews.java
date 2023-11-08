@@ -12,6 +12,9 @@ import java.util.regex.Pattern;
 import static java.net.http.HttpClient.newHttpClient;
 
 public class HackerNews {
+
+    private static final int MAX_TIMEOUT = 5;
+
     public long[] getHackerNewsTopStories() {
 
         HttpResponse<String> response;
@@ -20,7 +23,7 @@ public class HackerNews {
             var request = HttpRequest.newBuilder()
                 .uri(new URI("https://hacker-news.firebaseio.com/v0/topstories.json"))
                 .GET()
-                .timeout(Duration.of(5, ChronoUnit.SECONDS))
+                .timeout(Duration.of(MAX_TIMEOUT, ChronoUnit.SECONDS))
                 .build();
 
             response = newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
@@ -46,7 +49,7 @@ public class HackerNews {
             var request = HttpRequest.newBuilder()
                 .uri(new URI("https://hacker-news.firebaseio.com/v0/item/" + id + ".json"))
                 .GET()
-                .timeout(Duration.of(5, ChronoUnit.SECONDS))
+                .timeout(Duration.of(MAX_TIMEOUT, ChronoUnit.SECONDS))
                 .build();
 
             responseBody = newHttpClient().send(request, HttpResponse.BodyHandlers.ofString()).body();

@@ -6,27 +6,34 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class Task6Driver {
-
-    private static final PortScanner portScanner = new PortScanner();
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public static void main(String[] args) {
+    private static final String TABLE_FORMAT = "%16s%16s%16s";
 
-        var occupiedPorts = portScanner.getOccupiedPorts();
-        printPorts(occupiedPorts);
+    private static final String PROTOCOL_STRING = "protocol";
+    private static final String PORT_STRING = "port";
+    private static final String SERVICE_STRING = "service";
 
+    private Task6Driver() {
     }
 
-    private static void printPorts(List<Map<String, String>> ports) {
-        LOGGER.info(String.format("%16s%16s%16s", "protocol", "port", "service"));
+    public static void printPorts(List<Map<String, String>> ports) {
+        LOGGER.info(
+            String.format(
+                TABLE_FORMAT,
+                PROTOCOL_STRING,
+                PORT_STRING,
+                SERVICE_STRING
+            )
+        );
 
         ports.forEach(portInfo ->
             LOGGER.info(
                 String.format(
-                    "%16s%16s%16s",
-                    portInfo.get("protocol"),
-                    portInfo.get("port"),
-                    portInfo.get("service")
+                    TABLE_FORMAT,
+                    portInfo.get(PROTOCOL_STRING),
+                    portInfo.get(PORT_STRING),
+                    portInfo.get(SERVICE_STRING)
                 )
             )
         );

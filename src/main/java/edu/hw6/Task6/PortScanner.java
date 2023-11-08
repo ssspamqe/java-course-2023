@@ -15,6 +15,9 @@ public class PortScanner {
     public static Map<Integer, String> portServices = new HashMap<>();
     private static final String BASE_FILE_PATH = "./src/main/java/edu/hw6/Task6/possiblyOccupiedPorts.txt";
 
+    private static final int MIN_PORT = 0;
+    private static final int MAX_PORT = 49151;
+
     PortScanner() {
         this(List.of(BASE_FILE_PATH));
     }
@@ -56,7 +59,7 @@ public class PortScanner {
 
         List<Map<String, String>> occupiedPorts = new ArrayList<Map<String, String>>();
 
-        for (int port = 0; port <= 49151; port++) {
+        for (int port = MIN_PORT; port <= MAX_PORT; port++) {
             try {
                 var serverSocket = new ServerSocket(port);
                 serverSocket.close();

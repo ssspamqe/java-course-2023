@@ -7,13 +7,16 @@ import java.util.regex.Pattern;
 
 public class Filters {
 
-    public static final DefaultFilter regularFile = Files::isRegularFile;
+    public static final DefaultFilter REGULAR_FILE = Files::isRegularFile;
 
-    public static final DefaultFilter readable = Files::isReadable;
-    public static final DefaultFilter writeable = Files::isWritable;
+    public static final DefaultFilter READABLE = Files::isReadable;
+    public static final DefaultFilter WRITEABLE = Files::isWritable;
 
     public static DefaultFilter largerThan(int min) {
         return path -> Files.size(path) >= min;
+    }
+
+    private Filters() {
     }
 
     public static DefaultFilter magicNumber(char... bytes) {
@@ -34,8 +37,10 @@ public class Filters {
 
     public static DefaultFilter globMatcher(String glob) {
         return (Path path) -> {
-            var neededFileExtension = glob.split("\\.")[1];
-            var realFileExtension = new File(path.toString()).getName().split("\\.")[1];
+            var splitRegex = "\\.";
+
+            var neededFileExtension = glob.split(splitRegex)[1];
+            var realFileExtension = new File(path.toString()).getName().split(splitRegex)[1];
 
             return realFileExtension.equals(neededFileExtension);
         };
