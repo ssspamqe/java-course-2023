@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 import static java.net.http.HttpClient.newHttpClient;
 
 public class HackerNews {
-
     public long[] getHackerNewsTopStories() throws URISyntaxException, IOException, InterruptedException {
         var request = HttpRequest.newBuilder()
             .uri(new URI("https://hacker-news.firebaseio.com/v0/topstories.json"))
