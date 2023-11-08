@@ -10,20 +10,16 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.Set;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class DiskMap implements Map<String, String> {
 
-    private static final Logger LOGGER = LogManager.getLogger();
-
     File mapFile;
 
     BufferedWriter fileWriter;
 
-    private int size;
+    private int size = 0;
 
     private static final String DELIMITER = " ^$^ ";
 
@@ -92,44 +88,16 @@ public class DiskMap implements Map<String, String> {
     @Nullable
     @Override
     public String put(String key, String value) {
-        if (keySet().contains(key)) {
-            throw new IllegalArgumentException("Such key already exists");
-        }
 
+        var oldValue = get(key);
         try {
+            remove(key);
             fileWriter.append(key).append(DELIMITER).append(value).append("\n");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        return value;
-    }
-
-    @Override
-    public String remove(Object key) {
-        if (keySet().contains((String) key)) {
-            throw new IllegalArgumentException("Such key already exists");
-        }
-
-        var entries = entrySet();
-        try {
-            fileWriter.write("");
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
-
-        String oldValue = "";
-        for (var entry : entries) {
-            if (!entry.getKey().equals(key)) {
-                try {
-                    fileWriter.append(entry.getKey()).append(DELIMITER).append(entry.getValue()).append("\n");
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex);
-                }
-            } else {
-                oldValue = entry.getValue();
-            }
-        }
+        if(oldValue == null)
+            size++;
         return oldValue;
     }
 
@@ -150,6 +118,28 @@ public class DiskMap implements Map<String, String> {
             }
         });
     }
+
+    @Override
+    public String remove(Object key) {
+        var oldValue = get(key);
+
+        try {
+            fileWriter.write("");
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(oldValue!=null) {
+            size--;
+            var entries = entrySet();
+            entries.remove(new Entry((String) key, oldValue));
+            updateFile(entries);
+        }
+
+        return oldValue;
+    }
+
+
 
     @Override
     public void clear() {
@@ -199,10 +189,9 @@ public class DiskMap implements Map<String, String> {
         }
     }
 
-    @NotNull
     @Override
-    public Set<Map.Entry<String, String>> entrySet() {
-        Set<Map.Entry<String, String>> entries = new HashSet<>();
+    public @NotNull Set<Map.Entry<String, String>> entrySet() {
+        Set<Map.Entry<String,String>> entries = new HashSet<>();
 
         try (Scanner scanner = new Scanner(mapFile)) {
 
@@ -220,21 +209,16 @@ public class DiskMap implements Map<String, String> {
 
     @Override
     public boolean remove(Object key, Object value) {
-        if (get(key) == null) {
-            return false;
+        if (get(key).equals(value)) {
+            remove(key);
+            return true;
         }
-
-        remove(key);
-
-        return true;
+        return false;
     }
 
     @Nullable
     @Override
     public String replace(String key, String value) {
-        if (!keySet().contains(key)) {
-            return null;
-        }
         var oldValue = get(key);
 
         remove(key);
@@ -253,7 +237,7 @@ public class DiskMap implements Map<String, String> {
         return new Entry(data[0], data[1]);
     }
 
-    private void updateFile(Set<Entry> entries) {
+    private void updateFile(Set<Map.Entry<String,String>> entries) {
         try {
             fileWriter.write("");
 
@@ -263,16 +247,16 @@ public class DiskMap implements Map<String, String> {
 
         entries.forEach(entry -> {
             try {
-                fileWriter.append(entry.key).append(DELIMITER).append(entry.value).append("\n");
+                fileWriter.append(entry.getKey()).append(DELIMITER).append(entry.getValue()).append("\n");
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
         });
     }
 
-    private final class Entry implements Map.Entry<String, String> {
+    private static final class Entry implements Map.Entry<String, String> {
 
-        private String key;
+        private final String key;
         private String value;
 
         Entry(String key, String value) {
