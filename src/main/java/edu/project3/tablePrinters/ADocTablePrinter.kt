@@ -26,7 +26,8 @@ class ADocTablePrinter : TablePrinter() {
 
         LOGGER.info(buildString {
             columns.forEach {
-                append("|" + it.center(columnLengths[it]!!))
+                val columnLen = columnLengths[it]!!
+                append("|${it.center(columnLen)}")
             }
         })
 
@@ -40,10 +41,12 @@ class ADocTablePrinter : TablePrinter() {
         for (line in 0 until min(amount, table.size)) {
             LOGGER.info(buildString {
                 columns.forEach { column ->
+                    val columnLen = columnLengths[column]!!
+
                     if (table.getCell(line, column) == null)
-                        append("|" + "null".center(columnLengths[column]!!))
+                        append("|${"null".center(columnLen)}")
                     else
-                        append("|" + table.getCell(line, column)!!.center(columnLengths[column]!!))
+                        append("|${table.getCell(line, column)!!.center(columnLen)}")
                 }
             })
         }

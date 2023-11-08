@@ -25,7 +25,8 @@ class MarkdownTablePrinter : TablePrinter() {
             append("|")
 
             columns.forEach { column ->
-                append(column.center(columnLengths[column]!!) + "|")
+                val columnLen = columnLengths[column]!!
+                append(column.center(columnLen) + "|")
             }
         })
     }
@@ -36,7 +37,7 @@ class MarkdownTablePrinter : TablePrinter() {
         LOGGER.info(buildString {
             append("|")
             columnLengths.forEach {
-                append(":" + "-".repeat(it.value - 2) + ":" + "|")
+                append(":${"-".repeat(it.value - 2)}:|")
             }
         })
     }
@@ -49,10 +50,11 @@ class MarkdownTablePrinter : TablePrinter() {
             LOGGER.info(buildString {
                 append("|")
                 columns.forEach { column ->
+                    val columnLen = columnLengths[column]!!
                     if (table.getCell(line, column) == null)
-                        append("null".center(columnLengths[column]!!) + "|")
+                        append("${"null".center(columnLen)}|")
                     else
-                        append(table.getCell(line, column)!!.center(columnLengths[column]!!) + "|")
+                        append("${table.getCell(line, column)!!.center(columnLen)}|")
                 }
             })
         }
