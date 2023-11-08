@@ -21,9 +21,9 @@ public class Task2 {
             newPath = Paths.get(path.toString(), String.format("%s - copy (%d).%s", fileName, id, fileExtension));
         }
 
-        try{
-            Files.copy(path,newPath);
-        } catch (Exception ex){
+        try {
+            Files.copy(path, newPath);
+        } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
 

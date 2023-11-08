@@ -1,15 +1,19 @@
 package edu.hw6.Task1;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Scanner;
+import java.util.Set;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class DiskMap implements Map<String, String> {
 
@@ -115,15 +119,16 @@ public class DiskMap implements Map<String, String> {
         }
 
         String oldValue = "";
-        for(var entry:entries){
+        for (var entry : entries) {
             if (!entry.getKey().equals(key)) {
                 try {
                     fileWriter.append(entry.getKey()).append(DELIMITER).append(entry.getValue()).append("\n");
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }
-            } else
+            } else {
                 oldValue = entry.getValue();
+            }
         }
         return oldValue;
     }
@@ -234,9 +239,9 @@ public class DiskMap implements Map<String, String> {
 
         remove(key);
 
-        try{
+        try {
             fileWriter.append(key).append(DELIMITER).append(value).append("\n");
-        } catch (Exception ex){
+        } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
 
