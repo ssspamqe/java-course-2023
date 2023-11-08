@@ -1,6 +1,5 @@
 package edu.hw6;
 
-import edu.hw6.Task4.Task4;
 import edu.hw6.Task5.HackerNews;
 import java.io.IOException;
 import java.net.URISyntaxException;

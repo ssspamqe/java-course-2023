@@ -1,10 +1,13 @@
 package edu.hw6.Task6;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.ServerSocket;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class PortScanner {
@@ -36,18 +39,20 @@ public class PortScanner {
             while (occupiedPortsFile.hasNext()) {
                 var line = occupiedPortsFile.nextLine();
                 var matcher = linePattern.matcher(line);
+
                 if (!matcher.matches()) {
                     continue;
                 }
 
                 portServices.put(Integer.parseInt(matcher.group(1)), matcher.group(2));
             }
-        } catch (Exception ex){
+
+        } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
     }
 
-    public List<Map<String, String>> getOccupiedPorts(){
+    public List<Map<String, String>> getOccupiedPorts() {
 
         List<Map<String, String>> occupiedPorts = new ArrayList<Map<String, String>>();
 
@@ -58,6 +63,7 @@ public class PortScanner {
 
             } catch (Exception ex) {
                 occupiedPorts.add(getPortInfo(port, "TCP"));
+
             }
 
             try {
@@ -66,6 +72,7 @@ public class PortScanner {
 
             } catch (Exception ex) {
                 occupiedPorts.add(getPortInfo(port, "UDP"));
+
             }
         }
 

@@ -7,18 +7,18 @@ import java.nio.file.Paths;
 public class Task2 {
 
     public void cloneFile(Path path) {
-        var parent = path.getParent();
+        var directory = path.getParent();
         var file = path.getFileName();
 
         var fileData = file.toString().split("\\.");
         var fileName = fileData[0];
         var fileExtension = fileData[1];
 
-        var newPath = Paths.get(parent.toString(), fileName + " - copy." + fileExtension);
+        var newPath = Paths.get(directory.toString(), fileName + " - copy." + fileExtension);
         int id = 1;
-        while (Files.notExists(newPath)) {
-            id++;
+        while (Files.exists(newPath)) {
             newPath = Paths.get(path.toString(), String.format("%s - copy (%d).%s", fileName, id, fileExtension));
+            id++;
         }
 
         try {

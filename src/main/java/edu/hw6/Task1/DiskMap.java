@@ -25,10 +25,7 @@ public class DiskMap implements Map<String, String> {
 
     public DiskMap(String fileName) throws IOException {
         mapFile = new File(fileName);
-        if (!mapFile.createNewFile()) {
-            throw new IOException("Such file already exists");
-        }
-
+        mapFile.createNewFile();
         fileWriter = new BufferedWriter(new FileWriter(mapFile));
     }
 
@@ -96,8 +93,9 @@ public class DiskMap implements Map<String, String> {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        if(oldValue == null)
+        if (oldValue == null) {
             size++;
+        }
         return oldValue;
     }
 
@@ -129,7 +127,7 @@ public class DiskMap implements Map<String, String> {
             throw new RuntimeException(ex);
         }
 
-        if(oldValue!=null) {
+        if (oldValue != null) {
             size--;
             var entries = entrySet();
             entries.remove(new Entry((String) key, oldValue));
@@ -138,8 +136,6 @@ public class DiskMap implements Map<String, String> {
 
         return oldValue;
     }
-
-
 
     @Override
     public void clear() {
@@ -191,7 +187,7 @@ public class DiskMap implements Map<String, String> {
 
     @Override
     public @NotNull Set<Map.Entry<String, String>> entrySet() {
-        Set<Map.Entry<String,String>> entries = new HashSet<>();
+        Set<Map.Entry<String, String>> entries = new HashSet<>();
 
         try (Scanner scanner = new Scanner(mapFile)) {
 
@@ -237,7 +233,7 @@ public class DiskMap implements Map<String, String> {
         return new Entry(data[0], data[1]);
     }
 
-    private void updateFile(Set<Map.Entry<String,String>> entries) {
+    private void updateFile(Set<Map.Entry<String, String>> entries) {
         try {
             fileWriter.write("");
 

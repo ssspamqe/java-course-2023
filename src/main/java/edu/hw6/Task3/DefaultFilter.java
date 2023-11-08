@@ -5,6 +5,6 @@ import java.nio.file.Path;
 
 public interface DefaultFilter extends DirectoryStream.Filter<Path> {
     default DefaultFilter and(DefaultFilter other) {
-        return (Path path) -> (accept(path) && other.accept(path));
+        return path -> accept(path) && other.accept(path);
     }
 }

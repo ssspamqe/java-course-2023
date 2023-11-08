@@ -13,11 +13,11 @@ public class Filters {
     public static final DefaultFilter writeable = Files::isWritable;
 
     public static DefaultFilter largerThan(int min) {
-        return (Path path) -> Files.size(path) >= min;
+        return path -> Files.size(path) >= min;
     }
 
     public static DefaultFilter magicNumber(char... bytes) {
-        return (Path path) -> {
+        return path -> {
             var fileBytes = Files.readAllBytes(path);
             if (bytes.length > fileBytes.length) {
                 return false;
@@ -35,7 +35,8 @@ public class Filters {
     public static DefaultFilter globMatcher(String glob) {
         return (Path path) -> {
             var neededFileExtension = glob.split("\\.")[1];
-            var realFileExtension = new File(path.toString()).getName().split("\\.")[2];
+            var realFileExtension = new File(path.toString()).getName().split("\\.")[1];
+
             return realFileExtension.equals(neededFileExtension);
         };
     }
