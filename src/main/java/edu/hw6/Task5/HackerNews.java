@@ -58,9 +58,14 @@ public class HackerNews {
             throw new RuntimeException(ex);
         }
 
-        var pattern = Pattern.compile(".*\"title\":\"(.*)\",\"type\"");
+        var pattern = Pattern.compile("\"title\":\"([^\"]*)\"");
+        var matcher = pattern.matcher(responseBody);
 
-        return pattern.matcher(responseBody).group(1);
+        if (matcher.find()) {
+            return matcher.group(1);
+        } else {
+            return null;
+        }
     }
 
 }
