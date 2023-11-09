@@ -11,7 +11,7 @@ import java.util.zip.CheckedOutputStream;
 
 public class Task4 {
 
-    public void solution(String fileName, String message) throws IOException {
+    public void writeData(String fileName, String message) throws IOException {
         try (var outputStream = new FileOutputStream(fileName)) {
             var checkedOutputStream = new CheckedOutputStream(outputStream, new CRC32());
             var bufferedOutputStream = new BufferedOutputStream(checkedOutputStream);
