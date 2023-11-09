@@ -2,7 +2,6 @@ package edu.hw6.Task1;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
@@ -15,8 +14,6 @@ import org.jetbrains.annotations.Nullable;
 public class DiskMap implements Map<String, String> {
 
     File mapFile;
-
-    FileWriter fileWriter;
 
     private int size = 0;
 
@@ -70,7 +67,7 @@ public class DiskMap implements Map<String, String> {
 
     @Override
     public String get(Object key) {
-        try (Scanner scanner = new Scanner(mapFile)) {
+        try (Scanner scanner = new Scanner(mapFile.toPath())) {
 
             while (scanner.hasNext()) {
                 Entry entry = parseLine(scanner.nextLine());
@@ -93,16 +90,14 @@ public class DiskMap implements Map<String, String> {
 
         var oldValue = get(key);
 
-        openFileWriter();
-        try {
-            remove(key);
+        remove(key);
 
+        try (FileWriter fileWriter = new FileWriter(mapFile, true)) {
             fileWriter.append(key).append(DELIMITER).append(value).append("\n");
 
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
         }
-        closeFileWriter();
 
         if (oldValue == null) {
             size++;
@@ -119,15 +114,19 @@ public class DiskMap implements Map<String, String> {
             throw new RuntimeException("Intersection between keysets is not allowed");
         }
 
-        openFileWriter();
-        newMap.forEach((key, value) -> {
-            try {
-                fileWriter.append(key).append(DELIMITER).append(value).append("\n");
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
-            }
-        });
-        closeFileWriter();
+//        try(FileWriter fileWriter = new FileWriter(mapFile,true)){
+//
+//        }
+//
+//        openFileWriter();
+//        newMap.forEach((key, value) -> {
+//            try {
+//                fileWriter.append(key).append(DELIMITER).append(value).append("\n");
+//            } catch (Exception ex) {
+//                throw new RuntimeException(ex);
+//            }
+//        });
+//        closeFileWriter();
 
     }
 
@@ -147,16 +146,17 @@ public class DiskMap implements Map<String, String> {
 
     @Override
     public void clear() {
-        try {
-            fileWriter = new FileWriter(mapFile);
-            fileWriter.write("");
-            fileWriter.close();
-
-            size = 0;
-
-        } catch (IOException e) {
-            throw new RuntimeException(UNSUCCESSFUL_READING_FILE + mapFile);
-        }
+//        try {
+//
+//            fileWriter = new FileWriter(mapFile);
+//            fileWriter.write("");
+//            fileWriter.close();
+//
+//            size = 0;
+//
+//        } catch (IOException e) {
+//            throw new RuntimeException(UNSUCCESSFUL_READING_FILE + mapFile);
+//        }
     }
 
     @NotNull
@@ -232,7 +232,7 @@ public class DiskMap implements Map<String, String> {
 
         openFileWriter();
         try {
-            fileWriter.append(key).append(DELIMITER).append(value).append("\n");
+            //fileWriter.append(key).append(DELIMITER).append(value).append("\n");
 
         } catch (Exception ex) {
             throw new RuntimeException(ex);
@@ -254,7 +254,7 @@ public class DiskMap implements Map<String, String> {
         openFileWriter();
         entries.forEach(entry -> {
             try {
-                fileWriter.append(entry.getKey()).append(DELIMITER).append(entry.getValue()).append("\n");
+                //fileWriter.append(entry.getKey()).append(DELIMITER).append(entry.getValue()).append("\n");
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
@@ -263,22 +263,22 @@ public class DiskMap implements Map<String, String> {
     }
 
     private void openFileWriter() {
-        try {
-            fileWriter = new FileWriter(mapFile);
-
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
+//        try {
+//            var fileWriter = new FileWriter(mapFile);
+//
+//        } catch (Exception ex) {
+//            throw new RuntimeException(ex);
+//        }
     }
 
     private void closeFileWriter() {
-        try {
-            fileWriter.close();
-
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-
-        }
+//        try {
+//            var fileWriter.close();
+//
+//        } catch (Exception ex) {
+//            throw new RuntimeException(ex);
+//
+//        }
     }
 
     private static final class Entry implements Map.Entry<String, String> {
