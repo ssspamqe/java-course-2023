@@ -1,10 +1,12 @@
 package edu.hw6.Task2;
 
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class Task2Test {
@@ -31,6 +33,26 @@ public class Task2Test {
         var clonedFileExists = Files.exists(clonedFilePath);
 
         assertThat(clonedFileExists).isTrue();
+    }
+
+    @Test
+    @DisplayName("cloneFile(Path) should make a first copy of file with \"-copy\" in the end ")
+    void incorrect_cloneFile_should_makaASpecialFirstCopy() throws IOException {
+        var originalFileName = "originalFile.txt";
+        var originalFilePath = Paths.get(PARENT_PATH + "/" + originalFileName);
+
+        var clonedFileName = "originalFile - copy.txt";
+        var clonedFilePath = Paths.get(PARENT_PATH + "/" + clonedFileName);
+
+        Files.deleteIfExists(originalFilePath);
+        Files.deleteIfExists(clonedFilePath);
+
+        Files.createFile(originalFilePath);
+        solution.cloneFile(originalFilePath);
+
+        var clonedFileExists = Files.exists(Paths.get(PARENT_PATH + "/" + "1232"));
+
+        assertThat(clonedFileExists).isFalse();
     }
 
 }
