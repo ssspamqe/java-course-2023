@@ -15,9 +15,9 @@ public class Task2 {
         var fileExtension = fileData[1];
 
         var newPath = Paths.get(directory.toString(), fileName + " - copy." + fileExtension);
-        int id = 1;
+        int id = 2;
         while (Files.exists(newPath)) {
-            newPath = Paths.get(path.toString(), String.format("%s - copy (%d).%s", fileName, id, fileExtension));
+            newPath = Paths.get(directory.toString(), String.format("%s - copy (%d).%s", fileName, id, fileExtension));
             id++;
         }
 

@@ -36,23 +36,25 @@ public class Task2Test {
     }
 
     @Test
-    @DisplayName("cloneFile(Path) should make a first copy of file with \"-copy\" in the end ")
-    void incorrect_cloneFile_should_makaASpecialFirstCopy() throws IOException {
+    @DisplayName("cloneFile(Path) should make a second copy of file with \"-copy (2)\" in the end ")
+    void cloneFile_should_makaASpecialSecondCopy() throws IOException {
         var originalFileName = "originalFile.txt";
         var originalFilePath = Paths.get(PARENT_PATH + "/" + originalFileName);
 
-        var clonedFileName = "originalFile - copy.txt";
-        var clonedFilePath = Paths.get(PARENT_PATH + "/" + clonedFileName);
+        var secondClonedFileName = "originalFile - copy (2).txt";
+        var secondClonedFilePath = Paths.get(PARENT_PATH + "/" + secondClonedFileName);
+
 
         Files.deleteIfExists(originalFilePath);
-        Files.deleteIfExists(clonedFilePath);
+        Files.deleteIfExists(secondClonedFilePath);
 
         Files.createFile(originalFilePath);
         solution.cloneFile(originalFilePath);
+        solution.cloneFile(originalFilePath);
 
-        var clonedFileExists = Files.exists(Paths.get(PARENT_PATH + "/" + "1232"));
+        var secondClonedFileExists = Files.exists(secondClonedFilePath);
 
-        assertThat(clonedFileExists).isFalse();
+        assertThat(secondClonedFileExists).isTrue();
     }
 
 }
