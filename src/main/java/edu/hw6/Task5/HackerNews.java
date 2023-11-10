@@ -1,8 +1,6 @@
 package edu.hw6.Task5;
 
-import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
@@ -41,7 +39,7 @@ public class HackerNews {
         return Arrays.stream(stringIds).mapToLong(Long::parseLong).toArray();
     }
 
-    public String getNewsName(long id) throws URISyntaxException, IOException, InterruptedException {
+    public String getNewsName(long id) {
 
         String responseBody;
 

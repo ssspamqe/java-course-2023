@@ -18,15 +18,15 @@ public class PortScanner {
     private static final int MIN_PORT = 0;
     private static final int MAX_PORT = 49151;
 
-    PortScanner() {
+    public PortScanner() {
         this(List.of(BASE_FILE_PATH));
     }
 
-    PortScanner(List<String> filePaths) {
+    public PortScanner(List<String> filePaths) {
         this(filePaths, false);
     }
 
-    PortScanner(List<String> filePaths, boolean includeBasicPorts) {
+    public PortScanner(List<String> filePaths, boolean includeBasicPorts) {
         if (includeBasicPorts) {
             addNewPorts(BASE_FILE_PATH);
         }
@@ -34,7 +34,6 @@ public class PortScanner {
     }
 
     private void addNewPorts(String filePath) {
-
         Pattern linePattern = Pattern.compile("(\\d+) - ([^(?: \\- )]*)");
 
         try (Scanner occupiedPortsFile = new Scanner(new File(filePath))) {

@@ -19,12 +19,12 @@ public class DiskMap implements Map<String, String> {
 
     private static final String DELIMITER = "=";
 
-    private static final String UNSUCCESSFUL_READING_FILE = "Unsuccessful tryout of reading ";
-
     public DiskMap(String fileName) {
         mapFile = new File(fileName);
+
         try {
             mapFile.createNewFile();
+
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -57,7 +57,6 @@ public class DiskMap implements Map<String, String> {
 
     @Override
     public String get(Object key) {
-
         var value = entrySet().stream()
             .filter(mapEntry -> mapEntry.getKey().equals(key))
             .findFirst();
@@ -71,9 +70,7 @@ public class DiskMap implements Map<String, String> {
     @Nullable
     @Override
     public String put(String key, String value) {
-
         var oldValue = get(key);
-
         remove(key);
 
         fileWorker.appendLine(new Entry(key, value).toString());
@@ -155,7 +152,6 @@ public class DiskMap implements Map<String, String> {
 
     @Override
     public boolean remove(Object key, Object value) {
-
         var oldValue = get(key);
         if (oldValue != null && oldValue.equals(value)) {
             remove(key);

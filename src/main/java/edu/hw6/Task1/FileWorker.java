@@ -9,7 +9,7 @@ import java.util.List;
 
 public class FileWorker {
 
-    private String fullFileName;
+    private final String fullFileName;
 
     public FileWorker(String fullFileName) {
         this.fullFileName = fullFileName;

@@ -12,11 +12,11 @@ public class Filters {
     public static final DefaultFilter READABLE = Files::isReadable;
     public static final DefaultFilter WRITEABLE = Files::isWritable;
 
-    public static DefaultFilter largerThan(int min) {
-        return path -> Files.size(path) >= min;
+    private Filters() {
     }
 
-    private Filters() {
+    public static DefaultFilter largerThan(int min) {
+        return path -> Files.size(path) >= min;
     }
 
     public static DefaultFilter magicNumber(char... bytes) {
