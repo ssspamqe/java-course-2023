@@ -52,10 +52,10 @@ public class FileWorker {
     }
 
     public void write(String newString) {
-        try (var file = new RandomAccessFile(fullFileName,"rw")) {
-            file.writeBytes(newString);
+        try(var printWriter = new PrintWriter(new FileOutputStream(fullFileName))){
+            printWriter.write(newString);
 
-        } catch (Exception ex) {
+        } catch (Exception ex){
             throw new RuntimeException(ex);
         }
     }
