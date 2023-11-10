@@ -14,7 +14,7 @@ public class DiskMap implements Map<String, String> {
 
     private FileWorker fileWorker;
 
-    private static final String DELIMITER = ":";
+    private static final String DELIMITER = "=";
 
     private static final String UNSUCCESSFUL_READING_FILE = "Unsuccessful tryout of reading ";
 
@@ -152,7 +152,9 @@ public class DiskMap implements Map<String, String> {
 
     @Override
     public boolean remove(Object key, Object value) {
-        if (get(key).equals(value)) {
+
+        var oldValue = get(key);
+        if (oldValue != null && oldValue.equals(value)) {
             remove(key);
             return true;
         }
@@ -175,7 +177,7 @@ public class DiskMap implements Map<String, String> {
         return new Entry(data[0], data[1]);
     }
 
-    private static final class Entry implements Map.Entry<String, String> {
+    public static final class Entry implements Map.Entry<String, String> {
 
         private final String key;
         private String value;
