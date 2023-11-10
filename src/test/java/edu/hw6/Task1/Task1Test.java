@@ -96,11 +96,13 @@ public class Task1Test {
 
         diskMap.put(key, value);
 
+
         diskMap.remove(key, anotherValue);
         var returnedValue1 = diskMap.get(key);
 
         diskMap.remove(key, value);
         var returnedValue2 = diskMap.get(key);
+
 
         assertThat(returnedValue1).isEqualTo(value);
         assertThat(returnedValue2).isNull();
@@ -117,11 +119,13 @@ public class Task1Test {
         diskMap.put(firstKey, firstValue);
         diskMap.put(secondKey, secondValue);
 
+
         var actualEntries = new HashSet<DiskMap.Entry>();
         actualEntries.add(new DiskMap.Entry(firstKey, firstValue));
         actualEntries.add(new DiskMap.Entry(secondKey, secondValue));
 
         var returnedEntries = diskMap.entrySet();
+
 
         assertThat(returnedEntries).containsExactlyInAnyOrderElementsOf(actualEntries);
     }
@@ -136,9 +140,11 @@ public class Task1Test {
 
         var actualValues = List.of(firstValue, secondValue);
 
+
         diskMap.put(firstKey, firstValue);
         diskMap.put(secondKey, secondValue);
         var returnedValues = diskMap.values();
+
 
         assertThat(returnedValues).containsExactlyInAnyOrderElementsOf(actualValues);
     }
@@ -153,9 +159,11 @@ public class Task1Test {
 
         var actualKeys = Set.of(firstKey, secondKey);
 
+
         diskMap.put(firstKey, firstValue);
         diskMap.put(secondKey, secondValue);
         var returnedKeys = diskMap.keySet();
+
 
         assertThat(returnedKeys).containsExactlyInAnyOrderElementsOf(actualKeys);
     }

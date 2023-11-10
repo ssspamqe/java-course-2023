@@ -18,12 +18,14 @@ public class Task4Test {
     void solution_should_writeDateToFile() throws IOException {
         var message = "mydata";
 
+
         task.writeData(FILE_PATH, message);
 
-        String recordedMessage = "";
+        String recordedMessage;
         try (Scanner sc = new Scanner(new File(FILE_PATH))) {
             recordedMessage = sc.nextLine();
         }
+
 
         assertThat(recordedMessage).isEqualTo(message);
     }

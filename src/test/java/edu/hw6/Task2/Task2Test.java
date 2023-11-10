@@ -22,6 +22,7 @@ public class Task2Test {
         var clonedFileName = "originalFile - copy.txt";
         var clonedFilePath = Paths.get(PARENT_PATH + "/" + clonedFileName);
 
+
         Files.deleteIfExists(originalFilePath);
         Files.deleteIfExists(clonedFilePath);
 
@@ -29,6 +30,7 @@ public class Task2Test {
         solution.cloneFile(originalFilePath);
 
         var clonedFileExists = Files.exists(clonedFilePath);
+
 
         assertThat(clonedFileExists).isTrue();
     }
@@ -42,6 +44,7 @@ public class Task2Test {
         var secondClonedFileName = "originalFile - copy (2).txt";
         var secondClonedFilePath = Paths.get(PARENT_PATH + "/" + secondClonedFileName);
 
+
         Files.deleteIfExists(originalFilePath);
         Files.deleteIfExists(secondClonedFilePath);
 
@@ -50,6 +53,7 @@ public class Task2Test {
         solution.cloneFile(originalFilePath);
 
         var secondClonedFileExists = Files.exists(secondClonedFilePath);
+
 
         assertThat(secondClonedFileExists).isTrue();
     }

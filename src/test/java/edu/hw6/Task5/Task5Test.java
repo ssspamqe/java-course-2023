@@ -10,7 +10,7 @@ public class Task5Test {
 
     @Test
     @DisplayName("getNewsName() should return a name of news by given id")
-    void getNewsName_should_returnNewsName_byGivenId() throws Exception {
+    void getNewsName_should_returnNewsName_byGivenId() {
         var correctNewsName = "JDK 21 Release Notes";
         var newsId = 37570037;
 
@@ -21,7 +21,7 @@ public class Task5Test {
 
     @Test
     @DisplayName("getNewsName() should return a name of news by given id")
-    void getNewsName_should_returnNull_serverDidntResponseNews() throws Exception {
+    void getNewsName_should_returnNull_serverDidntResponseNews() {
         var newsId = -1;
 
         var returnedNewsName = hackerNews.getNewsName(newsId);
