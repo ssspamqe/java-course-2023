@@ -1,7 +1,6 @@
 package edu.hw6.Task1;
 
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
 import java.nio.file.Files;
@@ -17,31 +16,33 @@ public class FileWorker {
     }
 
     public void appendLine(String newLine) {
-        try (var file = new RandomAccessFile(fullFileName,"rw")) {
-            addLine(newLine,file);
+        try (var file = new RandomAccessFile(fullFileName, "rw")) {
+            addLine(newLine, file);
 
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
     }
 
-    public void appendAllLines(List<String> newLines){
-        try (var file = new RandomAccessFile(fullFileName,"rw")) {
-            newLines.forEach(line -> addLine(line,file));
+    public void appendAllLines(List<String> newLines) {
+        try (var file = new RandomAccessFile(fullFileName, "rw")) {
+            newLines.forEach(line -> addLine(line, file));
 
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
     }
-    private void addLine(String newLine, RandomAccessFile file){
-        try{
-            int fileSize = (int)Files.size(Path.of(fullFileName));
+
+    private void addLine(String newLine, RandomAccessFile file) {
+        try {
+            int fileSize = (int) Files.size(Path.of(fullFileName));
             file.seek(fileSize);
-            if(fileSize != 0)
+            if (fileSize != 0) {
                 file.writeBytes("\n");
+            }
             file.writeBytes(newLine);
 
-        } catch (Exception ex){
+        } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
 
@@ -52,10 +53,10 @@ public class FileWorker {
     }
 
     public void write(String newString) {
-        try(var printWriter = new PrintWriter(new FileOutputStream(fullFileName))){
+        try (var printWriter = new PrintWriter(new FileOutputStream(fullFileName))) {
             printWriter.write(newString);
 
-        } catch (Exception ex){
+        } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
     }

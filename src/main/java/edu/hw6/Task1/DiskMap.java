@@ -1,7 +1,10 @@
 package edu.hw6.Task1;
 
 import java.io.File;
-import java.util.*;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -167,7 +170,7 @@ public class DiskMap implements Map<String, String> {
         var oldValue = get(key);
         remove(key);
 
-        fileWorker.appendLine(new Entry(key,value).toString());
+        fileWorker.appendLine(new Entry(key, value).toString());
 
         return oldValue;
     }

@@ -2,8 +2,6 @@ package edu.hw6.Task5;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import java.io.IOException;
-import java.net.URISyntaxException;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class Task5Test {

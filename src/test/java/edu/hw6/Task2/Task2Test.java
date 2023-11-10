@@ -1,12 +1,10 @@
 package edu.hw6.Task2;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class Task2Test {
@@ -43,7 +41,6 @@ public class Task2Test {
 
         var secondClonedFileName = "originalFile - copy (2).txt";
         var secondClonedFilePath = Paths.get(PARENT_PATH + "/" + secondClonedFileName);
-
 
         Files.deleteIfExists(originalFilePath);
         Files.deleteIfExists(secondClonedFilePath);
