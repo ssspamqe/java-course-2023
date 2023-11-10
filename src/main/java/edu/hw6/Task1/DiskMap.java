@@ -144,7 +144,8 @@ public class DiskMap implements Map<String, String> {
 
     @Override
     public @NotNull Set<Map.Entry<String, String>> entrySet() {
-        return fileWorker.getLinesStream()
+        return fileWorker.getAllLines()
+            .stream()
             .map(this::parseLine)
             .collect(Collectors.toSet());
     }
