@@ -7,6 +7,7 @@ import java.io.RandomAccessFile;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class FileWorker {
 
@@ -60,9 +61,9 @@ public class FileWorker {
         }
     }
 
-    public List<String> getAllLines() {
+    public Stream<String> getLinesStream() {
         try (var linesStream = Files.lines(Path.of(fullFileName))) {
-            return linesStream.toList();
+            return linesStream;
 
         } catch (Exception ex) {
             throw new RuntimeException(ex);
