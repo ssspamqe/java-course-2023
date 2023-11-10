@@ -1,13 +1,8 @@
 package edu.hw6.Task1;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,7 +12,9 @@ public class DiskMap implements Map<String, String> {
 
     private int size = 0;
 
-    private static final String DELIMITER = " ^$^ ";
+    private FileWorker fileWorker;
+
+    private static final String DELIMITER = ":";
 
     private static final String UNSUCCESSFUL_READING_FILE = "Unsuccessful tryout of reading ";
 
@@ -29,6 +26,9 @@ public class DiskMap implements Map<String, String> {
             throw new RuntimeException(ex);
         }
 
+        fileWorker = new FileWorker(mapFile.getPath());
+
+        size = entrySet().size();
     }
 
     @Override
@@ -48,40 +48,21 @@ public class DiskMap implements Map<String, String> {
 
     @Override
     public boolean containsValue(Object value) {
-        try (Scanner scanner = new Scanner(mapFile)) {
-
-            while (scanner.hasNext()) {
-                Entry entry = parseLine(scanner.nextLine());
-
-                if (entry.getValue().equals(value)) {
-                    return true;
-                }
-            }
-
-            return false;
-
-        } catch (Exception ex) {
-            throw new RuntimeException(UNSUCCESSFUL_READING_FILE + mapFile);
-        }
+        return entrySet().stream()
+            .anyMatch(mapEntry -> mapEntry.getValue().equals(value));
     }
 
     @Override
     public String get(Object key) {
-        try (Scanner scanner = new Scanner(mapFile.toPath())) {
 
-            while (scanner.hasNext()) {
-                Entry entry = parseLine(scanner.nextLine());
+        var value = entrySet().stream()
+            .filter(mapEntry -> mapEntry.getKey().equals(key))
+            .findFirst();
 
-                if (entry.getKey().equals(key)) {
-                    return entry.getValue();
-                }
-            }
-
+        if (value.isEmpty()) {
             return null;
-
-        } catch (Exception ex) {
-            throw new RuntimeException(UNSUCCESSFUL_READING_FILE + mapFile);
         }
+        return value.get().getValue();
     }
 
     @Nullable
@@ -92,12 +73,7 @@ public class DiskMap implements Map<String, String> {
 
         remove(key);
 
-        try (FileWriter fileWriter = new FileWriter(mapFile, true)) {
-            fileWriter.append(key).append(DELIMITER).append(value).append("\n");
-
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
+        fileWorker.appendLine(new Entry(key, value).toString());
 
         if (oldValue == null) {
             size++;
@@ -114,20 +90,12 @@ public class DiskMap implements Map<String, String> {
             throw new RuntimeException("Intersection between keysets is not allowed");
         }
 
-//        try(FileWriter fileWriter = new FileWriter(mapFile,true)){
-//
-//        }
-//
-//        openFileWriter();
-//        newMap.forEach((key, value) -> {
-//            try {
-//                fileWriter.append(key).append(DELIMITER).append(value).append("\n");
-//            } catch (Exception ex) {
-//                throw new RuntimeException(ex);
-//            }
-//        });
-//        closeFileWriter();
-
+        fileWorker.appendAllLines(
+            newMap.entrySet()
+                .stream()
+                .map(Object::toString)
+                .toList()
+        );
     }
 
     @Override
@@ -136,9 +104,17 @@ public class DiskMap implements Map<String, String> {
 
         if (oldValue != null) {
             size--;
+
             var entries = entrySet();
             entries.remove(new Entry((String) key, oldValue));
-            updateFile(entries);
+
+            fileWorker.clear();
+            fileWorker.appendAllLines(
+                entries
+                    .stream()
+                    .map(Object::toString)
+                    .toList()
+            );
         }
 
         return oldValue;
@@ -146,72 +122,32 @@ public class DiskMap implements Map<String, String> {
 
     @Override
     public void clear() {
-//        try {
-//
-//            fileWriter = new FileWriter(mapFile);
-//            fileWriter.write("");
-//            fileWriter.close();
-//
-//            size = 0;
-//
-//        } catch (IOException e) {
-//            throw new RuntimeException(UNSUCCESSFUL_READING_FILE + mapFile);
-//        }
+        fileWorker.clear();
+        size = 0;
     }
 
     @NotNull
     @Override
     public Set<String> keySet() {
-
-        Set<String> keys = new HashSet<>();
-
-        try (Scanner scanner = new Scanner(mapFile)) {
-
-            while (scanner.hasNext()) {
-                Entry entry = parseLine(scanner.nextLine());
-                keys.add(entry.getKey());
-            }
-
-            return keys;
-
-        } catch (Exception ex) {
-            throw new RuntimeException(UNSUCCESSFUL_READING_FILE + mapFile);
-        }
+        return entrySet().stream()
+            .map(Map.Entry::getKey)
+            .collect(Collectors.toSet());
     }
 
     @NotNull
     @Override
     public Collection<String> values() {
-        Set<String> values = new HashSet<>();
-        try (Scanner scanner = new Scanner(mapFile)) {
-
-            while (scanner.hasNext()) {
-                Entry entry = parseLine(scanner.nextLine());
-                values.add(entry.getValue());
-            }
-
-            return values;
-
-        } catch (Exception ex) {
-            throw new RuntimeException(UNSUCCESSFUL_READING_FILE + mapFile);
-        }
+        return entrySet().stream()
+            .map(Map.Entry::getValue)
+            .collect(Collectors.toList());
     }
 
     @Override
     public @NotNull Set<Map.Entry<String, String>> entrySet() {
-        Set<Map.Entry<String, String>> entries = new HashSet<>();
-
-        try (Scanner scanner = new Scanner(mapFile)) {
-
-            while (scanner.hasNext()) {
-                Entry entry = parseLine(scanner.nextLine());
-                entries.add(entry);
-            }
-            return entries;
-
-        } catch (Exception ex) {
-            throw new RuntimeException(UNSUCCESSFUL_READING_FILE + mapFile);
-        }
+        return fileWorker.getAllLines()
+            .stream()
+            .map(this::parseLine)
+            .collect(Collectors.toSet());
     }
 
     @Override
@@ -227,17 +163,9 @@ public class DiskMap implements Map<String, String> {
     @Override
     public String replace(String key, String value) {
         var oldValue = get(key);
-
         remove(key);
 
-        openFileWriter();
-        try {
-            //fileWriter.append(key).append(DELIMITER).append(value).append("\n");
-
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
-        closeFileWriter();
+        fileWorker.appendLine(new Entry(key,value).toString());
 
         return oldValue;
     }
@@ -245,40 +173,6 @@ public class DiskMap implements Map<String, String> {
     private Entry parseLine(String line) {
         String[] data = line.split(DELIMITER);
         return new Entry(data[0], data[1]);
-    }
-
-    private void updateFile(Set<Map.Entry<String, String>> entries) {
-
-        clear();
-
-        openFileWriter();
-        entries.forEach(entry -> {
-            try {
-                //fileWriter.append(entry.getKey()).append(DELIMITER).append(entry.getValue()).append("\n");
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
-            }
-        });
-        closeFileWriter();
-    }
-
-    private void openFileWriter() {
-//        try {
-//            var fileWriter = new FileWriter(mapFile);
-//
-//        } catch (Exception ex) {
-//            throw new RuntimeException(ex);
-//        }
-    }
-
-    private void closeFileWriter() {
-//        try {
-//            var fileWriter.close();
-//
-//        } catch (Exception ex) {
-//            throw new RuntimeException(ex);
-//
-//        }
     }
 
     private static final class Entry implements Map.Entry<String, String> {
@@ -321,6 +215,11 @@ public class DiskMap implements Map<String, String> {
         @Override
         public int hashCode() {
             return Objects.hash(key, value);
+        }
+
+        @Override
+        public String toString() {
+            return key + DELIMITER + value;
         }
     }
 
