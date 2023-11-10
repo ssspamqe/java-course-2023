@@ -15,46 +15,14 @@ public class HackerNews {
 
     public long[] getHackerNewsTopStories() {
 
-        HttpResponse<String> response;
+        String responseBody = getResponseBody("topstories.json");
 
-        try {
-            var request = HttpRequest.newBuilder()
-                .uri(new URI("https://hacker-news.firebaseio.com/v0/topstories.json"))
-                .GET()
-                .timeout(Duration.of(MAX_TIMEOUT, ChronoUnit.SECONDS))
-                .build();
-
-            response = newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
-
-        return parseTopStories(response.body());
-    }
-
-    private long[] parseTopStories(String response) {
-        var stringIds = response.substring(1, response.length() - 1).split(",");
-
-        return Arrays.stream(stringIds).mapToLong(Long::parseLong).toArray();
+        return parseTopStories(responseBody);
     }
 
     public String getNewsName(long id) {
 
-        String responseBody;
-
-        try {
-            var request = HttpRequest.newBuilder()
-                .uri(new URI("https://hacker-news.firebaseio.com/v0/item/" + id + ".json"))
-                .GET()
-                .timeout(Duration.of(MAX_TIMEOUT, ChronoUnit.SECONDS))
-                .build();
-
-            responseBody = newHttpClient().send(request, HttpResponse.BodyHandlers.ofString()).body();
-
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
+        String responseBody = getResponseBody("item/" + id + ".json");
 
         var pattern = Pattern.compile("\"title\":\"([^\"]*)\"");
         var matcher = pattern.matcher(responseBody);
@@ -64,6 +32,27 @@ public class HackerNews {
         } else {
             return null;
         }
+    }
+
+    private String getResponseBody(String req) {
+        try {
+            var request = HttpRequest.newBuilder()
+                .uri(new URI("https://hacker-news.firebaseio.com/v0/" + req))
+                .GET()
+                .timeout(Duration.of(MAX_TIMEOUT, ChronoUnit.SECONDS))
+                .build();
+
+            return newHttpClient().send(request, HttpResponse.BodyHandlers.ofString()).body();
+
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    private long[] parseTopStories(String response) {
+        var stringIds = response.substring(1, response.length() - 1).split(",");
+
+        return Arrays.stream(stringIds).mapToLong(Long::parseLong).toArray();
     }
 
 }

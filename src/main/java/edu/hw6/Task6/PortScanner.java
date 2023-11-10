@@ -37,7 +37,6 @@ public class PortScanner {
         Pattern linePattern = Pattern.compile("(\\d+) - ([^(?: \\- )]*)");
 
         try (Scanner occupiedPortsFile = new Scanner(new File(filePath))) {
-
             while (occupiedPortsFile.hasNext()) {
                 var line = occupiedPortsFile.nextLine();
                 var matcher = linePattern.matcher(line);
