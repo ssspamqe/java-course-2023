@@ -19,7 +19,7 @@ public class PortScanner {
     private static final int MIN_PORT = 0;
     private static final int MAX_PORT = 49151;
 
-    private static final String PORT_LINE_PATTERN = "(\\d+) - ([^(?: \\- )]*)";
+    public static final String PORT_LINE_PATTERN = "(\\d+) - ([^ ].*)";
 
     public PortScanner() {
         this(List.of(BASE_FILE_PATH));
