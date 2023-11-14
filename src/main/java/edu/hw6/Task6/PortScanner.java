@@ -1,5 +1,6 @@
 package edu.hw6.Task6;
 
+import javax.sound.sampled.Port;
 import java.io.File;
 import java.net.DatagramSocket;
 import java.net.ServerSocket;
@@ -55,9 +56,9 @@ public class PortScanner {
         }
     }
 
-    public List<Map<String, String>> getOccupiedPorts() {
+    public List<PortInfo> getOccupiedPorts() {
 
-        List<Map<String, String>> occupiedPorts = new ArrayList<Map<String, String>>();
+        List<PortInfo> occupiedPorts = new ArrayList<>();
 
         for (int port = MIN_PORT; port <= MAX_PORT; port++) {
             try {
@@ -66,7 +67,6 @@ public class PortScanner {
 
             } catch (Exception ex) {
                 occupiedPorts.add(getPortInfo(port, "TCP"));
-
             }
 
             try {
@@ -75,7 +75,6 @@ public class PortScanner {
 
             } catch (Exception ex) {
                 occupiedPorts.add(getPortInfo(port, "UDP"));
-
             }
         }
 
@@ -83,19 +82,13 @@ public class PortScanner {
 
     }
 
-    private Map<String, String> getPortInfo(int port, String protocol) {
-        Map<String, String> portInfo = new HashMap<>();
-
+    private PortInfo getPortInfo(int port, String protocol) {
         var service = portServices.get(port);
         if (service == null) {
             service = "???";
         }
 
-        portInfo.put("protocol", protocol);
-        portInfo.put("port", String.valueOf(port));
-        portInfo.put("service", service);
-
-        return portInfo;
+        return new PortInfo(protocol,port,service);
     }
 
 }

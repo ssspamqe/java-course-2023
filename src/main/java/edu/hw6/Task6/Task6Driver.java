@@ -17,7 +17,7 @@ public class Task6Driver {
     private Task6Driver() {
     }
 
-    public static void printPorts(List<Map<String, String>> ports) {
+    public static void printPorts(List<PortInfo> ports) {
         LOGGER.info(
             String.format(
                 TABLE_FORMAT,
@@ -31,9 +31,9 @@ public class Task6Driver {
             LOGGER.info(
                 String.format(
                     TABLE_FORMAT,
-                    portInfo.get(PROTOCOL_STRING),
-                    portInfo.get(PORT_STRING),
-                    portInfo.get(SERVICE_STRING)
+                    portInfo.protocol(),
+                    portInfo.port(),
+                    portInfo.service()
                 )
             )
         );
