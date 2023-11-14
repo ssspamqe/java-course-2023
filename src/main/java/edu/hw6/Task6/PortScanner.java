@@ -1,6 +1,5 @@
 package edu.hw6.Task6;
 
-import javax.sound.sampled.Port;
 import java.io.File;
 import java.net.DatagramSocket;
 import java.net.ServerSocket;
@@ -88,7 +87,7 @@ public class PortScanner {
             service = "???";
         }
 
-        return new PortInfo(protocol,port,service);
+        return new PortInfo(protocol, port, service);
     }
 
 }

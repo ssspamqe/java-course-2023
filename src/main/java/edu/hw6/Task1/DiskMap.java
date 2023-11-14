@@ -1,11 +1,9 @@
 package edu.hw6.Task1;
 
 import java.io.File;
-import java.util.AbstractMap;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.stream.Collectors;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -172,40 +170,8 @@ public class DiskMap implements Map<String, String> {
         return oldValue;
     }
 
-    private Map.Entry<String,String> parseLine(String line) {
+    private Map.Entry<String, String> parseLine(String line) {
         String[] data = line.split(DELIMITER);
         return Map.entry(data[0], data[1]);
     }
-//    public static final class Entry implements Map.Entry<String, String> {
-//
-//        private final String key;
-//        private String value;
-//
-//        Entry(String key, String value) {
-//            this.key = key;
-//            this.value = value;
-//        }
-//
-//        @Override
-//        public String getKey() {
-//            return key;
-//        }
-//
-//        @Override
-//        public String getValue() {
-//            return value;
-//        }
-//
-//        @Override
-//        public String setValue(String value) {
-//            this.value = value;
-//            return value;
-//        }
-//
-//        @Override
-//        public String toString() {
-//            return key + DELIMITER + value;
-//        }
-//    }
-
 }
