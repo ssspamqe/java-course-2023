@@ -120,9 +120,9 @@ public class Task1Test {
         diskMap.put(secondKey, secondValue);
 
 
-        var actualEntries = new HashSet<DiskMap.Entry>();
-        actualEntries.add(new DiskMap.Entry(firstKey, firstValue));
-        actualEntries.add(new DiskMap.Entry(secondKey, secondValue));
+        var actualEntries = new HashSet<Map.Entry<String,String>>();
+        actualEntries.add(Map.entry(firstKey, firstValue));
+        actualEntries.add(Map.entry(secondKey, secondValue));
 
         var returnedEntries = diskMap.entrySet();
 

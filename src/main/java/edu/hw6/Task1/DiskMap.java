@@ -1,10 +1,11 @@
 package edu.hw6.Task1;
 
 import java.io.File;
+import java.util.AbstractMap;
 import java.util.Collection;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -73,7 +74,7 @@ public class DiskMap implements Map<String, String> {
         var oldValue = get(key);
         remove(key);
 
-        fileWorker.appendLine(new Entry(key, value).toString());
+        fileWorker.appendLine(Map.entry(key, value).toString());
 
         if (oldValue == null) {
             size++;
@@ -106,7 +107,7 @@ public class DiskMap implements Map<String, String> {
             size--;
 
             var entries = entrySet();
-            entries.remove(new Entry((String) key, oldValue));
+            entries.remove(Map.entry((String) key, oldValue));
 
             fileWorker.clear();
             fileWorker.appendAllLines(
@@ -166,62 +167,45 @@ public class DiskMap implements Map<String, String> {
         var oldValue = get(key);
         remove(key);
 
-        fileWorker.appendLine(new Entry(key, value).toString());
+        fileWorker.appendLine(Map.entry(key, value).toString());
 
         return oldValue;
     }
 
-    private Entry parseLine(String line) {
+    private Map.Entry<String,String> parseLine(String line) {
         String[] data = line.split(DELIMITER);
-        return new Entry(data[0], data[1]);
+        return Map.entry(data[0], data[1]);
     }
-
-    public static final class Entry implements Map.Entry<String, String> {
-
-        private final String key;
-        private String value;
-
-        Entry(String key, String value) {
-            this.key = key;
-            this.value = value;
-        }
-
-        @Override
-        public String getKey() {
-            return key;
-        }
-
-        @Override
-        public String getValue() {
-            return value;
-        }
-
-        @Override
-        public String setValue(String value) {
-            this.value = value;
-            return value;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (!(obj instanceof Entry)) {
-                return false;
-            }
-            if (this == obj) {
-                return true;
-            }
-            return hashCode() == obj.hashCode();
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(key, value);
-        }
-
-        @Override
-        public String toString() {
-            return key + DELIMITER + value;
-        }
-    }
+//    public static final class Entry implements Map.Entry<String, String> {
+//
+//        private final String key;
+//        private String value;
+//
+//        Entry(String key, String value) {
+//            this.key = key;
+//            this.value = value;
+//        }
+//
+//        @Override
+//        public String getKey() {
+//            return key;
+//        }
+//
+//        @Override
+//        public String getValue() {
+//            return value;
+//        }
+//
+//        @Override
+//        public String setValue(String value) {
+//            this.value = value;
+//            return value;
+//        }
+//
+//        @Override
+//        public String toString() {
+//            return key + DELIMITER + value;
+//        }
+//    }
 
 }
