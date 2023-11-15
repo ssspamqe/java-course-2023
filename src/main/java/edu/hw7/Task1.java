@@ -1,11 +1,11 @@
-package edu.hw7.Task1;
+package edu.hw7;
 
 import jakarta.validation.constraints.Positive;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class AtomicIntegerIncrementer {
+public class Task1 {
 
     public static int incrementAsync(int num, @Positive int threadAmount) {
         var res = new AtomicInteger(num);
