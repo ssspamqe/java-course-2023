@@ -64,7 +64,6 @@ public class ConsoleHangman {
         sc.close();
     }
 
-    //I need to use not more than 4 return statements according to checkstyle
     boolean isIncorrectInput(String line) {
         if (line.length() != 1) {
             LOGGER.info("Inputted line is not a single char");
