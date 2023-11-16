@@ -5,14 +5,14 @@ public record Person(Integer id,
                      String address,
                      String phoneNumber) {
 
-    boolean dontHaveNullFields() {
+    public boolean dontHaveNullFields() {
         return id != null
             && name != null
             && address != null
             && phoneNumber != null;
     }
 
-    Person getPersonWithId(int id) {
+    public Person getPersonWithId(int id) {
         return new Person(id, name(), address(), phoneNumber());
     }
 

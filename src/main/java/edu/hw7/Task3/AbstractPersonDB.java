@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import org.jetbrains.annotations.Nullable;
 
-public class PersonDAO implements PersonDB {
-
+public abstract class AbstractPersonDB implements PersonDB {
     List<Person> persons = new ArrayList<>();
 
     @Override
-    public synchronized void add(Person newPerson) {
+    public void add(Person newPerson) {
         if (newPerson.id() != null) {
             return;
         }
@@ -18,32 +17,15 @@ public class PersonDAO implements PersonDB {
         var personByAddress = findByAddress(newPerson.address());
         var personByPhone = findByPhone(newPerson.phoneNumber());
 
-        if (personByName != null) {
-            updatePersons(personByName, newPerson);
-        } else if (personByAddress != null) {
-            updatePersons(personByAddress, newPerson);
-        } else if (personByPhone != null) {
-            updatePersons(personByPhone, newPerson);
-        } else {
-            var id = persons.size();
-            var personWithId =
-                new Person(
-                    id,
-                    newPerson.name(),
-                    newPerson.address(),
-                    newPerson.phoneNumber()
-                );
-            persons.add(id, newPerson);
-        }
     }
 
     @Override
-    public synchronized void delete(int id) {
+    public void delete(int id) {
         persons.remove(id);
     }
 
     @Override
-    public synchronized @Nullable Person findByName(String name) {
+    public @Nullable Person findByName(String name) {
         return persons
             .stream()
             .filter(person ->
@@ -59,7 +41,7 @@ public class PersonDAO implements PersonDB {
     }
 
     @Override
-    public synchronized @Nullable Person findByAddress(String address) {
+    public @Nullable Person findByAddress(String address) {
         return persons
             .stream()
             .filter(person ->
@@ -75,7 +57,7 @@ public class PersonDAO implements PersonDB {
     }
 
     @Override
-    public synchronized @Nullable Person findByPhone(String phone) {
+    public @Nullable Person findByPhone(String phone) {
         return persons
             .stream()
             .filter(person ->
@@ -123,12 +105,36 @@ public class PersonDAO implements PersonDB {
             return newPerson.phoneNumber();
         }
         return oldPerson.phoneNumber();
-        ;
     }
 
-    private void updatePersons(Person oldPerson, Person newPerson) {
+    protected void mergePerson(Person oldPerson, Person newPerson) {
         Person mergedPerson = getMergedPerson(oldPerson, newPerson);
         int id = mergedPerson.id();
         persons.set(id, mergedPerson);
+    }
+
+    protected void updatePerson(
+        Person newPerson,
+        Person personByName,
+        Person personByAddress,
+        Person personByPhone
+    ) {
+        if (personByName != null) {
+            mergePerson(personByName, newPerson);
+        } else if (personByAddress != null) {
+            mergePerson(personByAddress, newPerson);
+        } else if (personByPhone != null) {
+            mergePerson(personByPhone, newPerson);
+        } else {
+            var id = persons.size();
+            var personWithId =
+                new Person(
+                    id,
+                    newPerson.name(),
+                    newPerson.address(),
+                    newPerson.phoneNumber()
+                );
+            persons.add(id, newPerson);
+        }
     }
 }
