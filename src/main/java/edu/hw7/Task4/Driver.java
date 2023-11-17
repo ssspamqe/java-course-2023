@@ -1,27 +1,30 @@
 package edu.hw7.Task4;
 
+import edu.hw7.Task4.simulation.Simulator;
+
 public class Driver {
     public static void main(String[] params) {
-        int randomPoints = 100000000;
+        var simulator = new Simulator();
+        int simulations = 5;
+        int randomPoints = 1_000_000;
+        int threads = 2;
+        int pointsPerThread = randomPoints / threads;
 
-        var start = System.nanoTime();
-        DeltaCounter.getAverageDelta(
-            1,
-            Math.PI,
-            () -> PiCalculator.getPi(randomPoints)
+        System.out.println(
+            simulator.getSingleThreadResult(
+                simulations,
+                Math.PI,
+                randomPoints
+            )
         );
 
-        var end = System.nanoTime();
-        System.out.println(end - start);
-
-        start = System.nanoTime();
-        DeltaCounter.getAverageDelta(
-            1,
-            Math.PI,
-            () -> PiCalculator.getPiAsync(2, randomPoints / 2)
+        System.out.println(
+            simulator.getMultiThreadResult(
+                simulations,
+                Math.PI,
+                pointsPerThread,
+                threads
+            )
         );
-
-        end = System.nanoTime();
-        System.out.println(end - start);
     }
 }

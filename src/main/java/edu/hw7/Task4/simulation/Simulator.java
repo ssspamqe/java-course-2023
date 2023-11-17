@@ -6,7 +6,7 @@ public class Simulator {
 
     PiCalculator calculator = new PiCalculator();
 
-    public SimulationResult simulateSingleThread(int simulations, double original, int randomPointsAmount) {
+    public SimulationResult getSingleThreadResult(int simulations, double original, int randomPointsAmount) {
         double executingTimeSum = 0;
         double deltaSum = 0;
 
@@ -28,7 +28,7 @@ public class Simulator {
         return new SimulationResult(averageExecutingTime, averageDelta);
     }
 
-    public SimulationResult simulateMultiThread(int simulations, double original, int randomPointsPerThread, int threadsAmount) {
+    public SimulationResult getMultiThreadResult(int simulations, double original, int randomPointsPerThread, int threadsAmount) {
         double executingTimeSum = 0;
         double deltaSum = 0;
 

@@ -1,7 +1,6 @@
 package edu.hw7.Task4;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -10,14 +9,14 @@ import org.apache.logging.log4j.Logger;
 
 public class PiCalculator {
 
-    private  final Logger LOGGER = LogManager.getLogger();
-    private  final Random RANDOM = new Random();
-    private  final double RADIUS = 1;
-    private  final Point CENTER = new Point(RADIUS, RADIUS);
-    private  final int DEFAULT_POINTS_AMOUNT = 500;
+    private static final Logger LOGGER = LogManager.getLogger();
+    private static final Random RANDOM = new Random();
+    private static final double RADIUS = 1;
+    private static final Point CENTER = new Point(RADIUS, RADIUS);
+    private static final int DEFAULT_POINTS_AMOUNT = 500;
 
     public double getPi(int pointsAmount) {
-        int circlePoints = getRandomPointsInCircleAmount(pointsAmount);
+        int circlePoints = getRandomAmountOfPointsInCircle(pointsAmount);
         return calculatePi(circlePoints, pointsAmount);
     }
 
@@ -32,10 +31,9 @@ public class PiCalculator {
         for (int i = 0; i < threadsAmount; i++) {
             threads.add(
                 new Thread(() ->
-                    pointsInCircle.addAndGet(getRandomPointsInCircleAmount(pointsPerThread))
+                    pointsInCircle.addAndGet(getRandomAmountOfPointsInCircle(pointsPerThread))
                 )
             );
-            LOGGER.info("launcher thread");
             threads.getLast().start();
         }
 
@@ -44,6 +42,7 @@ public class PiCalculator {
                     var start = System.nanoTime();
                     thread.join();
                     var end = System.nanoTime();
+
                     LOGGER.info("waited thread for " + (end - start));
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
@@ -58,7 +57,7 @@ public class PiCalculator {
         return getPiAsync(DEFAULT_POINTS_AMOUNT / threadAmount, threadAmount);
     }
 
-    private int getRandomPointsInCircleAmount(int pointsAmount) {
+    private int getRandomAmountOfPointsInCircle(int pointsAmount) {
         int pointsInCircle = 0;
 
         for (int i = 0; i < pointsAmount; i++) {
@@ -67,7 +66,6 @@ public class PiCalculator {
                 pointsInCircle++;
             }
         }
-        LOGGER.info("returning points...");
         return pointsInCircle;
     }
 
