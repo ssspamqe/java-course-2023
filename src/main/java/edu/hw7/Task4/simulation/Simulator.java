@@ -7,7 +7,7 @@ public class Simulator {
     private static final PiCalculator calculator = new PiCalculator();
     private static final double ORIGINAL = Math.PI;
 
-    public SimulationResult getAsyncResult(int simulations, int threadsAmount, int randomPointsPerThread,) {
+    public SimulationResult getAsyncResult(int simulations, int threadsAmount, int randomPointsPerThread) {
         double executingTimeSum = 0;
         double deltaSum = 0;
 
