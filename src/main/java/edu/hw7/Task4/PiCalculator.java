@@ -11,15 +11,6 @@ public class PiCalculator {
     private static final Point CENTER = new Point(RADIUS, RADIUS);
     private static final int DEFAULT_POINTS_AMOUNT = 500;
 
-    public double getPi(int pointsAmount) {
-        int circlePoints = getRandomAmountOfPointsInCircle(pointsAmount);
-        return calculatePi(circlePoints, pointsAmount);
-    }
-
-    public double getPi() {
-        return getPi(DEFAULT_POINTS_AMOUNT);
-    }
-
     public double getPiAsync(int threadsAmount, int pointsPerThread) {
         List<Thread> threads = new ArrayList<>();
         AtomicInteger pointsInCircle = new AtomicInteger();
