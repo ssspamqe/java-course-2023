@@ -1,0 +1,60 @@
+80 - HTTP
+21 - FTP
+25 - SMTP
+22 - SSH
+443 - HTTPS
+53 - DNS
+3306 - MySQL Database
+5432 - PostgreSQL Database
+3389 - Remote Desktop Protocol
+27017 - MongoDB Database
+1521 - Oracle Database
+49152 - Windows RPC
+5353 - mDNS
+5672 - AMQP
+5355 - LLMNR
+49153 - Windows RPC
+23 - Telnet
+110 - POP3
+143 - IMAP
+67 - DHCP
+68 - DHCP
+123 - NTP
+161 - SNMP
+162 - SNMP
+445 - SMB
+548 - AFP
+137 - NetBIOS
+138 - NetBIOS
+139 - NetBIOS
+8080 - HTTP Proxy
+1080 - SOCKS
+3306 - MySQL
+1433 - MSSQL
+1521 - Oracle
+389 - LDAP
+636 - LDAP
+5722 - SMB2
+500 - IKE
+1701 - L2TP
+1723 - PPTP
+5060 - SIP
+5061 - SIP
+3128 - HTTPS
+3128 - Squid
+5900 - VNC
+123 - NTP
+6667 - IRC
+6697 - IRC
+389 - LDAP
+636 - LDAP
+548 - AFP
+5353 - Bonjour
+2049 - NFS
+6379 - Redis
+11211 - Memcached
+873 - Rsync
+5353 - Zeroconf
+5222 - XMPP
+5223 - XMPP
+443 - VMware
