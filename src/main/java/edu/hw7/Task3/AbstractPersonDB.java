@@ -1,22 +1,16 @@
 package edu.hw7.Task3;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
-import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractPersonDB implements PersonDB {
     List<Person> persons = new ArrayList<>();
 
     @Override
     public void add(Person newPerson) {
-        if (newPerson.id() != null) {
-            return;
-        }
-
-        var personByName = findByName(newPerson.name());
-        var personByAddress = findByAddress(newPerson.address());
-        var personByPhone = findByPhone(newPerson.phoneNumber());
-
+        updateDB(newPerson);
     }
 
     @Override
@@ -113,12 +107,11 @@ public abstract class AbstractPersonDB implements PersonDB {
         persons.set(id, mergedPerson);
     }
 
-    protected void updatePerson(
-        Person newPerson,
-        Person personByName,
-        Person personByAddress,
-        Person personByPhone
-    ) {
+    protected void updateDB(Person newPerson) {
+        var personByName = findByName(newPerson.name());
+        var personByAddress = findByAddress(newPerson.address());
+        var personByPhone = findByPhone(newPerson.phoneNumber());
+
         if (personByName != null) {
             mergePerson(personByName, newPerson);
         } else if (personByAddress != null) {
@@ -126,15 +119,15 @@ public abstract class AbstractPersonDB implements PersonDB {
         } else if (personByPhone != null) {
             mergePerson(personByPhone, newPerson);
         } else {
-            var id = persons.size();
-            var personWithId =
+            Person personWithId =
                 new Person(
-                    id,
+                    persons.size(),
                     newPerson.name(),
                     newPerson.address(),
                     newPerson.phoneNumber()
                 );
-            persons.add(id, newPerson);
+            persons.add(personWithId);
         }
     }
+
 }

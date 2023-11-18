@@ -1,6 +1,5 @@
 package edu.hw7.Task3;
 
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import org.jetbrains.annotations.Nullable;
 
@@ -13,51 +12,49 @@ public class RWLockPersonDB extends AbstractPersonDB {
             return;
         }
 
-        var personByName = findByName(newPerson.name());
-        var personByAddress = findByAddress(newPerson.address());
-        var personByPhone = findByPhone(newPerson.phoneNumber());
-
-        try {
-            if (rwLock.readLock().tryLock(500, TimeUnit.MILLISECONDS)) {
-                updatePerson(newPerson, personByName, personByAddress, personByPhone);
-            }
-        } catch (Exception ex) {
+        rwLock.writeLock().lock();
+        try{
+            updateDB(newPerson);
+        } finally {
+            rwLock.writeLock().unlock();
         }
     }
 
     public void delete(int id) {
-        super.delete(id);
+        rwLock.writeLock().lock();
+        try{
+            super.delete(id);
+        } finally {
+            rwLock.writeLock().unlock();
+        }
     }
 
     @Override
     public @Nullable Person findByName(String name) {
-        try {
-            if (rwLock.readLock().tryLock(500, TimeUnit.MILLISECONDS)) {
-                return super.findByName(name);
-            }
-        } catch (Exception e) {
+        rwLock.readLock().lock();
+        try{
+            return super.findByName(name);
+        } finally {
+            rwLock.readLock().unlock();
         }
-        return null;
     }
 
     @Override
     public @Nullable Person findByAddress(String address) {
-        try {
-            if (rwLock.readLock().tryLock(500, TimeUnit.MILLISECONDS)) {
-                return super.findByAddress(address);
-            }
-        } catch (Exception e) {
+        rwLock.readLock().lock();
+        try{
+            return super.findByAddress(address);
+        } finally {
+            rwLock.readLock().unlock();
         }
-        return null;
     }
 
     public @Nullable Person findByPhone(String phone) {
-        try {
-            if (rwLock.readLock().tryLock(500, TimeUnit.MILLISECONDS)) {
-                return super.findByPhone(phone);
-            }
-        } catch (Exception e) {
+        rwLock.readLock().lock();
+        try{
+            return super.findByPhone(phone);
+        } finally {
+            rwLock.readLock().unlock();
         }
-        return null;
     }
 }

@@ -5,6 +5,10 @@ public record Person(Integer id,
                      String address,
                      String phoneNumber) {
 
+    Person(String name, String address, String phoneNumber) {
+        this(-1, name, address, phoneNumber);
+    }
+
     public boolean dontHaveNullFields() {
         return id != null
             && name != null

@@ -25,7 +25,7 @@ public class Driver {
     private static final int THREADS_MIN = 2;
     private static final int THREADS_MAX = 10;
     private static final int THREADS_DEFAULT = 2;
-    
+
     public static void Launch() {
         Map<Integer, Double> averageDeltas = getAverageDeltas(AMOUNTS_OF_POINTS);
         Map<Integer, Double> averageSpeedUp = getAverageSpeedUp(POINTS_DEFAULT);
