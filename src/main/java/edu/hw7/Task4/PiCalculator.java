@@ -3,14 +3,10 @@ package edu.hw7.Task4;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class PiCalculator {
-
-    private static final Logger LOGGER = LogManager.getLogger();
-    private static final Random RANDOM = new Random();
     private static final double RADIUS = 1;
     private static final Point CENTER = new Point(RADIUS, RADIUS);
     private static final int DEFAULT_POINTS_AMOUNT = 500;
@@ -39,11 +35,7 @@ public class PiCalculator {
 
         threads.forEach(thread -> {
                 try {
-                    var start = System.nanoTime();
                     thread.join();
-                    var end = System.nanoTime();
-
-                    LOGGER.info("waited thread for " + (end - start));
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }
@@ -71,8 +63,8 @@ public class PiCalculator {
 
     private Point getRandomPoint() {
         return new Point(
-            RANDOM.nextDouble(0, 2 * RADIUS),
-            RANDOM.nextDouble(0, 2 * RADIUS)
+            ThreadLocalRandom.current().nextDouble(0, 2 * RADIUS),
+            ThreadLocalRandom.current().nextDouble(0, 2 * RADIUS)
         );
     }
 

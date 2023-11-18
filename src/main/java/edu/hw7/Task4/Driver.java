@@ -6,7 +6,7 @@ public class Driver {
     public static void main(String[] params) {
         var simulator = new Simulator();
         int simulations = 5;
-        int randomPoints = 1_000_000;
+        int randomPoints = 1_000_000_00;
         int threads = 2;
         int pointsPerThread = randomPoints / threads;
 
