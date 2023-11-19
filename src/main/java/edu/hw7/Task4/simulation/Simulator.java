@@ -11,10 +11,9 @@ public class Simulator {
         double executingTimeSum = 0;
         double deltaSum = 0;
 
-
         for (int i = 0; i < simulations; i++) {
             var startTime = System.nanoTime();
-            double val = calculator.getPiAsync(threads,randomPointsPerThread);
+            double val = calculator.getPiAsync(threads, randomPointsPerThread);
             var endTime = System.nanoTime();
 
             double delta = Math.abs(val - ORIGINAL);

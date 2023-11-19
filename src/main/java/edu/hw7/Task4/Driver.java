@@ -26,7 +26,10 @@ public class Driver {
     private static final int THREADS_MAX = 10;
     private static final int THREADS_DEFAULT = 2;
 
-    public static void main(String[] params){Launch();}
+    public static void main(String[] params) {
+        Launch();
+    }
+
     public static void Launch() {
         Map<Integer, Double> averageDeltas = getAverageDeltas(AMOUNTS_OF_POINTS);
         Map<Integer, Double> averageSpeedUp = getAverageSpeedUp(POINTS_DEFAULT);
@@ -64,7 +67,7 @@ public class Driver {
 
         Map<Integer, Double> averageExecutingTimes = new TreeMap<>();
         for (int threads = THREADS_MIN; threads <= THREADS_MAX; threads++) {
-            int pointsPerThread = points/threads;
+            int pointsPerThread = points / threads;
             var executionTime =
                 SIMULATOR.getAsyncResult(
                     SIMULATIONS,

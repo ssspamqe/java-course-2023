@@ -8,7 +8,7 @@ public class Task2Test {
 
     @Test
     @DisplayName("getAsyncFactorial should return a factorial of number")
-    void getAsyncFactorial_should_return_factorialOfNumber(){
+    void getAsyncFactorial_should_return_factorialOfNumber() {
         int number = 10;
         int factorial = 3628800;
 
@@ -19,7 +19,7 @@ public class Task2Test {
 
     @Test
     @DisplayName("getAsyncFactorial should return 1 if given 0")
-    void getAsyncFactorial_should_return_1_if_given0(){
+    void getAsyncFactorial_should_return_1_if_given0() {
         int number = 1;
         int factorial = 1;
 
@@ -27,6 +27,5 @@ public class Task2Test {
 
         assertThat(returnedFactorial).isEqualTo(factorial);
     }
-
 
 }

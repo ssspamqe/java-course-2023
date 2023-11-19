@@ -13,8 +13,8 @@ public record Person(Integer id,
         }
     }
 
-    Person(String name, String address, String phoneNumber){
-        this(null,name,address,phoneNumber);
+    Person(String name, String address, String phoneNumber) {
+        this(null, name, address, phoneNumber);
     }
 
     public Person gtPersonWithId(int id) {

@@ -1,6 +1,5 @@
 package edu.hw7.Task3;
 
-import java.util.ArrayList;
 import java.util.List;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,6 +21,7 @@ public class SynchronizedPersonDB extends AbstractPersonDB {
     public synchronized @Nullable List<Person> findByAddress(String address) {
         return super.findByAddress(address);
     }
+
     public synchronized @Nullable Person findByPhone(String phone) {
         return super.findByPhone(phone);
     }

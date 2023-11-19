@@ -6,22 +6,23 @@ import java.util.List;
 import java.util.Map;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class AbstractPersonDB implements PersonDB {
+public class AbstractPersonDB implements PersonDB {
+
+    private static final Map<Integer, Person> personsById = new HashMap<>();
+    private static final Map<String, List<Person>> personsByName = new HashMap<>();
+    private static final Map<String, List<Person>> personsByAddress = new HashMap<>();
+    private static final Map<String, Person> personsByPhone = new HashMap<>();
 
     private int maxId = -1;
 
-    Map<Integer, Person> personsById = new HashMap<>();
-    Map<String, List<Person>> personsByName = new HashMap<>();
-    Map<String, List<Person>> personsByAddress = new HashMap<>();
-    Map<String, Person> personsByPhone = new HashMap<>();
-
     @Override
     public void add(Person newPerson) {
-        if(!phoneIsAvailable(newPerson.phoneNumber()))
+        if (!phoneIsAvailable(newPerson.phoneNumber())) {
             return;
+        }
 
         Person personWithId = getPersonWithCorrectId(newPerson);
-        addToDB(newPerson);
+        addToDB(personWithId);
     }
 
     @Override
@@ -30,6 +31,7 @@ public abstract class AbstractPersonDB implements PersonDB {
         deletePersonInPersonsByName(person);
         deletePersonInPersonsByAddress(person);
         deletePersonInPersonsByPhone(person);
+        personsById.remove(id);
     }
 
     @Override
@@ -47,7 +49,7 @@ public abstract class AbstractPersonDB implements PersonDB {
         return personsByPhone.get(phone);
     }
 
-    private void addToDB(Person person){
+    private void addToDB(Person person) {
         addPersonToPersonsByName(person);
         addPersonToPersonsByAddress(person);
         addPersonToPersonByPhone(person);
@@ -66,22 +68,22 @@ public abstract class AbstractPersonDB implements PersonDB {
         personsByPhone.remove(phone);
     }
 
-    private void addPersonToPersonsByName(Person person){
+    private void addPersonToPersonsByName(Person person) {
         String name = person.name();
-        personsByName.computeIfAbsent(name, _ -> new ArrayList<>());
+        personsByName.computeIfAbsent(name, mapper -> new ArrayList<>());
         personsByName.get(name).add(person);
     }
 
-    private void addPersonToPersonsByAddress(Person person){
+    private void addPersonToPersonsByAddress(Person person) {
         String address = person.address();
-        personsByAddress.computeIfAbsent(address,_ -> new ArrayList<>());
+        personsByAddress.computeIfAbsent(address, mapper -> new ArrayList<>());
         personsByAddress.get(address).add(person);
     }
 
-    private void addPersonToPersonByPhone(Person person){
+    private void addPersonToPersonByPhone(Person person) {
         String phone = person.phoneNumber();
         if (phoneIsAvailable(phone)) {
-            personsByPhone.put(phone,person);
+            personsByPhone.put(phone, person);
         }
     }
 
