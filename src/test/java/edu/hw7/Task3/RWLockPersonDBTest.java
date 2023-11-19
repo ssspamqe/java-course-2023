@@ -1,24 +1,24 @@
 package edu.hw7.Task3;
 
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class SynchronizedPersonDBTest {
+public class RWLockPersonDBTest {
 
     PersonDB personDAO;
 
     @BeforeEach
     void initPersonDAO() {
-        personDAO = new SynchronizedPersonDB();
+        personDAO = new RWLockPersonDB();
     }
 
     @Test
-    @DisplayName("SynchronizedPersonDB should be able to return a list of persons with same names")
-    void synchronizedPersonDB_should_returnListOfPersonsWithSameName() {
+    @DisplayName("RWLockPersonDB should be able to return a list of persons with same names")
+    void RWLockPersonDB_should_returnListOfPersonsWithSameName() {
         String name1 = "name1";
         String name2 = "name2";
 
@@ -35,8 +35,8 @@ public class SynchronizedPersonDBTest {
     }
 
     @Test
-    @DisplayName("SynchronizedPersonDB should be able to return a list of persons with same addresses")
-    void synchronizedPersonDB_should_returnListOfPersonsWithSameAddresses() {
+    @DisplayName("RWLockPersonDB should be able to return a list of persons with same addresses")
+    void RWLockPersonDB_should_returnListOfPersonsWithSameAddresses() {
         String address1 = "address1";
         String address2 = "address2";
 
@@ -53,8 +53,8 @@ public class SynchronizedPersonDBTest {
     }
 
     @Test
-    @DisplayName("SynchronizedPersonDB should be able to return a person with specified phone")
-    void synchronizedPersonDB_should_returnListOfPersonsWithSpecifiedPhone() {
+    @DisplayName("RWLockPersonDB should be able to return a person with specified phone")
+    void RWLockPersonDB_should_returnListOfPersonsWithSpecifiedPhone() {
         String phone1 = "phone1";
         String phone2 = "phone2";
 
@@ -69,8 +69,8 @@ public class SynchronizedPersonDBTest {
     }
 
     @Test
-    @DisplayName("SynchronizedPersonDB should store Persons and work synchronizely")
-    void synchronizedPersonDB_should_workSynchronizely() throws Exception {
+    @DisplayName("RWLockPersonDB should store Persons and work synchronizely")
+    void RWLockPersonDB_should_workSynchronizely() throws InterruptedException {
         String name = "default_name";
 
         Person person = new Person(0, name, "default_address", "default_phone");

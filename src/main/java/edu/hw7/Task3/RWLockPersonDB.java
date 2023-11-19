@@ -11,7 +11,7 @@ public class RWLockPersonDB extends AbstractPersonDB {
     public void add(Person newPerson) {
         rwLock.writeLock().lock();
         try {
-            add(newPerson);
+            super.add(newPerson);
         } finally {
             rwLock.writeLock().unlock();
         }
