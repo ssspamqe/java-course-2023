@@ -7,14 +7,14 @@ public class Simulator {
     private static final PiCalculator calculator = new PiCalculator();
     private static final double ORIGINAL = Math.PI;
 
-    public SimulationResult getAsyncResult(int simulations, int threadsAmount, int randomPointsPerThread) {
+    public SimulationResult getAsyncResult(int simulations, int threads, int randomPointsPerThread) {
         double executingTimeSum = 0;
         double deltaSum = 0;
 
 
         for (int i = 0; i < simulations; i++) {
             var startTime = System.nanoTime();
-            double val = calculator.getPiAsync(threadsAmount,randomPointsPerThread);
+            double val = calculator.getPiAsync(threads,randomPointsPerThread);
             var endTime = System.nanoTime();
 
             double delta = Math.abs(val - ORIGINAL);
