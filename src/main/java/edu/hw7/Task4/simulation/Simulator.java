@@ -1,10 +1,10 @@
 package edu.hw7.Task4.simulation;
 
-import edu.hw7.Task4.PiCalculator;
+import edu.hw7.Task4.MonteCarloPiCalculator;
 
 public class Simulator {
 
-    private static final PiCalculator calculator = new PiCalculator();
+    private static final MonteCarloPiCalculator calculator = new MonteCarloPiCalculator();
     private static final double ORIGINAL = Math.PI;
 
     public SimulationResult getAsyncResult(int simulations, int threads, int randomPointsPerThread) {

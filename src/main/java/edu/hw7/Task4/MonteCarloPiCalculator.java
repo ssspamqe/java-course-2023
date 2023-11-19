@@ -2,11 +2,10 @@ package edu.hw7.Task4;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class PiCalculator {
+public class MonteCarloPiCalculator {
     private static final double RADIUS = 1;
     private static final Point CENTER = new Point(RADIUS, RADIUS);
     private static final int DEFAULT_POINTS_AMOUNT = 500;
