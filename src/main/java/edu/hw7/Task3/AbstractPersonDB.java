@@ -47,7 +47,7 @@ public abstract class AbstractPersonDB implements PersonDB {
         return personsByPhone.get(phone);
     }
 
-    protected void addToDB(Person person){
+    private void addToDB(Person person){
         addPersonToPersonsByName(person);
         addPersonToPersonsByAddress(person);
         addPersonToPersonByPhone(person);

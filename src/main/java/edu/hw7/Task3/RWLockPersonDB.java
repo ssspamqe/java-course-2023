@@ -1,5 +1,6 @@
 package edu.hw7.Task3;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import org.jetbrains.annotations.Nullable;
@@ -9,13 +10,9 @@ public class RWLockPersonDB extends AbstractPersonDB {
     private final ReentrantReadWriteLock rwLock = new ReentrantReadWriteLock();
 
     public void add(Person newPerson) {
-        if (newPerson.id() != null) {
-            return;
-        }
-
         rwLock.writeLock().lock();
         try{
-            updateDB(newPerson);
+            add(newPerson);
         } finally {
             rwLock.writeLock().unlock();
         }
@@ -31,7 +28,7 @@ public class RWLockPersonDB extends AbstractPersonDB {
     }
 
     @Override
-    public @Nullable Person findByName(String name) {
+    public @Nullable List<Person> findByName(String name) {
         rwLock.readLock().lock();
         try{
             return super.findByName(name);
@@ -41,7 +38,7 @@ public class RWLockPersonDB extends AbstractPersonDB {
     }
 
     @Override
-    public @Nullable Person findByAddress(String address) {
+    public @Nullable List<Person> findByAddress(String address) {
         rwLock.readLock().lock();
         try{
             return super.findByAddress(address);

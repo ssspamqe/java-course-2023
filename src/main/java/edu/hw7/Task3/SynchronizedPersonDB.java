@@ -14,12 +14,12 @@ public class SynchronizedPersonDB extends AbstractPersonDB {
     }
 
     @Override
-    public synchronized @Nullable Person findByName(String name) {
+    public synchronized @Nullable List<Person> findByName(String name) {
         return super.findByName(name);
     }
 
     @Override
-    public synchronized @Nullable Person findByAddress(String address) {
+    public synchronized @Nullable List<Person> findByAddress(String address) {
         return super.findByAddress(address);
     }
     public synchronized @Nullable Person findByPhone(String phone) {
