@@ -1,12 +1,9 @@
 package edu.hw4;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -52,9 +49,7 @@ public class SolutionTest {
 
         List<Animal> returnedAnimals;
 
-
         returnedAnimals = solutions.task1(animals);
-
 
         assertThat(returnedAnimals).isEqualTo(sortedAnimals);
     }
@@ -105,9 +100,7 @@ public class SolutionTest {
 
         List<Animal> returnedAnimals;
 
-
         returnedAnimals = solutions.task2(animals, k);
-
 
         assertThat(returnedAnimals).containsExactlyInAnyOrder(animalWeight4, animalWeight3);
     }
@@ -151,11 +144,9 @@ public class SolutionTest {
 
         Map<Animal.Type, Long> returnedMap;
 
-
         returnedMap = solutions.task3(animals);
 
-
-        assertThat(returnedMap).containsExactlyEntriesOf(correctMap);
+        assertThat(returnedMap).containsExactlyInAnyOrderEntriesOf(correctMap);
     }
 
     @Test
@@ -193,9 +184,7 @@ public class SolutionTest {
 
         Animal returnedAnimal;
 
-
         returnedAnimal = solutions.task4(animals);
-
 
         assertThat(returnedAnimal).isEqualTo(animal3);
     }
@@ -235,9 +224,7 @@ public class SolutionTest {
 
         Animal.Sex returnedSex;
 
-
         returnedSex = solutions.task5(animals);
-
 
         assertThat(returnedSex).isEqualTo(Animal.Sex.F);
     }
@@ -281,9 +268,7 @@ public class SolutionTest {
 
         Map<Animal.Type, Animal> returnedMap;
 
-
         returnedMap = solutions.task6(animals);
-
 
         assertThat(returnedMap).containsExactlyEntriesOf(correctMap);
     }
@@ -335,9 +320,7 @@ public class SolutionTest {
 
         Animal returnedAnimal;
 
-
         returnedAnimal = solutions.task7(animals, k);
-
 
         assertThat(returnedAnimal).isEqualTo(animalAge3);
     }
@@ -379,9 +362,7 @@ public class SolutionTest {
 
         Animal returnedAnimal;
 
-
         returnedAnimal = solutions.task8(animals, k).get();
-
 
         assertThat(returnedAnimal).isEqualTo(animal2);
     }
@@ -412,9 +393,7 @@ public class SolutionTest {
 
         int returnedSum;
 
-
         returnedSum = solutions.task9(animals);
-
 
         assertThat(returnedSum).isEqualTo(12);
     }
@@ -456,9 +435,7 @@ public class SolutionTest {
 
         List<Animal> returnedAnimals;
 
-
         returnedAnimals = solutions.task10(animals);
-
 
         assertThat(returnedAnimals).containsExactlyInAnyOrder(animal2, animal3);
     }
@@ -501,9 +478,7 @@ public class SolutionTest {
 
         List<Animal> returnedAnimals;
 
-
         returnedAnimals = solutions.task11(animals);
-
 
         assertThat(returnedAnimals).containsExactlyInAnyOrder(animal2);
     }
@@ -546,9 +521,7 @@ public class SolutionTest {
 
         int returnedAmount;
 
-
         returnedAmount = solutions.task12(animals);
-
 
         assertThat(returnedAmount).isEqualTo(1);
     }
@@ -588,9 +561,7 @@ public class SolutionTest {
 
         List<Animal> returnedAnimals;
 
-
         returnedAnimals = solutions.task13(animals);
-
 
         assertThat(returnedAnimals).containsExactlyInAnyOrder(animal2, animal3);
     }
@@ -632,9 +603,7 @@ public class SolutionTest {
 
         boolean returnedStatement;
 
-
         returnedStatement = solutions.task14(animals, k);
-
 
         assertThat(returnedStatement).isTrue();
     }
@@ -689,11 +658,9 @@ public class SolutionTest {
 
         Map<Animal.Type, Integer> returnedMap;
 
-
         returnedMap = solutions.task15(animals, k, l);
 
-
-        assertThat(returnedMap).containsExactlyEntriesOf(correctMap);
+        assertThat(returnedMap).containsExactlyInAnyOrderEntriesOf(correctMap);
     }
 
     @Test
@@ -741,9 +708,7 @@ public class SolutionTest {
 
         List<Animal> returnedAnimals;
 
-
         returnedAnimals = solutions.task16(animals);
-
 
         assertThat(returnedAnimals).isEqualTo(sortedAnimals);
     }
@@ -792,9 +757,7 @@ public class SolutionTest {
 
         boolean returnedStatement;
 
-
         returnedStatement = solutions.task17(animals);
-
 
         assertThat(returnedStatement).isTrue();
     }
@@ -825,9 +788,7 @@ public class SolutionTest {
 
         Animal returnedAnimal;
 
-
         returnedAnimal = solutions.task18(superList);
-
 
         assertThat(returnedAnimal).isEqualTo(animal2);
     }
@@ -873,9 +834,7 @@ public class SolutionTest {
 
         Set<Solutions.ValidationException> returnedExceptions;
 
-
         returnedExceptions = solutions.task19(animalsWithIncorrectData).get("wrong name1");
-
 
         assertThat(returnedExceptions).containsExactlyInAnyOrderElementsOf(correctExceptions);
     }
@@ -899,9 +858,7 @@ public class SolutionTest {
 
         String returnedLine;
 
-
         returnedLine = solutions.task20(animalsWithIncorrectData).get("wrong name1");
-
 
         assertThat(returnedLine).isEqualTo(correctLine);
     }
