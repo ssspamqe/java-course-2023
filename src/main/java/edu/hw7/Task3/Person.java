@@ -6,19 +6,11 @@ public record Person(Integer id,
                      String phoneNumber) {
 
     public Person {
-        if (!(name != null
+        if (!(id != null
+            && name != null
             && address != null
             && phoneNumber != null)) {
             throw new IllegalArgumentException("name, address and phoneNumber cant be null");
         }
     }
-
-    Person(String name, String address, String phoneNumber) {
-        this(null, name, address, phoneNumber);
-    }
-
-    public Person gtPersonWithId(int id) {
-        return new Person(id, name(), address(), phoneNumber());
-    }
-
 }

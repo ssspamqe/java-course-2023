@@ -13,16 +13,13 @@ public class AbstractPersonDB implements PersonDB {
     private static final Map<String, List<Person>> personsByAddress = new HashMap<>();
     private static final Map<String, Person> personsByPhone = new HashMap<>();
 
-    private int maxId = -1;
-
     @Override
     public void add(Person newPerson) {
-        if (!phoneIsAvailable(newPerson.phoneNumber())) {
+        if (!phoneIsAvailable(newPerson.phoneNumber())
+        ||personsById.containsKey(newPerson.id())) {
             return;
         }
-
-        Person personWithId = getPersonWithCorrectId(newPerson);
-        addToDB(personWithId);
+        addToDB(newPerson);
     }
 
     @Override
@@ -85,15 +82,6 @@ public class AbstractPersonDB implements PersonDB {
         if (phoneIsAvailable(phone)) {
             personsByPhone.put(phone, person);
         }
-    }
-
-    private Person getPersonWithCorrectId(Person person) {
-        if (person.id() == null) {
-            maxId++;
-            return person.gtPersonWithId(maxId);
-        }
-        maxId = Math.max(person.id(), maxId);
-        return person;
     }
 
     private boolean phoneIsAvailable(String phone) {
