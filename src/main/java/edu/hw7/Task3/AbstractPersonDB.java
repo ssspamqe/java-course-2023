@@ -8,15 +8,15 @@ import org.jetbrains.annotations.Nullable;
 
 public class AbstractPersonDB implements PersonDB {
 
-    private static final Map<Integer, Person> personsById = new HashMap<>();
-    private static final Map<String, List<Person>> personsByName = new HashMap<>();
-    private static final Map<String, List<Person>> personsByAddress = new HashMap<>();
-    private static final Map<String, Person> personsByPhone = new HashMap<>();
+    private static final Map<Integer, Person> PERSONS_BY_ID = new HashMap<>();
+    private static final Map<String, List<Person>> PERSONS_BY_NAME = new HashMap<>();
+    private static final Map<String, List<Person>> PERSONS_BY_ADDRESS = new HashMap<>();
+    private static final Map<String, Person> PERSONS_BY_PHONE = new HashMap<>();
 
     @Override
     public void add(Person newPerson) {
         if (!phoneIsAvailable(newPerson.phoneNumber())
-        ||personsById.containsKey(newPerson.id())) {
+        || PERSONS_BY_ID.containsKey(newPerson.id())) {
             return;
         }
         addToDB(newPerson);
@@ -24,26 +24,26 @@ public class AbstractPersonDB implements PersonDB {
 
     @Override
     public void delete(int id) {
-        Person person = personsById.get(id);
+        Person person = PERSONS_BY_ID.get(id);
         deletePersonInPersonsByName(person);
         deletePersonInPersonsByAddress(person);
         deletePersonInPersonsByPhone(person);
-        personsById.remove(id);
+        PERSONS_BY_ID.remove(id);
     }
 
     @Override
     public @Nullable List<Person> findByName(String name) {
-        return personsByName.get(name);
+        return PERSONS_BY_NAME.get(name);
     }
 
     @Override
     public @Nullable List<Person> findByAddress(String address) {
-        return personsByAddress.get(address);
+        return PERSONS_BY_ADDRESS.get(address);
     }
 
     @Override
     public @Nullable Person findByPhone(String phone) {
-        return personsByPhone.get(phone);
+        return PERSONS_BY_PHONE.get(phone);
     }
 
     private void addToDB(Person person) {
@@ -53,39 +53,39 @@ public class AbstractPersonDB implements PersonDB {
     }
 
     private void deletePersonInPersonsByName(Person person) {
-        personsByName.values().forEach(it -> it.remove(person));
+        PERSONS_BY_NAME.values().forEach(it -> it.remove(person));
     }
 
     private void deletePersonInPersonsByAddress(Person person) {
-        personsByAddress.values().forEach(it -> it.remove(person));
+        PERSONS_BY_ADDRESS.values().forEach(it -> it.remove(person));
     }
 
     private void deletePersonInPersonsByPhone(Person person) {
         String phone = person.phoneNumber();
-        personsByPhone.remove(phone);
+        PERSONS_BY_PHONE.remove(phone);
     }
 
     private void addPersonToPersonsByName(Person person) {
         String name = person.name();
-        personsByName.computeIfAbsent(name, mapper -> new ArrayList<>());
-        personsByName.get(name).add(person);
+        PERSONS_BY_NAME.computeIfAbsent(name, mapper -> new ArrayList<>());
+        PERSONS_BY_NAME.get(name).add(person);
     }
 
     private void addPersonToPersonsByAddress(Person person) {
         String address = person.address();
-        personsByAddress.computeIfAbsent(address, mapper -> new ArrayList<>());
-        personsByAddress.get(address).add(person);
+        PERSONS_BY_ADDRESS.computeIfAbsent(address, mapper -> new ArrayList<>());
+        PERSONS_BY_ADDRESS.get(address).add(person);
     }
 
     private void addPersonToPersonByPhone(Person person) {
         String phone = person.phoneNumber();
         if (phoneIsAvailable(phone)) {
-            personsByPhone.put(phone, person);
+            PERSONS_BY_PHONE.put(phone, person);
         }
     }
 
     private boolean phoneIsAvailable(String phone) {
-        return personsByPhone.get(phone) == null;
+        return PERSONS_BY_PHONE.get(phone) == null;
     }
 
 }

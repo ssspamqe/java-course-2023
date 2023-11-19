@@ -26,11 +26,12 @@ public class Driver {
     private static final int THREADS_MAX = 10;
     private static final int THREADS_DEFAULT = 2;
 
-    public static void main(String[] params) {
-        Launch();
+    private static final String PRINT_STATS_FORMAT = "{} - {}";
+
+    private Driver() {
     }
 
-    public static void Launch() {
+    public static void launch() {
         Map<Integer, Double> averageDeltas = getAverageDeltas(AMOUNTS_OF_POINTS);
         Map<Integer, Double> averageSpeedUp = getAverageSpeedUp(POINTS_DEFAULT);
 
@@ -85,7 +86,7 @@ public class Driver {
         LOGGER.info("Average delta:");
         LOGGER.info("(points - delta)");
         stats.forEach((key, value) -> {
-            LOGGER.info("{} - {}", key, value);
+            LOGGER.info(PRINT_STATS_FORMAT, key, value);
         });
     }
 
@@ -93,7 +94,7 @@ public class Driver {
         LOGGER.info("Average speed up:");
         LOGGER.info("(threads - speed up)");
         stats.forEach((key, value) -> {
-            LOGGER.info("{} - {}", key, value);
+            LOGGER.info(PRINT_STATS_FORMAT, key, value);
         });
     }
 

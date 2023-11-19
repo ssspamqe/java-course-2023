@@ -7,6 +7,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Task1 {
 
+    private Task1() {
+    }
+
     public static int incrementAsync(int num, @Positive int threads) {
         var res = new AtomicInteger(num);
         List<Thread> launcherThread = new ArrayList<>();

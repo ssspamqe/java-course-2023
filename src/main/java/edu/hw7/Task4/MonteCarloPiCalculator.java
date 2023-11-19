@@ -68,6 +68,7 @@ public class MonteCarloPiCalculator {
         );
     }
 
+    @SuppressWarnings("MagicNumber")
     private double calculatePi(int pointsInCircle, int allPoints) {
         return 4 * ((double) pointsInCircle / allPoints);
     }
