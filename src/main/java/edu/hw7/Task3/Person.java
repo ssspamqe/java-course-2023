@@ -5,18 +5,19 @@ public record Person(Integer id,
                      String address,
                      String phoneNumber) {
 
-    Person(String name, String address, String phoneNumber) {
-        this(-1, name, address, phoneNumber);
-    }
-
-    public boolean dontHaveNullFields() {
-        return id != null
-            && name != null
+    public Person {
+        if (!(name != null
             && address != null
-            && phoneNumber != null;
+            && phoneNumber != null)) {
+            throw new IllegalArgumentException("name, address and phoneNumber cant be null");
+        }
     }
 
-    public Person getPersonWithId(int id) {
+    Person(String name, String address, String phoneNumber){
+        this(null,name,address,phoneNumber);
+    }
+
+    public Person gtPersonWithId(int id) {
         return new Person(id, name(), address(), phoneNumber());
     }
 
