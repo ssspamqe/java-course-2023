@@ -1,17 +1,17 @@
 package edu.project4.fractalGeneration.pointModifiers.pointFunctions;
 
-import edu.project4.fractalGeneration.point.DoublePoint;
+import edu.project4.fractalGeneration.point.Point;
 
 public class SphericalFunction implements PointFunction {
 
     @Override
-    public DoublePoint get(DoublePoint oldPoint) {
-        double x = oldPoint.x();
-        double y = oldPoint.y();
+    public Point apply(Point oldPoint) {
+        double x = oldPoint.getX();
+        double y = oldPoint.getY();
 
         double newX = x / (x * x + y * y);
         double newY = y / (x * x + y * y);
 
-        return new DoublePoint(newX, newY);
+        return new Point(newX, newY);
     }
 }

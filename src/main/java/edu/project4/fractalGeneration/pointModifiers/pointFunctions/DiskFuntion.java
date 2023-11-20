@@ -1,12 +1,12 @@
 package edu.project4.fractalGeneration.pointModifiers.pointFunctions;
 
-import edu.project4.fractalGeneration.point.DoublePoint;
+import edu.project4.fractalGeneration.point.Point;
 
 public class DiskFuntion implements PointFunction{
     @Override
-    public DoublePoint get(DoublePoint oldPoint) {
-        double x = oldPoint.x();
-        double y = oldPoint.y();
+    public Point apply(Point oldPoint) {
+        double x = oldPoint.getX();
+        double y = oldPoint.getY();
 
         double trigonomArg = Math.PI * Math.sqrt(x*x + y*y);
         double coeff = Math.atan(y/x)/Math.PI;
@@ -14,6 +14,6 @@ public class DiskFuntion implements PointFunction{
         double newX = coeff * Math.sin(trigonomArg);
         double newY = coeff * Math.cos(trigonomArg);
 
-        return new DoublePoint(newX, newY);
+        return new Point(newX, newY);
     }
 }

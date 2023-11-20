@@ -1,10 +1,10 @@
 package edu.project4.fractalGeneration.pointModifiers.pointFunctions;
 
-import edu.project4.fractalGeneration.point.DoublePoint;
+import edu.project4.fractalGeneration.point.Point;
 
 public interface PointFunction {
 
-    public DoublePoint get(DoublePoint oldPoint);
+    public Point apply(Point oldPoint);
 
 
 }
