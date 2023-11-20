@@ -11,6 +11,8 @@ public class Pixel {
 
     private int hits = 0;
 
+    public double normal =0;
+
     public Pixel(int x, int y) {
         this.x = x;
         this.y = y;

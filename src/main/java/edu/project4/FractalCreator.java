@@ -54,20 +54,39 @@ public class FractalCreator {
                         }
 
                         pixel.incrementHits();
-
-//                        g.setColor(new Color(pixels.get(x1).get(y1).red,
-//                            pixels.get(x1).get(y1).green,
-//                            pixels.get(x1).get(y1).blue));
-//                        g.fillRect(x1,y1,1,1);
-//                        try {
-//                            ImageIO.write(image, "png", new File("./sampleFiles/img.png"));
-//                        } catch (Exception ex) {
-//                            ex.printStackTrace();
-//                        }
                     }
 
                 }
 
+            }
+        }
+
+        correction(xRes,yRes);
+    }
+
+
+    void correction(int xRes, int yRes){
+        double max = 0;
+        double gamma = 2.2;
+        for(int row = 0; row<xRes;row++){
+            for(int col = 0; col < yRes;col++){
+                var pixel = pixels.get(row).get(col);
+                if(pixel.getHits()!=0){
+                    pixel.normal = Math.log10(pixel.getHits());
+                    max = Math.max(max, pixel.normal);
+                }
+            }
+        }
+
+        for(int row = 0; row <xRes;row++){
+            for(int col =0; col < yRes;col++){
+                var pixel = pixels.get(row).get(col);
+                pixel.normal/=max;
+                double coefficient = Math.pow(pixel.normal,(1/gamma));
+
+                pixel.red = (int)(pixel.red * coefficient);
+                pixel.green = (int)(pixel.green * coefficient);
+                pixel.blue = (int)(pixel.blue * coefficient);
             }
         }
     }
