@@ -1,10 +1,6 @@
 package edu.project4;
 
-import javax.imageio.ImageIO;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.io.File;
+import edu.project4.fractalGeneration.FractalCreator;
 
 public class Driver {
 

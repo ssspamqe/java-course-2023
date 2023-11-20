@@ -1,5 +1,7 @@
-package edu.project4;
+package edu.project4.fractalGeneration;
 
+import edu.project4.Pixel;
+import edu.project4.fractalGeneration.pointModifiers.AffineTransformation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -15,7 +17,16 @@ public class FractalCreator {
 
     public List<List<Pixel>> pixels;
 
-    void create(int samples, int eqCount, int iterationsPerSample, int xRes, int yRes, boolean horizontalSymmetry, boolean verticalSymmetry) {
+    public static void create(
+        int samples,
+        int iterationsPerSample,
+        int offset,
+        int xRes,
+        int yRes,
+        boolean horizontalSymmetry,
+        boolean verticalSymmetry,
+        List<AffineTransformation> transformations
+    ) {
         fillTransformations(eqCount);
         fillPixels(xRes, yRes);
 
@@ -23,7 +34,7 @@ public class FractalCreator {
             double newX = ThreadLocalRandom.current().nextDouble(-1, 1);
             double newY = ThreadLocalRandom.current().nextDouble(-1, 1);
 
-            for (int step =-20; step < iterationsPerSample; step++) {
+            for (int step = -20; step < iterationsPerSample; step++) {
                 int i = ThreadLocalRandom.current().nextInt(0, eqCount);
 
                 double x = transformations.get(i).a * newX + transformations.get(i).b * newY + transformations.get(i).c;
@@ -56,7 +67,7 @@ public class FractalCreator {
 
                         pixel.incrementHits();
 
-                        if(verticalSymmetry){
+                        if (verticalSymmetry) {
                             int x2 = xRes - 1 - x1;
                             int y2 = y1;
                             var pixel2 = pixels.get(x2).get(y2);
@@ -67,7 +78,7 @@ public class FractalCreator {
 
                             pixel2.setHits(pixel.getHits());
                         }
-                        if(horizontalSymmetry){
+                        if (horizontalSymmetry) {
                             int x2 = x1;
                             int y2 = yRes - 1 - y1;
                             var pixel2 = pixels.get(x2).get(y2);
@@ -79,7 +90,6 @@ public class FractalCreator {
                             pixel2.setHits(pixel.getHits());
                         }
 
-
                     }
 
                 }
@@ -87,32 +97,31 @@ public class FractalCreator {
             }
         }
 
-        correction(xRes,yRes);
+        correction(xRes, yRes);
     }
 
-
-    void correction(int xRes, int yRes){
+    void correction(int xRes, int yRes) {
         double max = 0;
         double gamma = 2.2;
-        for(int row = 0; row<xRes;row++){
-            for(int col = 0; col < yRes;col++){
+        for (int row = 0; row < xRes; row++) {
+            for (int col = 0; col < yRes; col++) {
                 var pixel = pixels.get(row).get(col);
-                if(pixel.getHits()!=0){
+                if (pixel.getHits() != 0) {
                     pixel.normal = Math.log10(pixel.getHits());
                     max = Math.max(max, pixel.normal);
                 }
             }
         }
 
-        for(int row = 0; row <xRes;row++){
-            for(int col =0; col < yRes;col++){
+        for (int row = 0; row < xRes; row++) {
+            for (int col = 0; col < yRes; col++) {
                 var pixel = pixels.get(row).get(col);
-                pixel.normal/=max;
-                double coefficient = Math.pow(pixel.normal,(1/gamma));
+                pixel.normal /= max;
+                double coefficient = Math.pow(pixel.normal, (1 / gamma));
 
-                pixel.red = (int)(pixel.red * coefficient);
-                pixel.green = (int)(pixel.green * coefficient);
-                pixel.blue = (int)(pixel.blue * coefficient);
+                pixel.red = (int) (pixel.red * coefficient);
+                pixel.green = (int) (pixel.green * coefficient);
+                pixel.blue = (int) (pixel.blue * coefficient);
             }
         }
     }
