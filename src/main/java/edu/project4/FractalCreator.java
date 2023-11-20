@@ -15,7 +15,7 @@ public class FractalCreator {
 
     public List<List<Pixel>> pixels;
 
-    void create(int samples, int eqCount, int iterationsPerSample, int xRes, int yRes) {
+    void create(int samples, int eqCount, int iterationsPerSample, int xRes, int yRes, boolean horizontalSymmetry, boolean verticalSymmetry) {
         fillTransformations(eqCount);
         fillPixels(xRes, yRes);
 
@@ -45,6 +45,7 @@ public class FractalCreator {
                             pixel.red = transformations.get(i).red;
                             pixel.green = transformations.get(i).green;
                             pixel.blue = transformations.get(i).blue;
+
                         } else {
                             pixel.red = (pixel.red + transformations.get(i).red) / 2;
                             pixel.green =
@@ -54,6 +55,31 @@ public class FractalCreator {
                         }
 
                         pixel.incrementHits();
+
+                        if(verticalSymmetry){
+                            int x2 = xRes - 1 - x1;
+                            int y2 = y1;
+                            var pixel2 = pixels.get(x2).get(y2);
+
+                            pixel2.red = pixel.red;
+                            pixel2.green = pixel.green;
+                            pixel2.blue = pixel.blue;
+
+                            pixel2.setHits(pixel.getHits());
+                        }
+                        if(horizontalSymmetry){
+                            int x2 = x1;
+                            int y2 = yRes - 1 - y1;
+                            var pixel2 = pixels.get(x2).get(y2);
+
+                            pixel2.red = pixel.red;
+                            pixel2.green = pixel.green;
+                            pixel2.blue = pixel.blue;
+
+                            pixel2.setHits(pixel.getHits());
+                        }
+
+
                     }
 
                 }

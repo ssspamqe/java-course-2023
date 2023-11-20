@@ -18,12 +18,13 @@ public class Pixel {
         this.y = y;
     }
 
-
-
     public void incrementHits(){
         hits++;
     }
     public int getHits() {
         return hits;
+    }
+    public void setHits(int hits){
+        this.hits = hits;
     }
 }
