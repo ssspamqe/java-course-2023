@@ -15,15 +15,15 @@ public class FractalCreator {
 
     public List<List<Pixel>> pixels;
 
-    void create(int n, int eqCount, int it, int xRes, int yRes) {
+    void create(int samples, int eqCount, int iterationsPerSample, int xRes, int yRes) {
         fillTransformations(eqCount);
         fillPixels(xRes, yRes);
 
-        for (int num = 0; num < n; num++) {
-            double newX = ThreadLocalRandom.current().nextDouble(XMIN, XMAX);
-            double newY = ThreadLocalRandom.current().nextDouble(YMIN, YMAX);
+        for (int num = 0; num < samples; num++) {
+            double newX = ThreadLocalRandom.current().nextDouble(-1, 1);
+            double newY = ThreadLocalRandom.current().nextDouble(-1, 1);
 
-            for (int step = -20; step < it; step++) {
+            for (int step =-20; step < iterationsPerSample; step++) {
                 int i = ThreadLocalRandom.current().nextInt(0, eqCount);
 
                 double x = transformations.get(i).a * newX + transformations.get(i).b * newY + transformations.get(i).c;
@@ -38,24 +38,38 @@ public class FractalCreator {
                     int y1 = yRes - (int) (((YMAX - newY) / (YMAX - YMIN)) * yRes);
 
                     if (x1 < xRes && y1 < yRes) {
-                        if (pixels.get(x1).get(y1).getHits() == 0) {
-                            pixels.get(x1).get(y1).red = transformations.get(i).red;
-                            pixels.get(x1).get(y1).green = transformations.get(i).green;
-                            pixels.get(x1).get(y1).blue = transformations.get(i).blue;
+
+                        Pixel pixel = pixels.get(x1).get(y1);
+
+                        if (pixel.getHits() == 0) {
+                            pixel.red = transformations.get(i).red;
+                            pixel.green = transformations.get(i).green;
+                            pixel.blue = transformations.get(i).blue;
                         } else {
-                            pixels.get(x1).get(y1).red = (pixels.get(x1).get(y1).red + transformations.get(i).red)/2;
-                            pixels.get(x1).get(y1).green = (pixels.get(x1).get(y1).green + transformations.get(i).green)/2;
-                            pixels.get(x1).get(y1).blue = (pixels.get(x1).get(y1).blue + transformations.get(i).blue)/2;
+                            pixel.red = (pixel.red + transformations.get(i).red) / 2;
+                            pixel.green =
+                                (pixel.green + transformations.get(i).green) / 2;
+                            pixel.blue =
+                                (pixel.blue + transformations.get(i).blue) / 2;
                         }
 
-                        pixels.get(x1).get(y1).incrementHits();
+                        pixel.incrementHits();
+
+//                        g.setColor(new Color(pixels.get(x1).get(y1).red,
+//                            pixels.get(x1).get(y1).green,
+//                            pixels.get(x1).get(y1).blue));
+//                        g.fillRect(x1,y1,1,1);
+//                        try {
+//                            ImageIO.write(image, "png", new File("./sampleFiles/img.png"));
+//                        } catch (Exception ex) {
+//                            ex.printStackTrace();
+//                        }
                     }
 
                 }
 
             }
         }
-
     }
 
     private void fillTransformations(int amount) {
@@ -71,8 +85,11 @@ public class FractalCreator {
             double d = ThreadLocalRandom.current().nextDouble(-1, 1);
             double e = ThreadLocalRandom.current().nextDouble(-1, 1);
 
+            double c = ThreadLocalRandom.current().nextDouble(-10, 10);
+            double f = ThreadLocalRandom.current().nextDouble(-10, 10);
+
             if (areCorrectCoefficients(a, b, d, e)) {
-                return new AffineTransformation(a, b, 1, d, e, 1);
+                return new AffineTransformation(a, b, c, d, e, f);
             }
         }
 

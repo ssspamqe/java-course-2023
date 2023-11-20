@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import javax.imageio.ImageIO;
 
@@ -36,13 +38,19 @@ public class ImageRenderer {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 var pixel = pixels.get(i).get(j);
-                g.setColor(new Color(pixel.red,pixel.green,pixel.blue));
-                g.fillRect(i,j,1,1);
+                g.setColor(new Color(pixel.red, pixel.green, pixel.blue));
+                g.fillRect(i, j, 1, 1);
             }
         }
 
+        String path = "./sampleFiles/";
+        int i = 0;
+        String fileName = "img";
+        while (Files.exists(Path.of(path + fileName +i+".png"))) {
+            i++;
+        }
         try {
-            ImageIO.write(image, "png", new File("./sampleFiles/img.png"));
+            ImageIO.write(image, "png", new File(path + fileName + i + ".png"));
         } catch (Exception ex) {
             ex.printStackTrace();
         }

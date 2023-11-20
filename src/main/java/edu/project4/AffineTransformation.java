@@ -23,8 +23,8 @@ public class AffineTransformation {
         this.e = e;
         this.f = f;
 
-        red = ThreadLocalRandom.current().nextInt(0,255);
-        green = ThreadLocalRandom.current().nextInt(0,255);
-        blue = ThreadLocalRandom.current().nextInt(0,255);
+        red = ThreadLocalRandom.current().nextInt(0,256);
+        green = ThreadLocalRandom.current().nextInt(0,256);
+        blue = ThreadLocalRandom.current().nextInt(0,256);
     }
 }
