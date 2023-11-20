@@ -1,22 +1,23 @@
-package edu.project4.fractalGeneration;
+package edu.project4.fractalGeneration.graphics;
 
-import edu.project4.Pixel;
+import edu.project4.fractalGeneration.graphics.Pixel;
+import edu.project4.fractalGeneration.point.Dot;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PixelCanvas {
 
-    private final int xSize;
-    private final int ySize;
+    private final int height;
+    private final int width;
 
     private final boolean verticalSymmetry;
     private final boolean horizontalSymmetry;
 
     private List<List<Pixel>> canvas;
 
-    public PixelCanvas(int xSize, int ySize, boolean verticalSymmetry, boolean horizontalSymmetry) {
-        this.xSize = xSize;
-        this.ySize = ySize;
+    public PixelCanvas(int height, int width, boolean verticalSymmetry, boolean horizontalSymmetry) {
+        this.height = height;
+        this.width = width;
 
         this.verticalSymmetry = verticalSymmetry;
         this.horizontalSymmetry = horizontalSymmetry;
@@ -24,8 +25,8 @@ public class PixelCanvas {
         fillCanvas();
     }
 
-    public PixelCanvas(int xSize, int ySize) {
-        this(xSize, ySize, false, false);
+    public PixelCanvas(int height, int width) {
+        this(height, width, false, false);
     }
 
     private void fillCanvas() {
@@ -41,11 +42,11 @@ public class PixelCanvas {
     }
 
     private void fillCanvasNoSymmetry() {
-        canvas = new ArrayList<>(xSize);
+        canvas = new ArrayList<>(height);
 
-        for (int row = 0; row < xSize; row++) {
-            List<Pixel> pixelRow = new ArrayList<>(ySize);
-            for (int column = 0; column < ySize; column++) {
+        for (int row = 0; row < height; row++) {
+            List<Pixel> pixelRow = new ArrayList<>(width);
+            for (int column = 0; column < width; column++) {
                 pixelRow.add(new Pixel());
             }
             canvas.add(pixelRow);
@@ -74,7 +75,7 @@ public class PixelCanvas {
         fillNullCanvas();
 
         int maxX = getMaxX();
-        int maxY = ySize;
+        int maxY = width;
 
         for (int row = 0; row < maxX; row++) {
             for (int column = 0; column < maxY; column++) {
@@ -89,7 +90,7 @@ public class PixelCanvas {
     private void fillCanvasVerticalSymmetry() {
         fillNullCanvas();
 
-        int maxX = xSize;
+        int maxX = height;
         int maxY = getMaxY();
 
         for (int row = 0; row < maxX; row++) {
@@ -103,11 +104,11 @@ public class PixelCanvas {
     }
 
     private void fillNullCanvas() {
-        canvas = new ArrayList<>(xSize);
+        canvas = new ArrayList<>(height);
 
-        for (int row = 0; row < xSize; row++) {
-            List<Pixel> pixelRow = new ArrayList<>(ySize);
-            for (int column = 0; column < ySize; column++) {
+        for (int row = 0; row < height; row++) {
+            List<Pixel> pixelRow = new ArrayList<>(width);
+            for (int column = 0; column < width; column++) {
                 pixelRow.add(null);
             }
             canvas.add(pixelRow);
@@ -115,24 +116,34 @@ public class PixelCanvas {
     }
 
     private int getVerticallyMirroredDot(int y) {
-        return ySize - y - 1;
+        return width - y - 1;
     }
 
     private int getHorizontallyMirroredDot(int x) {
-        return xSize - x - 1;
+        return height - x - 1;
     }
 
     private int getMaxX() {
-        return xSize / 2 + (1 - xSize % 2);
+        return height / 2 + (1 - height % 2);
     }
 
     private int getMaxY() {
-        return ySize / 2 + (1 - ySize % 2);
+        return width / 2 + (1 - width % 2);
     }
 
 
     public Pixel getPixel(int x, int y){
         return canvas.get(x).get(y);
     }
+    public Pixel getPixel(Dot dot){
+        return getPixel(dot.x(), dot.y());
+    }
 
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
 }

@@ -1,6 +1,7 @@
 package edu.project4.fractalGeneration;
 
-import edu.project4.Pixel;
+import edu.project4.fractalGeneration.graphics.Pixel;
+import edu.project4.fractalGeneration.graphics.PixelCanvas;
 import edu.project4.fractalGeneration.point.Dot;
 import edu.project4.fractalGeneration.point.Point;
 import edu.project4.fractalGeneration.pointModifiers.AffineTransformation;
@@ -16,19 +17,19 @@ public class FractalCreator {
     private static final int Y_MIN = -1;
     private static final int Y_MAX = 1;
 
-    public static void create(
+    public static PixelCanvas create(
         int samples,
         int iterationsPerSample,
         int offset,
-        int xRes,
-        int yRes,
-        boolean horizontalSymmetry,
+        int height,
+        int width,
         boolean verticalSymmetry,
+        boolean horizontalSymmetry,
         List<AffineTransformation> transformations,
         List<PointFunction> pointFunctions
     ) {
 
-        PixelCanvas canvas = new PixelCanvas(xRes, yRes, verticalSymmetry, horizontalSymmetry);
+        PixelCanvas canvas = new PixelCanvas(height, width, verticalSymmetry, horizontalSymmetry);
 
         for (int sample = 0; sample < samples; sample++) {
             Point newPoint = getRandomInitialPoint();
@@ -43,70 +44,17 @@ public class FractalCreator {
                     && (newPoint.getX() >= X_MIN && newPoint.getX() <= X_MAX)
                     && (newPoint.getY() >= Y_MIN && newPoint.getY() <= Y_MAX)) {
 
-                    Dot dot = getDot(newPoint, xRes, yRes);
+                    Dot dot = getDot(newPoint, height, width);
 
-                    if (dot.x() < xRes && dot.y() < yRes) {
+                    if (dot.x() < height && dot.y() < width) {
                         paintPixel(dot,canvas,transformation.getColor());
                     }
                 }
             }
         }
+
+        return canvas;
     }
-
-//    void correction(int xRes, int yRes) {
-//        double max = 0;
-//        double gamma = 2.2;
-//        for (int row = 0; row < xRes; row++) {
-//            for (int col = 0; col < yRes; col++) {
-//                var pixel = pixels.get(row).get(col);
-//                if (pixel.getHits() != 0) {
-//                    pixel.normal = Math.log10(pixel.getHits());
-//                    max = Math.max(max, pixel.normal);
-//                }
-//            }
-//        }
-//
-//        for (int row = 0; row < xRes; row++) {
-//            for (int col = 0; col < yRes; col++) {
-//                var pixel = pixels.get(row).get(col);
-//                pixel.normal /= max;
-//                double coefficient = Math.pow(pixel.normal, (1 / gamma));
-//
-//                pixel.red = (int) (pixel.red * coefficient);
-//                pixel.green = (int) (pixel.green * coefficient);
-//                pixel.blue = (int) (pixel.blue * coefficient);
-//            }
-//        }
-//    }
-
-//    private void fillTransformations(int amount) {
-//        for (int i = 0; i < amount; i++) {
-//            transformations.add(generateAffineTransformation());
-//        }
-//    }
-
-//    private AffineTransformation generateAffineTransformation() {
-//        while (true) {
-//            double a = ThreadLocalRandom.current().nextDouble(-1, 1);
-//            double b = ThreadLocalRandom.current().nextDouble(-1, 1);
-//            double d = ThreadLocalRandom.current().nextDouble(-1, 1);
-//            double e = ThreadLocalRandom.current().nextDouble(-1, 1);
-//
-//            double c = ThreadLocalRandom.current().nextDouble(-10, 10);
-//            double f = ThreadLocalRandom.current().nextDouble(-10, 10);
-//
-//            if (areCorrectCoefficients(a, b, d, e)) {
-//                return new AffineTransformation(a, b, c, d, e, f);
-//            }
-//        }
-//
-//    }
-//
-//    private boolean areCorrectCoefficients(double a, double b, double d, double e) {
-//        return a * a + d * d < 1
-//            && b * b + e * e < 1
-//            && a * a + b * b + d * d + e * e < 1 + (a * e - b * d) * (a * e - b * d);
-//    }
 
     private static Point getRandomInitialPoint() {
         return new Point(

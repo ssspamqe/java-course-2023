@@ -22,6 +22,7 @@ public class AffineTransformation {
         this.color = color;
     }
 
+
     public double getA() {
         return a;
     }

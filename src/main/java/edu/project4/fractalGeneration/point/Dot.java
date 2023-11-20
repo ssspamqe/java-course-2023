@@ -1,4 +1,4 @@
 package edu.project4.fractalGeneration.point;
 
-public record Dot(double x, double y) {
+public record Dot(int x, int y) {
 }
