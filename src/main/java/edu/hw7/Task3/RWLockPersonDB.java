@@ -6,52 +6,52 @@ import org.jetbrains.annotations.Nullable;
 
 public class RWLockPersonDB extends AbstractPersonDB {
 
-    private final ReentrantReadWriteLock rwLock = new ReentrantReadWriteLock();
+    private static final ReentrantReadWriteLock RW_LOCK = new ReentrantReadWriteLock();
 
     public void add(Person newPerson) {
-        rwLock.writeLock().lock();
+        RW_LOCK.writeLock().lock();
         try {
             super.add(newPerson);
         } finally {
-            rwLock.writeLock().unlock();
+            RW_LOCK.writeLock().unlock();
         }
     }
 
     public void delete(int id) {
-        rwLock.writeLock().lock();
+        RW_LOCK.writeLock().lock();
         try {
             super.delete(id);
         } finally {
-            rwLock.writeLock().unlock();
+            RW_LOCK.writeLock().unlock();
         }
     }
 
     @Override
-    public @Nullable List<Person> findByName(String name) {
-        rwLock.readLock().lock();
+    public List<Person> findByName(String name) {
+        RW_LOCK.readLock().lock();
         try {
             return super.findByName(name);
         } finally {
-            rwLock.readLock().unlock();
+            RW_LOCK.readLock().unlock();
         }
     }
 
     @Override
-    public @Nullable List<Person> findByAddress(String address) {
-        rwLock.readLock().lock();
+    public List<Person> findByAddress(String address) {
+        RW_LOCK.readLock().lock();
         try {
             return super.findByAddress(address);
         } finally {
-            rwLock.readLock().unlock();
+            RW_LOCK.readLock().unlock();
         }
     }
 
     public @Nullable Person findByPhone(String phone) {
-        rwLock.readLock().lock();
+        RW_LOCK.readLock().lock();
         try {
             return super.findByPhone(phone);
         } finally {
-            rwLock.readLock().unlock();
+            RW_LOCK.readLock().unlock();
         }
     }
 }

@@ -8,9 +8,9 @@ public interface PersonDB {
 
     void delete(int id);
 
-    @Nullable List<Person> findByName(String name);
+    List<Person> findByName(String name);
 
-    @Nullable List<Person> findByAddress(String address);
+    List<Person> findByAddress(String address);
 
     @Nullable Person findByPhone(String phone);
 }

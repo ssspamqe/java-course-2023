@@ -10,7 +10,7 @@ public record Person(Integer id,
             && name != null
             && address != null
             && phoneNumber != null)) {
-            throw new IllegalArgumentException("name, address and phoneNumber cant be null");
+            throw new IllegalArgumentException("Person's fields cant be null");
         }
     }
 }

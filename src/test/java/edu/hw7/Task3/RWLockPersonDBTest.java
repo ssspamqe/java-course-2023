@@ -17,7 +17,7 @@ public class RWLockPersonDBTest {
     }
 
     @Test
-    @DisplayName("RWLockPersonDB should be able to return a list of persons with same names")
+    @DisplayName("RWLockPersonDB should be able to return a list of persons with specified name")
     void RWLockPersonDB_should_returnListOfPersonsWithSameName() {
         String name1 = "name1";
         String name2 = "name2";
@@ -35,7 +35,7 @@ public class RWLockPersonDBTest {
     }
 
     @Test
-    @DisplayName("RWLockPersonDB should be able to return a list of persons with same addresses")
+    @DisplayName("RWLockPersonDB should be able to return a list of persons with specified address")
     void RWLockPersonDB_should_returnListOfPersonsWithSameAddresses() {
         String address1 = "address1";
         String address2 = "address2";
@@ -66,6 +66,20 @@ public class RWLockPersonDBTest {
         Person returnedPerson = personDAO.findByPhone(phone1);
 
         assertThat(returnedPerson).isEqualTo(personWithPhone1);
+    }
+
+    @Test
+    @DisplayName("RWLockPersonDB should be able to delete person by id")
+    void RWLockPersonDB_should_beAble_to_deletePersonById() {
+        int id = 0;
+        String phone = "121";
+        Person person = new Person(id, "", "", phone);
+
+        personDAO.add(person);
+        personDAO.delete(id);
+        Person returnedPerson = personDAO.findByPhone(phone);
+
+        assertThat(returnedPerson).isNull();
     }
 
     @Test

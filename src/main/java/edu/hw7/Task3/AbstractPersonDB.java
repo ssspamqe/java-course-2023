@@ -8,15 +8,15 @@ import org.jetbrains.annotations.Nullable;
 
 public class AbstractPersonDB implements PersonDB {
 
-    private static final Map<Integer, Person> PERSONS_BY_ID = new HashMap<>();
-    private static final Map<String, List<Person>> PERSONS_BY_NAME = new HashMap<>();
-    private static final Map<String, List<Person>> PERSONS_BY_ADDRESS = new HashMap<>();
-    private static final Map<String, Person> PERSONS_BY_PHONE = new HashMap<>();
+    private final Map<Integer, Person> personsById = new HashMap<>();
+    private final Map<String, List<Person>> personsByName = new HashMap<>();
+    private final Map<String, List<Person>> personsByAddress = new HashMap<>();
+    private final Map<String, Person> personsByPhone = new HashMap<>();
 
     @Override
     public void add(Person newPerson) {
         if (!phoneIsAvailable(newPerson.phoneNumber())
-        || PERSONS_BY_ID.containsKey(newPerson.id())) {
+            || personsById.containsKey(newPerson.id())) {
             return;
         }
         addToDB(newPerson);
@@ -24,68 +24,76 @@ public class AbstractPersonDB implements PersonDB {
 
     @Override
     public void delete(int id) {
-        Person person = PERSONS_BY_ID.get(id);
-        deletePersonInPersonsByName(person);
-        deletePersonInPersonsByAddress(person);
-        deletePersonInPersonsByPhone(person);
-        PERSONS_BY_ID.remove(id);
+        Person person = personsById.get(id);
+        deletePersonFromPersonsByName(person);
+        deletePersonFromPersonsByAddress(person);
+        deletePersonFromPersonsByPhone(person);
+        personsById.remove(id);
     }
 
     @Override
-    public @Nullable List<Person> findByName(String name) {
-        return PERSONS_BY_NAME.get(name);
+    public List<Person> findByName(String name) {
+        return personsByName.get(name);
     }
 
     @Override
-    public @Nullable List<Person> findByAddress(String address) {
-        return PERSONS_BY_ADDRESS.get(address);
+    public List<Person> findByAddress(String address) {
+        return personsByAddress.get(address);
     }
 
     @Override
     public @Nullable Person findByPhone(String phone) {
-        return PERSONS_BY_PHONE.get(phone);
+        return personsByPhone.get(phone);
     }
 
     private void addToDB(Person person) {
+        addPersonToPersonsById(person);
         addPersonToPersonsByName(person);
         addPersonToPersonsByAddress(person);
-        addPersonToPersonByPhone(person);
+        addPersonToPersonsByPhone(person);
     }
 
-    private void deletePersonInPersonsByName(Person person) {
-        PERSONS_BY_NAME.values().forEach(it -> it.remove(person));
+    private void deletePersonFromPersonsByName(Person person) {
+        personsByName.values().forEach(it -> it.remove(person));
     }
 
-    private void deletePersonInPersonsByAddress(Person person) {
-        PERSONS_BY_ADDRESS.values().forEach(it -> it.remove(person));
+    private void deletePersonFromPersonsByAddress(Person person) {
+        personsByAddress.values().forEach(it -> it.remove(person));
     }
 
-    private void deletePersonInPersonsByPhone(Person person) {
+    private void deletePersonFromPersonsByPhone(Person person) {
         String phone = person.phoneNumber();
-        PERSONS_BY_PHONE.remove(phone);
+        personsByPhone.remove(phone);
+    }
+
+    private void addPersonToPersonsById(Person person) {
+        int id = person.id();
+        if (!personsById.containsKey(id)) {
+            personsById.put(id, person);
+        }
     }
 
     private void addPersonToPersonsByName(Person person) {
         String name = person.name();
-        PERSONS_BY_NAME.computeIfAbsent(name, mapper -> new ArrayList<>());
-        PERSONS_BY_NAME.get(name).add(person);
+        personsByName.computeIfAbsent(name, mapper -> new ArrayList<>());
+        personsByName.get(name).add(person);
     }
 
     private void addPersonToPersonsByAddress(Person person) {
         String address = person.address();
-        PERSONS_BY_ADDRESS.computeIfAbsent(address, mapper -> new ArrayList<>());
-        PERSONS_BY_ADDRESS.get(address).add(person);
+        personsByAddress.computeIfAbsent(address, mapper -> new ArrayList<>());
+        personsByAddress.get(address).add(person);
     }
 
-    private void addPersonToPersonByPhone(Person person) {
+    private void addPersonToPersonsByPhone(Person person) {
         String phone = person.phoneNumber();
         if (phoneIsAvailable(phone)) {
-            PERSONS_BY_PHONE.put(phone, person);
+            personsByPhone.put(phone, person);
         }
     }
 
     private boolean phoneIsAvailable(String phone) {
-        return PERSONS_BY_PHONE.get(phone) == null;
+        return personsByPhone.get(phone) == null;
     }
 
 }
