@@ -1,9 +1,11 @@
 package edu.project4.fractalGeneration;
 
 import edu.project4.Pixel;
+import edu.project4.fractalGeneration.point.Dot;
+import edu.project4.fractalGeneration.point.Point;
 import edu.project4.fractalGeneration.pointModifiers.AffineTransformation;
 import edu.project4.fractalGeneration.pointModifiers.pointFunctions.PointFunction;
-import java.util.ArrayList;
+import java.awt.Color;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -26,140 +28,121 @@ public class FractalCreator {
         List<PointFunction> pointFunctions
     ) {
 
-        for (int num = 0; num < samples; num++) {
-            double newX = ThreadLocalRandom.current().nextDouble(-1, 1);
-            double newY = ThreadLocalRandom.current().nextDouble(-1, 1);
+        PixelCanvas canvas = new PixelCanvas(xRes, yRes, verticalSymmetry, horizontalSymmetry);
 
-            for (int step = -20; step < iterationsPerSample; step++) {
-                int i = ThreadLocalRandom.current().nextInt(0, eqCount);
+        for (int sample = 0; sample < samples; sample++) {
+            Point newPoint = getRandomInitialPoint();
 
-                double x = transformations.get(i).a * newX + transformations.get(i).b * newY + transformations.get(i).c;
-                double y = transformations.get(i).d * newX + transformations.get(i).e * newY + transformations.get(i).f;
+            for (int iteration = offset; iteration < iterationsPerSample; iteration++) {
+                AffineTransformation transformation = getRandomTransformation(transformations);
 
-                newX = Math.sin(x);
-                newY = Math.sin(y);
+                Point transformedPoint = newPoint.getTransformedPoint(transformation);
+                newPoint = applyPointFunctions(transformedPoint, pointFunctions);
 
-                if (step >= 0 && (newX >= X_MIN && newX <= X_MAX) && (newY >= Y_MIN && newY <= Y_MAX)) {
+                if (iteration >= 0
+                    && (newPoint.getX() >= X_MIN && newPoint.getX() <= X_MAX)
+                    && (newPoint.getY() >= Y_MIN && newPoint.getY() <= Y_MAX)) {
 
-                    int x1 = xRes - (int) (((X_MAX - newX) / (X_MAX - X_MIN)) * xRes);
-                    int y1 = yRes - (int) (((Y_MAX - newY) / (Y_MAX - Y_MIN)) * yRes);
+                    Dot dot = getDot(newPoint, xRes, yRes);
 
-                    if (x1 < xRes && y1 < yRes) {
-
-                        Pixel pixel = pixels.get(x1).get(y1);
-
-                        if (pixel.getHits() == 0) {
-                            pixel.red = transformations.get(i).red;
-                            pixel.green = transformations.get(i).green;
-                            pixel.blue = transformations.get(i).blue;
-
-                        } else {
-                            pixel.red = (pixel.red + transformations.get(i).red) / 2;
-                            pixel.green =
-                                (pixel.green + transformations.get(i).green) / 2;
-                            pixel.blue =
-                                (pixel.blue + transformations.get(i).blue) / 2;
-                        }
-
-                        pixel.incrementHits();
-
-                        if (verticalSymmetry) {
-                            int x2 = xRes - 1 - x1;
-                            int y2 = y1;
-                            var pixel2 = pixels.get(x2).get(y2);
-
-                            pixel2.red = pixel.red;
-                            pixel2.green = pixel.green;
-                            pixel2.blue = pixel.blue;
-
-                            pixel2.setHits(pixel.getHits());
-                        }
-                        if (horizontalSymmetry) {
-                            int x2 = x1;
-                            int y2 = yRes - 1 - y1;
-                            var pixel2 = pixels.get(x2).get(y2);
-
-                            pixel2.red = pixel.red;
-                            pixel2.green = pixel.green;
-                            pixel2.blue = pixel.blue;
-
-                            pixel2.setHits(pixel.getHits());
-                        }
-
+                    if (dot.x() < xRes && dot.y() < yRes) {
+                        paintPixel(dot,canvas,transformation.getColor());
                     }
-
-                }
-
-            }
-        }
-
-        correction(xRes, yRes);
-    }
-
-    void correction(int xRes, int yRes) {
-        double max = 0;
-        double gamma = 2.2;
-        for (int row = 0; row < xRes; row++) {
-            for (int col = 0; col < yRes; col++) {
-                var pixel = pixels.get(row).get(col);
-                if (pixel.getHits() != 0) {
-                    pixel.normal = Math.log10(pixel.getHits());
-                    max = Math.max(max, pixel.normal);
                 }
             }
         }
-
-        for (int row = 0; row < xRes; row++) {
-            for (int col = 0; col < yRes; col++) {
-                var pixel = pixels.get(row).get(col);
-                pixel.normal /= max;
-                double coefficient = Math.pow(pixel.normal, (1 / gamma));
-
-                pixel.red = (int) (pixel.red * coefficient);
-                pixel.green = (int) (pixel.green * coefficient);
-                pixel.blue = (int) (pixel.blue * coefficient);
-            }
-        }
     }
 
-    private void fillTransformations(int amount) {
-        for (int i = 0; i < amount; i++) {
-            transformations.add(generateAffineTransformation());
-        }
+//    void correction(int xRes, int yRes) {
+//        double max = 0;
+//        double gamma = 2.2;
+//        for (int row = 0; row < xRes; row++) {
+//            for (int col = 0; col < yRes; col++) {
+//                var pixel = pixels.get(row).get(col);
+//                if (pixel.getHits() != 0) {
+//                    pixel.normal = Math.log10(pixel.getHits());
+//                    max = Math.max(max, pixel.normal);
+//                }
+//            }
+//        }
+//
+//        for (int row = 0; row < xRes; row++) {
+//            for (int col = 0; col < yRes; col++) {
+//                var pixel = pixels.get(row).get(col);
+//                pixel.normal /= max;
+//                double coefficient = Math.pow(pixel.normal, (1 / gamma));
+//
+//                pixel.red = (int) (pixel.red * coefficient);
+//                pixel.green = (int) (pixel.green * coefficient);
+//                pixel.blue = (int) (pixel.blue * coefficient);
+//            }
+//        }
+//    }
+
+//    private void fillTransformations(int amount) {
+//        for (int i = 0; i < amount; i++) {
+//            transformations.add(generateAffineTransformation());
+//        }
+//    }
+
+//    private AffineTransformation generateAffineTransformation() {
+//        while (true) {
+//            double a = ThreadLocalRandom.current().nextDouble(-1, 1);
+//            double b = ThreadLocalRandom.current().nextDouble(-1, 1);
+//            double d = ThreadLocalRandom.current().nextDouble(-1, 1);
+//            double e = ThreadLocalRandom.current().nextDouble(-1, 1);
+//
+//            double c = ThreadLocalRandom.current().nextDouble(-10, 10);
+//            double f = ThreadLocalRandom.current().nextDouble(-10, 10);
+//
+//            if (areCorrectCoefficients(a, b, d, e)) {
+//                return new AffineTransformation(a, b, c, d, e, f);
+//            }
+//        }
+//
+//    }
+//
+//    private boolean areCorrectCoefficients(double a, double b, double d, double e) {
+//        return a * a + d * d < 1
+//            && b * b + e * e < 1
+//            && a * a + b * b + d * d + e * e < 1 + (a * e - b * d) * (a * e - b * d);
+//    }
+
+    private static Point getRandomInitialPoint() {
+        return new Point(
+            ThreadLocalRandom.current().nextDouble(X_MIN, X_MAX),
+            ThreadLocalRandom.current().nextDouble(Y_MIN, Y_MAX)
+        );
     }
 
-    private AffineTransformation generateAffineTransformation() {
-        while (true) {
-            double a = ThreadLocalRandom.current().nextDouble(-1, 1);
-            double b = ThreadLocalRandom.current().nextDouble(-1, 1);
-            double d = ThreadLocalRandom.current().nextDouble(-1, 1);
-            double e = ThreadLocalRandom.current().nextDouble(-1, 1);
-
-            double c = ThreadLocalRandom.current().nextDouble(-10, 10);
-            double f = ThreadLocalRandom.current().nextDouble(-10, 10);
-
-            if (areCorrectCoefficients(a, b, d, e)) {
-                return new AffineTransformation(a, b, c, d, e, f);
-            }
+    private static Point applyPointFunctions(Point point, List<PointFunction> functions) {
+        Point resPoint = functions.get(0).apply(point);
+        for (int i = 1; i < functions.size(); i++) {
+            resPoint = functions.get(i).apply(resPoint);
         }
-
+        return resPoint;
     }
 
-    private boolean areCorrectCoefficients(double a, double b, double d, double e) {
-        return a * a + d * d < 1
-            && b * b + e * e < 1
-            && a * a + b * b + d * d + e * e < 1 + (a * e - b * d) * (a * e - b * d);
+    private static Dot getDot(Point point, int xRes, int yRes) {
+        int x = xRes - (int) (((X_MAX - point.getX()) / (X_MAX - X_MIN)) * xRes);
+        int y = yRes - (int) (((Y_MAX - point.getY()) / (Y_MAX - Y_MIN)) * yRes);
+
+        return new Dot(x, y);
     }
 
-    private void fillPixels(int xRes, int yRes) {
-        pixels = new ArrayList<>();
-        for (int i = 0; i < xRes; i++) {
-            List<Pixel> line = new ArrayList<>();
-            for (int j = 0; j < yRes; j++) {
-                line.add(new Pixel(i, j));
-            }
-            pixels.add(line);
+    private static void paintPixel(Dot dot, PixelCanvas canvas, Color transformationColor) {
+        Pixel pixel = canvas.getPixel(dot);
+
+        if (pixel.getHits() == 0) {
+            pixel.setColor(transformationColor);
+        } else {
+            pixel.mixColor(transformationColor);
         }
+        pixel.incrementHits();
+    }
+
+    private static AffineTransformation getRandomTransformation(List<AffineTransformation> transformations){
+        return transformations.get(ThreadLocalRandom.current().nextInt(0, transformations.size()));
     }
 
 }
