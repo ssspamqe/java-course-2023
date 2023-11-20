@@ -1,22 +1,11 @@
 package edu.project4;
 
+import java.awt.Color;
+
 public class Pixel {
-
-    private int x;
-    private int y;
-
-    public int red = 0;
-    public int green = 0;
-    public int blue = 0;
-
+    private Color color = Color.BLACK;
     private int hits = 0;
-
     public double normal =0;
-
-    public Pixel(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
 
     public void incrementHits(){
         hits++;

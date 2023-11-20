@@ -2,20 +2,17 @@ package edu.project4.fractalGeneration;
 
 import edu.project4.Pixel;
 import edu.project4.fractalGeneration.pointModifiers.AffineTransformation;
+import edu.project4.fractalGeneration.pointModifiers.pointFunctions.PointFunction;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class FractalCreator {
 
-    private static final int XMIN = -1;
-    private static final int XMAX = 1;
-    private static final int YMIN = -1;
-    private static final int YMAX = 1;
-
-    List<AffineTransformation> transformations = new ArrayList<>();
-
-    public List<List<Pixel>> pixels;
+    private static final int X_MIN = -1;
+    private static final int X_MAX = 1;
+    private static final int Y_MIN = -1;
+    private static final int Y_MAX = 1;
 
     public static void create(
         int samples,
@@ -25,10 +22,9 @@ public class FractalCreator {
         int yRes,
         boolean horizontalSymmetry,
         boolean verticalSymmetry,
-        List<AffineTransformation> transformations
+        List<AffineTransformation> transformations,
+        List<PointFunction> pointFunctions
     ) {
-        fillTransformations(eqCount);
-        fillPixels(xRes, yRes);
 
         for (int num = 0; num < samples; num++) {
             double newX = ThreadLocalRandom.current().nextDouble(-1, 1);
@@ -43,10 +39,10 @@ public class FractalCreator {
                 newX = Math.sin(x);
                 newY = Math.sin(y);
 
-                if (step >= 0 && (newX >= XMIN && newX <= XMAX) && (newY >= YMIN && newY <= YMAX)) {
+                if (step >= 0 && (newX >= X_MIN && newX <= X_MAX) && (newY >= Y_MIN && newY <= Y_MAX)) {
 
-                    int x1 = xRes - (int) (((XMAX - newX) / (XMAX - XMIN)) * xRes);
-                    int y1 = yRes - (int) (((YMAX - newY) / (YMAX - YMIN)) * yRes);
+                    int x1 = xRes - (int) (((X_MAX - newX) / (X_MAX - X_MIN)) * xRes);
+                    int y1 = yRes - (int) (((Y_MAX - newY) / (Y_MAX - Y_MIN)) * yRes);
 
                     if (x1 < xRes && y1 < yRes) {
 
