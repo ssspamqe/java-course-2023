@@ -12,8 +12,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class SingleThreadFractalCreator extends AbstractFractalCreator {
 
-
-
     public static PixelCanvas create(
         int samples,
         int iterationsPerSample,
@@ -25,7 +23,6 @@ public class SingleThreadFractalCreator extends AbstractFractalCreator {
         List<AffineTransformation> transformations,
         List<PointFunction> pointFunctions
     ) {
-
         PixelCanvas canvas = new PixelCanvas(height, width, verticalSymmetry, horizontalSymmetry);
 
         for (int sample = 0; sample < samples; sample++) {

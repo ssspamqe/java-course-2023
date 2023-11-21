@@ -1,9 +1,10 @@
 package edu.project4;
 
+import edu.project4.fractalGeneration.fractalCreators.MultiThreadFractalCreator;
 import edu.project4.fractalGeneration.fractalCreators.SingleThreadFractalCreator;
-import edu.project4.fractalGeneration.graphics.PixelCanvas;
 import edu.project4.fractalGeneration.pointModifiers.AffineTransformation;
 import edu.project4.fractalGeneration.pointModifiers.pointFunctions.PointFunction;
+import edu.project4.fractalGeneration.pointModifiers.pointFunctions.PolarFunction;
 import edu.project4.fractalGeneration.pointModifiers.pointFunctions.SinusoidalFunction;
 import edu.project4.fractalGeneration.postProcessing.GammaCorrection;
 import edu.project4.fractalGeneration.postProcessing.PostProcessing;
@@ -25,10 +26,16 @@ public class Driver {
     private static final boolean HORIZONTAL_SYMMETRY = false;
 
     public static void main(String[] params) {
-        List<AffineTransformation> transformations = getListOfAffineTransformations(6);
-        List<PointFunction> pointFunctions = List.of(new SinusoidalFunction());
+        List<AffineTransformation> transformations = getListOfAffineTransformations(70);
+        List<PointFunction> pointFunctions =
+            List.of(
+                new SinusoidalFunction(),
+                new PolarFunction()
+            );
 
-        PixelCanvas canvas =
+        double singleThreadTime = 0;
+        for (int i = 0; i < 5; i++) {
+            var start = System.nanoTime();
             SingleThreadFractalCreator.create(
                 SAMPLES,
                 ITERATIONS_PER_SAMPLE,
@@ -40,17 +47,49 @@ public class Driver {
                 transformations,
                 pointFunctions
             );
+            var end = System.nanoTime();
+            System.out.println(end - start);
+            singleThreadTime += end - start;
+        }
+        singleThreadTime /= 5_000_000_000L;
+        System.out.println(singleThreadTime);
 
-        PostProcessing gammaCorrection = new GammaCorrection();
-        gammaCorrection.applyProcedure(canvas);
 
-        ImageRenderer.renderImage(canvas);
+        for (int threads = 2; threads <= 10; threads++) {
+            double allTime = 0;
+
+            for (int i = 0; i < 5; i++) {
+                var start = System.nanoTime();
+                MultiThreadFractalCreator.create(
+                    SAMPLES,
+                    ITERATIONS_PER_SAMPLE,
+                    OFFSET,
+                    HEIGHT,
+                    WIDTH,
+                    VERTICAL_SYMMETRY,
+                    HORIZONTAL_SYMMETRY,
+                    transformations,
+                    pointFunctions,
+                    threads
+                );
+                var end = System.nanoTime();
+                allTime+=end-start;
+            }
+            allTime/=5_000_000_000L;
+
+            System.out.println(threads + " - " +singleThreadTime/allTime);
+        }
+
+//        PostProcessing gammaCorrection = new GammaCorrection();
+//        gammaCorrection.applyProcedure(canvas);
+//
+//        ImageRenderer.renderImage(canvas);
     }
 
     private static List<AffineTransformation> getListOfAffineTransformations(int n) {
         List<AffineTransformation> transformations = new ArrayList<>();
 
-        for(int i = 0; i < n;i++){
+        for (int i = 0; i < n; i++) {
             transformations.add(generateAffineTransformation());
         }
         return transformations;
