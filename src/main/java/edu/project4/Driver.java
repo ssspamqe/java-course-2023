@@ -1,21 +1,15 @@
 package edu.project4;
 
-import edu.project4.fractalGeneration.FractalCreator;
-import edu.project4.fractalGeneration.graphics.Pixel;
+import edu.project4.fractalGeneration.fractalCreators.SingleThreadFractalCreator;
 import edu.project4.fractalGeneration.graphics.PixelCanvas;
 import edu.project4.fractalGeneration.pointModifiers.AffineTransformation;
-import edu.project4.fractalGeneration.pointModifiers.pointFunctions.DiskFunction;
-import edu.project4.fractalGeneration.pointModifiers.pointFunctions.HeartFunction;
 import edu.project4.fractalGeneration.pointModifiers.pointFunctions.PointFunction;
 import edu.project4.fractalGeneration.pointModifiers.pointFunctions.SinusoidalFunction;
-import edu.project4.fractalGeneration.pointModifiers.pointFunctions.SphericalFunction;
 import edu.project4.fractalGeneration.postProcessing.GammaCorrection;
 import edu.project4.fractalGeneration.postProcessing.PostProcessing;
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Driver {
@@ -35,7 +29,7 @@ public class Driver {
         List<PointFunction> pointFunctions = List.of(new SinusoidalFunction());
 
         PixelCanvas canvas =
-            FractalCreator.create(
+            SingleThreadFractalCreator.create(
                 SAMPLES,
                 ITERATIONS_PER_SAMPLE,
                 OFFSET,

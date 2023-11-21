@@ -37,7 +37,6 @@ public class GammaCorrection implements PostProcessing {
                 correctedPixels.add(pixel);
             }
         }
-
     }
 
     private static void rePaintPixel(Pixel pixel, double maxGamma) {
