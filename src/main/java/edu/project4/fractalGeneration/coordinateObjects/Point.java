@@ -1,4 +1,4 @@
-package edu.project4.fractalGeneration.point;
+package edu.project4.fractalGeneration.coordinateObjects;
 
 import edu.project4.fractalGeneration.pointModifiers.AffineTransformation;
 

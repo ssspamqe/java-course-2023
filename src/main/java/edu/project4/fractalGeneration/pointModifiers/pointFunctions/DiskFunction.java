@@ -1,8 +1,8 @@
 package edu.project4.fractalGeneration.pointModifiers.pointFunctions;
 
-import edu.project4.fractalGeneration.point.Point;
+import edu.project4.fractalGeneration.coordinateObjects.Point;
 
-public class DiskFuntion implements PointFunction{
+public class DiskFunction implements PointFunction{
     @Override
     public Point apply(Point oldPoint) {
         double x = oldPoint.getX();

@@ -1,6 +1,6 @@
 package edu.project4.fractalGeneration.pointModifiers.pointFunctions;
 
-import edu.project4.fractalGeneration.point.Point;
+import edu.project4.fractalGeneration.coordinateObjects.Point;
 
 public class PolarFunction implements PointFunction {
     @Override

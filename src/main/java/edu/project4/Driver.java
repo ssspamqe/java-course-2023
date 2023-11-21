@@ -1,22 +1,27 @@
 package edu.project4;
 
 import edu.project4.fractalGeneration.FractalCreator;
+import edu.project4.fractalGeneration.graphics.Pixel;
 import edu.project4.fractalGeneration.graphics.PixelCanvas;
 import edu.project4.fractalGeneration.pointModifiers.AffineTransformation;
+import edu.project4.fractalGeneration.pointModifiers.pointFunctions.DiskFunction;
+import edu.project4.fractalGeneration.pointModifiers.pointFunctions.HeartFunction;
 import edu.project4.fractalGeneration.pointModifiers.pointFunctions.PointFunction;
-import edu.project4.fractalGeneration.pointModifiers.pointFunctions.PolarFunction;
 import edu.project4.fractalGeneration.pointModifiers.pointFunctions.SinusoidalFunction;
+import edu.project4.fractalGeneration.pointModifiers.pointFunctions.SphericalFunction;
 import edu.project4.fractalGeneration.postProcessing.GammaCorrection;
 import edu.project4.fractalGeneration.postProcessing.PostProcessing;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Driver {
 
     private static final int SAMPLES = 1_000_000;
-    private static final int ITERATIONS_PER_SAMPLE = 50;
+    private static final int ITERATIONS_PER_SAMPLE = 100;
     private static final int OFFSET = -20;
 
     private static final int HEIGHT = 2000;
@@ -26,9 +31,8 @@ public class Driver {
     private static final boolean HORIZONTAL_SYMMETRY = false;
 
     public static void main(String[] params) {
-
-        List<AffineTransformation> transformations = getListOfAffineTransformations(10);
-        List<PointFunction> pointFunctions = List.of(new PolarFunction());
+        List<AffineTransformation> transformations = getListOfAffineTransformations(6);
+        List<PointFunction> pointFunctions = List.of(new SinusoidalFunction());
 
         PixelCanvas canvas =
             FractalCreator.create(

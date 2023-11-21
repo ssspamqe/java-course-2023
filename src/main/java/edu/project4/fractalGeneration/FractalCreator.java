@@ -2,8 +2,8 @@ package edu.project4.fractalGeneration;
 
 import edu.project4.fractalGeneration.graphics.Pixel;
 import edu.project4.fractalGeneration.graphics.PixelCanvas;
-import edu.project4.fractalGeneration.point.Dot;
-import edu.project4.fractalGeneration.point.Point;
+import edu.project4.fractalGeneration.coordinateObjects.Dot;
+import edu.project4.fractalGeneration.coordinateObjects.Point;
 import edu.project4.fractalGeneration.pointModifiers.AffineTransformation;
 import edu.project4.fractalGeneration.pointModifiers.pointFunctions.PointFunction;
 import java.awt.Color;
@@ -71,9 +71,9 @@ public class FractalCreator {
         return resPoint;
     }
 
-    private static Dot getDot(Point point, int xRes, int yRes) {
-        int x = xRes - (int) (((X_MAX - point.getX()) / (X_MAX - X_MIN)) * xRes);
-        int y = yRes - (int) (((Y_MAX - point.getY()) / (Y_MAX - Y_MIN)) * yRes);
+    private static Dot getDot(Point point, int height, int width) {
+        int x = height - (int) (((X_MAX - point.getX()) / (X_MAX - X_MIN)) * height);
+        int y = width - (int) (((Y_MAX - point.getY()) / (Y_MAX - Y_MIN)) * width);
 
         return new Dot(x, y);
     }
