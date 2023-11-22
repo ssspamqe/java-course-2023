@@ -11,6 +11,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,6 +22,7 @@ public class Server {
     private static final int PORT = 1337;
     private static final int CLIENT_MESSAGE_CAPACITY = 1024;
     private static final ResponseHandler RESPONSE_HANDLER = new ResponseHandler(CLIENT_MESSAGE_CAPACITY);
+    private static final int THREAD_POOL_SIZE = 5;
 
     private boolean running = true;
 
@@ -27,16 +30,27 @@ public class Server {
         try (Selector selector = Selector.open()) {
             LOGGER.info("opened selector");
             try (ServerSocketChannel serverSocket = configureServerSocketChannel(selector)) {
-                ByteBuffer buffer = ByteBuffer.allocate(CLIENT_MESSAGE_CAPACITY);
+
+                ExecutorService executorService = Executors.newSingleThreadExecutor();
                 while (running) {
+
                     selector.select();
                     Set<SelectionKey> selectionKeys = selector.selectedKeys();
                     Iterator<SelectionKey> keyIterator = selectionKeys.iterator();
-                    while (keyIterator.hasNext()) {
+
+                    while (keyIterator.hasNext() && !selectionKeys.isEmpty()) {
                         SelectionKey key = keyIterator.next();
-                        buffer.clear();
-                        handleSelectionKey(selector, key, serverSocket, buffer);
+                        executorService.submit(() -> {
+                                try {
+                                    handleSelectionKey(selector, key, serverSocket);
+                                } catch (Exception ex){
+
+                                }
+                            }
+                        );
+                        LOGGER.info("deleting element from selectionKeys");
                         keyIterator.remove();
+                        LOGGER.info("deleted element from selectionKeys, now size is {}", selectionKeys.size());
                     }
                 }
             }
@@ -54,31 +68,45 @@ public class Server {
     private void handleSelectionKey(
         Selector selector,
         SelectionKey key,
-        ServerSocketChannel serverSocketChannel,
-        ByteBuffer buffer
-    )
-        throws IOException, InterruptedException {
+        ServerSocketChannel serverSocketChannel
+    ) throws IOException {
         if (key.isAcceptable()) {
-            configureSockerChannel(selector, serverSocketChannel);
+            try {
+                configureSocketChannel(selector, serverSocketChannel);
+            } catch (Exception ex) {
+                return;
+            }
         }
         if (key.isReadable()) {
             SocketChannel client = (SocketChannel) key.channel();
-
-            int bytesToRead = client.read(buffer);
-            LOGGER.info("From client: {}", new String(buffer.array(),StandardCharsets.UTF_8));
-            if (bytesToRead == -1) {
+            ByteBuffer buffer = ByteBuffer.allocate(CLIENT_MESSAGE_CAPACITY);
+            int bytesToRead;
+            try {
+                bytesToRead = client.read(buffer);
+            } catch (Exception ex) {
                 client.close();
+                return;
+            }
+            LOGGER.info("From client: {}", new String(buffer.array(), StandardCharsets.UTF_8));
+            if (bytesToRead == -1) {
+                try {
+                    client.close();
+                } catch (Exception ex) {
+                    return;
+                }
             } else {
                 LOGGER.info("sending response...");
-                byte[] requestBytes = Arrays.copyOfRange(buffer.array(),0,bytesToRead);
-                RESPONSE_HANDLER.getAndSendPhrase(requestBytes, client);
+                byte[] requestBytes = Arrays.copyOfRange(buffer.array(), 0, bytesToRead);
+                try {
+                    RESPONSE_HANDLER.getAndSendPhrase(requestBytes, client);
+                } catch (Exception ex) {
+                    return;
+                }
             }
         }
     }
 
-
-
-    private void configureSockerChannel(
+    private void configureSocketChannel(
         Selector selector,
         ServerSocketChannel serverSocketChannel
     )
