@@ -6,15 +6,18 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
-import java.util.Optional;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class Client {
+public class ConnectionHandler {
 
     private static final Logger LOGGER = LogManager.getLogger();
 
     private static final int DEFAULT_MESSAGE_CAPACITY = 1024;
+    private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 
     private final int port;
     private final ByteBuffer byteBuffer;
@@ -22,12 +25,12 @@ public class Client {
     private SocketChannel socketChannel;
     private volatile boolean connected = false;
 
-    public Client(int port, int messageCapacity) {
+    public ConnectionHandler(int port, int messageCapacity) {
         this.port = port;
         byteBuffer = ByteBuffer.allocate(messageCapacity);
     }
 
-    public Client(int port) {
+    public ConnectionHandler(int port) {
         this(port, DEFAULT_MESSAGE_CAPACITY);
 
     }
@@ -38,31 +41,35 @@ public class Client {
         selector = Selector.open();
         socketChannel.register(selector, SelectionKey.OP_READ);
         connected = true;
-
-        LOGGER.info("started user");
     }
 
     public void send(byte[] bytes) throws IOException {
-        if(!connected)
+        if (!connected) {
             throw new RuntimeException("Not connected");
+        }
 
-        byteBuffer.clear().put(bytes);
-        byteBuffer.flip();
-        LOGGER.info("writing to socker channel");
+        byteBuffer
+            .clear()
+            .put(bytes)
+            .flip();
+
         socketChannel.write(byteBuffer);
     }
 
-    public Optional<byte[]> waitResponse() throws IOException {
-        if(!connected)
+    public String waitResponse() throws IOException {
+        LOGGER.info("waiting server response...");
+        if (!connected) {
             throw new RuntimeException("Not connected");
+        }
         selector.select();
         byteBuffer.clear();
-        socketChannel.read(byteBuffer);
-        return Optional.of(byteBuffer.array());
+        int bytesToRead = socketChannel.read(byteBuffer);
+        byte[] responseBytes = Arrays.copyOfRange(byteBuffer.array(),0,bytesToRead);
+        return new String(responseBytes, DEFAULT_CHARSET).trim();
     }
 
-    public void close() throws IOException{
-        if(connected){
+    public void close() throws IOException {
+        if (connected) {
             socketChannel.close();
             selector.close();
         }

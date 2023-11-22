@@ -1,7 +1,5 @@
 package edu.hw8.task1.server;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -9,17 +7,23 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Set;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Server {
 
     private static final Logger LOGGER = LogManager.getLogger();
     private static final int PORT = 1337;
     private static final int CLIENT_MESSAGE_CAPACITY = 1024;
+    private static final ResponseHandler RESPONSE_HANDLER = new ResponseHandler(CLIENT_MESSAGE_CAPACITY);
+
     private boolean running = true;
 
-    public void start() throws IOException {
+    public void start() throws IOException, InterruptedException {
         try (Selector selector = Selector.open()) {
             LOGGER.info("opened selector");
             try (ServerSocketChannel serverSocket = configureServerSocketChannel(selector)) {
@@ -47,32 +51,40 @@ public class Server {
         }
     }
 
-
-
-    private void handleSelectionKey(Selector selector, SelectionKey key, ServerSocketChannel serverSocketChannel, ByteBuffer buffer)
-        throws IOException {
-        if(key.isAcceptable())
-            configureSelectionKey(selector,key,serverSocketChannel,buffer);
+    private void handleSelectionKey(
+        Selector selector,
+        SelectionKey key,
+        ServerSocketChannel serverSocketChannel,
+        ByteBuffer buffer
+    )
+        throws IOException, InterruptedException {
+        if (key.isAcceptable()) {
+            configureSockerChannel(selector, serverSocketChannel);
+        }
         if (key.isReadable()) {
-            LOGGER.info("reading key");
             SocketChannel client = (SocketChannel) key.channel();
-            int r = client.read(buffer);
-            if (r == -1) {
+
+            int bytesToRead = client.read(buffer);
+            LOGGER.info("From client: {}", new String(buffer.array(),StandardCharsets.UTF_8));
+            if (bytesToRead == -1) {
                 client.close();
             } else {
-                рфтвлу
+                LOGGER.info("sending response...");
+                byte[] requestBytes = Arrays.copyOfRange(buffer.array(),0,bytesToRead);
+                RESPONSE_HANDLER.getAndSendPhrase(requestBytes, client);
             }
         }
     }
 
-    private void handleMessage(byte[] message){
 
-    }
 
-    private void configureSelectionKey(Selector selector, SelectionKey key, ServerSocketChannel serverSocketChannel, ByteBuffer buffer)
+    private void configureSockerChannel(
+        Selector selector,
+        ServerSocketChannel serverSocketChannel
+    )
         throws IOException {
         SocketChannel client = serverSocketChannel.accept();
-        LOGGER.info("accepted user client");
+        LOGGER.info("accepted client");
         client.configureBlocking(false);
         client.register(selector, SelectionKey.OP_READ);
     }
@@ -84,6 +96,5 @@ public class Server {
         serverSocket.register(selector, SelectionKey.OP_ACCEPT);
         return serverSocket;
     }
-
 
 }

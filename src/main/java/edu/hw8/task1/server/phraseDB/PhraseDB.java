@@ -1,4 +1,4 @@
-package edu.hw8.task1.server;
+package edu.hw8.task1.server.phraseDB;
 
 import java.io.FileInputStream;
 import java.util.ArrayList;
@@ -8,10 +8,13 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class PhraseDB {
 
-    private static final String DEFAULT_FILE_PATH = "./src/main/java/edu/hw8/task1/server/phrases.txt";
+    private static final String DEFAULT_FILE_PATH = "./src/main/java/edu/hw8/task1/server/phraseDB/phrases.txt";
+    private static final Logger LOGGER = LogManager.getLogger();
 
     private Map<String, List<String>> phrasesByWord = new HashMap<>();
 
@@ -38,19 +41,32 @@ public class PhraseDB {
     public void addNewPhrase(String phrase) {
         var words = phrase.split(" ");
         for (var word : words) {
+            //TODO change to a more pleasant way
+            String currentWord =
+                word
+                    .toLowerCase()
+                    .replace(",", "")
+                    .replace(".", "")
+                    .replace("?","")
+                    .replace("!","");
             if (!phrasesByWord.containsKey(word)) {
-                phrasesByWord.put(word, new ArrayList<>());
+                phrasesByWord.put(currentWord, new ArrayList<>());
             }
-            phrasesByWord.get(word).add(phrase);
+            phrasesByWord.get(currentWord).add(phrase);
         }
     }
 
-    public Optional<String> getPhrase(String word) {
+    public Optional<String> getPhrase(String word) throws InterruptedException {
         if (!phrasesByWord.containsKey(word)) {
+            LOGGER.info("No phrase");
             return Optional.empty();
         }
         var phrases = phrasesByWord.get(word);
-        return Optional.of(getRandomElement(phrases));
+        var phrase = getRandomElement(phrases);
+        LOGGER.info("found phrase: {}", phrase);
+
+        //this.wait(750); //simulating work time
+        return Optional.of(phrase);
     }
 
     private <T> T getRandomElement(List<T> list) {
