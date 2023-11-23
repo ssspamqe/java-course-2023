@@ -13,13 +13,14 @@ import org.apache.logging.log4j.Logger;
 
 public class PhraseDB {
 
-    private static final String DEFAULT_FILE_PATH = "./src/main/java/edu/hw8/task1/server/phraseDB/phrases.txt";
     private static final Logger LOGGER = LogManager.getLogger();
+    private static final String DEFAULT_FILE_PATH = "./src/main/java/edu/hw8/task1/server/phraseDB/phrases.txt";
 
-    private Map<String, List<String>> phrasesByWord = new HashMap<>();
+    private final Map<String, List<String>> phrasesByWord = new HashMap<>();
 
     public PhraseDB(List<String> filePaths) {
         loadPhrases(filePaths);
+        LOGGER.info("loaded phrases: {}", phrasesByWord);
     }
 
     public PhraseDB() {
@@ -41,14 +42,10 @@ public class PhraseDB {
     public void addNewPhrase(String phrase) {
         var words = phrase.split(" ");
         for (var word : words) {
-            //TODO change to a more pleasant way
-            String currentWord =
-                word
-                    .toLowerCase()
-                    .replace(",", "")
-                    .replace(".", "")
-                    .replace("?","")
-                    .replace("!","");
+            String currentWord = getClearWord(word);
+            if (currentWord.isBlank()) {
+                continue;
+            }
             if (!phrasesByWord.containsKey(word)) {
                 phrasesByWord.put(currentWord, new ArrayList<>());
             }
@@ -56,7 +53,32 @@ public class PhraseDB {
         }
     }
 
-    public Optional<String> getPhrase(String word) throws InterruptedException {
+    private String getClearWord(String word) {
+        int start = -1;
+        int end = -1;
+
+        for (int i = 0; i < word.length(); i++) {
+            boolean isAlphabeticChar = Character.isAlphabetic(word.charAt(i));
+            if (isAlphabeticChar && start == -1) {
+                start = i;
+            }
+            if (start != -1 && !isAlphabeticChar) {
+                end = i;
+                break;
+            }
+        }
+        if (end == -1) {
+            end = word.length();
+        }
+
+        if (start == -1) {
+            return "";
+        }
+
+        return word.substring(start, end).toLowerCase();
+    }
+
+    public Optional<String> getPhrase(String word) {
         if (!phrasesByWord.containsKey(word)) {
             LOGGER.info("No phrase");
             return Optional.empty();
@@ -65,7 +87,12 @@ public class PhraseDB {
         var phrase = getRandomElement(phrases);
         LOGGER.info("found phrase: {}", phrase);
 
-        //this.wait(750); //simulating work time
+        try {
+            Thread.sleep(5000);
+        } catch (Exception ex) {
+            LOGGER.warn("phrase db sleeping was interrupted");
+        }
+
         return Optional.of(phrase);
     }
 

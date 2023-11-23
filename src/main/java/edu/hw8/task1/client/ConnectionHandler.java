@@ -32,7 +32,6 @@ public class ConnectionHandler {
 
     public ConnectionHandler(int port) {
         this(port, DEFAULT_MESSAGE_CAPACITY);
-
     }
 
     public void start() throws IOException {
@@ -59,7 +58,8 @@ public class ConnectionHandler {
     public String waitResponse() throws IOException {
         LOGGER.info("waiting server response...");
         if (!connected) {
-            throw new RuntimeException("Not connected");
+            LOGGER.error("Connection troubles");
+            return "no response";
         }
         selector.select();
         byteBuffer.clear();

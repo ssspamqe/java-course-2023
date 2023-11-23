@@ -7,11 +7,8 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import org.apache.logging.log4j.LogManager;
@@ -30,14 +27,9 @@ public class Server {
 
     public void start() throws IOException, InterruptedException {
         try (Selector selector = Selector.open()) {
-            LOGGER.info("opened selector");
             ByteBuffer buffer = ByteBuffer.allocate(CLIENT_MESSAGE_CAPACITY);
             try (ServerSocketChannel serverSocket = configureServerSocketChannel(selector)) {
-
-                Set<SelectionKey> a = new HashSet<>();
-
                 while (running) {
-
                     selector.select();
                     var selectionKeys = selector.selectedKeys();
                     Iterator<SelectionKey> keyIterator = selectionKeys.iterator();
@@ -46,7 +38,6 @@ public class Server {
                         buffer.clear();
                         handleSelectionKey(selector, key, buffer, serverSocket);
                         keyIterator.remove();
-                        LOGGER.info("deleted element from selectionKeys, now size is {}", selectionKeys.size());
                     }
                 }
             }
@@ -66,61 +57,72 @@ public class Server {
         SelectionKey key,
         ByteBuffer buffer,
         ServerSocketChannel serverSocketChannel
-    ) throws IOException {
+    ) {
         if (key.isAcceptable()) {
-            try {
-                configureSocketChannel(selector, serverSocketChannel);
-            } catch (Exception ex) {
-                return;
-            }
+            configureSocketChannel(selector, serverSocketChannel);
+            LOGGER.info("Accepted user");
         }
         if (key.isReadable()) {
-            SocketChannel client = (SocketChannel) key.channel();
+            handleReadableKey(key, buffer);
+        }
+    }
 
-            int bytesToRead;
+    private void handleReadableKey(SelectionKey key, ByteBuffer buffer) {
+        SocketChannel client = (SocketChannel) key.channel();
 
+        int bytesToRead;
+        try {
             bytesToRead = client.read(buffer);
+        } catch (Exception ex) {
+            LOGGER.warn("Unable to read data from client");
+            bytesToRead=-1;
+        }
 
-            LOGGER.info("From client: {}", new String(buffer.array(), StandardCharsets.UTF_8));
-            LOGGER.info("Bytes to read: {}", bytesToRead);
-            if (bytesToRead == -1) {
-
+        if (bytesToRead == -1) {
+            try {
                 client.close();
-
-            } else {
-                LOGGER.info("sending response...");
-                byte[] requestBytes = Arrays.copyOfRange(buffer.array(), 0, bytesToRead);
-
-                threadPool.execute(() -> {
-                    try {
-                        RESPONSE_HANDLER.getAndSendPhrase(requestBytes, client);
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-                });
-
+            } catch (Exception ex) {
+                LOGGER.warn("Unable to close clinet");
+                throw new RuntimeException(ex);
             }
+        } else {
+            byte[] requestBytes = Arrays.copyOfRange(buffer.array(), 0, bytesToRead);
+
+            threadPool.execute(() -> {
+                try {
+                    RESPONSE_HANDLER.getAndSendPhrase(requestBytes, client);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
         }
     }
 
     private void configureSocketChannel(
         Selector selector,
         ServerSocketChannel serverSocketChannel
-    )
-        throws IOException {
-        SocketChannel client = serverSocketChannel.accept();
-        LOGGER.info("accepted client");
-        client.configureBlocking(false);
-        client.register(selector, SelectionKey.OP_READ);
+    ) {
+        try {
+            SocketChannel client = serverSocketChannel.accept();
+            client.configureBlocking(false);
+            client.register(selector, SelectionKey.OP_READ);
+        } catch (Exception ex) {
+            LOGGER.error("Unable to accept client");
+            throw new RuntimeException(ex);
+        }
     }
 
-    private ServerSocketChannel configureServerSocketChannel(Selector selector) throws IOException {
-        ServerSocketChannel serverSocket = ServerSocketChannel.open();
-        serverSocket.bind(new InetSocketAddress(PORT));
-        serverSocket.configureBlocking(false);
-        serverSocket.register(selector, SelectionKey.OP_ACCEPT);
+    private ServerSocketChannel configureServerSocketChannel(Selector selector) {
+        ServerSocketChannel serverSocket = null;
+        try {
+            serverSocket = ServerSocketChannel.open();
+            serverSocket.bind(new InetSocketAddress(PORT));
+            serverSocket.configureBlocking(false);
+            serverSocket.register(selector, SelectionKey.OP_ACCEPT);
+        } catch (Exception ex) {
+            LOGGER.error("Unable to configure server socker channel");
+            throw new RuntimeException(ex);
+        }
         return serverSocket;
     }
-    //TODO add close
-
 }
