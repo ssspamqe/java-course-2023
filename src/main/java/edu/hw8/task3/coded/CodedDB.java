@@ -41,17 +41,20 @@ public class CodedDB {
     private void handleLine(String line) {
         String[] data = line.split(" ");
         try {
+            if (data.length != 2) {
+                throw new Exception();
+            }
             usersByHash.put(data[1], data[0]);
         } catch (Exception ex) {
             LOGGER.warn("line \"{}\" is not correct", line);
         }
     }
 
-    public String remove(String key){
+    public String remove(String key) {
         return usersByHash.remove(key);
     }
 
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return usersByHash.isEmpty();
     }
 }

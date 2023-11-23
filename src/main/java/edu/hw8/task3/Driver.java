@@ -7,7 +7,7 @@ public class Driver {
     private static final Logger LOGGER = LogManager.getLogger();
     public static void main(String[] params) {
         SingleThreadBruteForce bf = new SingleThreadBruteForce();
-        var decodedMap = bf.getDecodedMap(4);
+        var decodedMap = bf.getDecodedMap(6);
         LOGGER.info(decodedMap);
 
     }

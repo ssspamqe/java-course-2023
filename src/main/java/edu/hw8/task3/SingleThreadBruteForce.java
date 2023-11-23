@@ -46,6 +46,7 @@ public class SingleThreadBruteForce {
             currentNumber = nextNumber.get();
 
             String password = getPassword(currentNumber);
+            handlePassword(password);
             if (fakeDB.isEmpty()) {
                 break;
             }
@@ -58,23 +59,15 @@ public class SingleThreadBruteForce {
 
     private Optional<int[]> getNextNumber(int[] currentNumber) {
         int[] nextNumber = currentNumber.clone();
-
-        nextNumber[0]++;
         int i = 0;
-        while (i < nextNumber.length && nextNumber[i] >= countingSystem) {
-            nextNumber[i] = 0;
+        while(i < nextNumber.length && nextNumber[i] >= countingSystem-1){
+            nextNumber[i]=0;
             i++;
-            //TODO increase by 1
         }
-        if (i >= nextNumber.length) {
+        if (i == nextNumber.length) {
             return Optional.empty();
         }
-        LOGGER.info("{} {} {} {}",
-            nextNumber[0],
-            nextNumber[1],
-            nextNumber[2],
-            nextNumber[3]);
-        LOGGER.info(countingSystem);
+        nextNumber[i]++;
         return Optional.of(nextNumber);
     }
 
@@ -91,6 +84,9 @@ public class SingleThreadBruteForce {
 
     private void handlePassword(String password) {
         String hash = getMD5Hash(password);
+        if (password.equals("password")) {
+            LOGGER.info(10);
+        }
         String removedUser = fakeDB.remove(hash);
         if (removedUser != null) {
             decodedPasswords.put(removedUser, password);
@@ -98,6 +94,7 @@ public class SingleThreadBruteForce {
     }
 
     private String getMD5Hash(String s) {
+        //LOGGER.info("{} - {}",s,DigestUtils.md5Hex(s));
         return DigestUtils.md5Hex(s);
     }
 
