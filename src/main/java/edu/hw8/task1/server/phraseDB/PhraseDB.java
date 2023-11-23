@@ -79,19 +79,13 @@ public class PhraseDB {
     }
 
     public Optional<String> getPhrase(String word) {
-        if (!phrasesByWord.containsKey(word)) {
+        if (!phrasesByWord.containsKey(word.toLowerCase())) {
             LOGGER.info("No phrase");
             return Optional.empty();
         }
-        var phrases = phrasesByWord.get(word);
+        var phrases = phrasesByWord.get(word.toLowerCase());
         var phrase = getRandomElement(phrases);
         LOGGER.info("found phrase: {}", phrase);
-
-        try {
-            Thread.sleep(5000);
-        } catch (Exception ex) {
-            LOGGER.warn("phrase db sleeping was interrupted");
-        }
 
         return Optional.of(phrase);
     }
