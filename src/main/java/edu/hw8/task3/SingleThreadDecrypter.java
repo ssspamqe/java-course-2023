@@ -3,25 +3,35 @@ package edu.hw8.task3;
 import edu.hw8.task3.coded.CodedDB;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class SingleThreadBruteForce {
+public class SingleThreadDecrypter {
 
     private static final Logger LOGGER = LogManager.getLogger();
-
-    private final Map<String, String> decodedPasswords = new HashMap<>();
-    private final CodedDB fakeDB = new CodedDB();
-
+    private final CodedDB fakeDB;
     private String alphabet = " ";
-    private int countingSystem;
+    private final int countingSystem;
+    private Map<String, String> decodedPasswords;
 
-    public SingleThreadBruteForce() {
+    public SingleThreadDecrypter(List<String> filePaths) {
+        fakeDB = new CodedDB(filePaths);
+
         loadAlphabet();
         countingSystem = alphabet.length();
+
+    }
+
+    public SingleThreadDecrypter(){
+        fakeDB = new CodedDB();
+
+        loadAlphabet();
+        countingSystem = alphabet.length();
+
     }
 
     private void loadAlphabet(String... specialCharacters) {
@@ -36,12 +46,13 @@ public class SingleThreadBruteForce {
         alphabet = stringBuilder.toString();
     }
 
-    public Map<String,String> getDecodedMap(int maxLen) {
-        int countingSystem = alphabet.length();
-        int[] currentNumber = new int[maxLen];
-        currentNumber[0] = -1;
-        var nextNumber = getNextNumber(currentNumber);
+    public Map<String, String> getDecodedMap(int minLen, int maxLen) {
+        if(minLen<=0)
+            throw new IllegalArgumentException("minLen must be positive number");
 
+        decodedPasswords = new HashMap<>();
+        var currentNumber = getFirstIterationNumber(minLen,maxLen);
+        var nextNumber = getNextNumber(currentNumber);
         while (nextNumber.isPresent()) {
             currentNumber = nextNumber.get();
 
@@ -57,11 +68,13 @@ public class SingleThreadBruteForce {
         return decodedPasswords;
     }
 
+
+
     private Optional<int[]> getNextNumber(int[] currentNumber) {
         int[] nextNumber = currentNumber.clone();
         int i = 0;
-        while(i < nextNumber.length && nextNumber[i] >= countingSystem-1){
-            nextNumber[i]=0;
+        while (i < nextNumber.length && nextNumber[i] >= countingSystem - 1) {
+            nextNumber[i] = 1;
             i++;
         }
         if (i == nextNumber.length) {
@@ -83,21 +96,22 @@ public class SingleThreadBruteForce {
     }
 
     private void handlePassword(String password) {
-        String hash = getMD5Hash(password);
-        if (password.equals("password")) {
-            LOGGER.info(10);
-        }
+        String hash = DigestUtils.md5Hex(password);
         String removedUser = fakeDB.remove(hash);
         if (removedUser != null) {
             decodedPasswords.put(removedUser, password);
         }
     }
 
-    private String getMD5Hash(String s) {
-        //LOGGER.info("{} - {}",s,DigestUtils.md5Hex(s));
-        return DigestUtils.md5Hex(s);
+
+    private int[] getFirstIterationNumber(int minLen, int maxLen){
+        if(minLen<=0)
+            throw new IllegalArgumentException("minLen must be positive number");
+        int[] number =new int[maxLen];
+        for(int i =0; i< minLen;i++){
+            number[i]=1;
+        }
+        number[minLen-1]--;
+        return number;
     }
-
-
-
 }
