@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-
 public class MyThreadPool implements ThreadPool {
 
     private final static Logger LOGGER = LogManager.getLogger();
@@ -33,7 +32,7 @@ public class MyThreadPool implements ThreadPool {
 
     @Override
     public void execute(Runnable newTask) {
-        if(closing){
+        if (closing) {
             throw new RuntimeException("Thread pool is closing now...");
         }
         taskQueue.add(newTask);
@@ -42,8 +41,12 @@ public class MyThreadPool implements ThreadPool {
     @Override
     public void close() throws Exception {
         closing = true;
+
         workers.forEach(it -> {
             try {
+                if (taskQueue.isEmpty()) {
+                    it.interrupt();
+                }
                 it.join();
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
@@ -58,7 +61,6 @@ public class MyThreadPool implements ThreadPool {
                 try {
                     task = taskQueue.take();
                 } catch (InterruptedException e) {
-                    LOGGER.warn("Interrupted");
                     continue;
                 }
                 task.run();
