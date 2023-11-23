@@ -1,4 +1,4 @@
-package edu.hw8.task3;
+package edu.hw8.task3.decryptors;
 
 import edu.hw8.task3.coded.CodedDB;
 import java.util.Arrays;
@@ -13,14 +13,14 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class MultiThreadDecrypter {
+public class MultiThreadDecrypter{
     private static final Logger LOGGER = LogManager.getLogger();
     private final CodedDB fakeDB;
     private String alphabet = " ";
     private final int countingSystem;
     private Map<String, String> decodedPasswords;
     private ExecutorService threadPool;
-
+    AtomicBoolean running = new AtomicBoolean(false);
     public MultiThreadDecrypter(List<String> filePaths) {
         fakeDB = new CodedDB(filePaths);
 
@@ -55,30 +55,18 @@ public class MultiThreadDecrypter {
         }
         decodedPasswords = new HashMap<>();
         threadPool = Executors.newFixedThreadPool(nThreads);
+        running.set(true);
 
         var firstNumber = getFirstNumber(minLen, maxLen);
-        AtomicBoolean running = new AtomicBoolean(true);
+
         for (int fistDigit = 1; fistDigit < alphabet.length() && running.get(); fistDigit++) {
             int finalFistDigit = fistDigit;
-            threadPool.execute(() -> {
-                var currentNumber = firstNumber.clone();
-                currentNumber[0] = finalFistDigit;
-
-                var nextNumber = Optional.of(currentNumber);
-
-                while (nextNumber.isPresent() && running.get()) {
-                    currentNumber = nextNumber.get();
-                    String password = getPassword(currentNumber);
-                    handlePassword(password);
-                    if (fakeDB.isEmpty()) {
-                        running.set(false);
-                    }
-                    nextNumber = getNextNumber(currentNumber);
-                }
-            });
+            threadPool.execute(() -> threadPoolTask(finalFistDigit,firstNumber));
         }
-        threadPool.close();
 
+
+        threadPool.close();
+        running.set(false);
         return decodedPasswords;
     }
 
@@ -124,5 +112,22 @@ public class MultiThreadDecrypter {
             number[i] = 1;
         }
         return number;
+    }
+
+    private void threadPoolTask(int firstDigit, int[] firstNumber){
+        var currentNumber = firstNumber.clone();
+        currentNumber[0] = firstDigit;
+
+        var nextNumber = Optional.of(currentNumber);
+
+        while (nextNumber.isPresent() && running.get()) {
+            currentNumber = nextNumber.get();
+            String password = getPassword(currentNumber);
+            handlePassword(password);
+            if (fakeDB.isEmpty()) {
+                running.set(false);
+            }
+            nextNumber = getNextNumber(currentNumber);
+        }
     }
 }
