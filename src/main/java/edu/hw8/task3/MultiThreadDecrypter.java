@@ -49,7 +49,7 @@ public class MultiThreadDecrypter {
         alphabet = stringBuilder.toString();
     }
 
-    public Map<String, String> getDecodedMap(int minLen, int maxLen, int nThreads) throws InterruptedException {
+    public Map<String, String> getDecryptedMap(int minLen, int maxLen, int nThreads)  {
         if (minLen <= 0) {
             throw new IllegalArgumentException("minLen must be positive number");
         }
@@ -65,7 +65,6 @@ public class MultiThreadDecrypter {
                 currentNumber[0] = finalFistDigit;
 
                 var nextNumber = Optional.of(currentNumber);
-
 
                 while (nextNumber.isPresent() && running.get()) {
                     currentNumber = nextNumber.get();

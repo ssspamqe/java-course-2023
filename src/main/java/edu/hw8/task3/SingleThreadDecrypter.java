@@ -46,7 +46,7 @@ public class SingleThreadDecrypter {
         alphabet = stringBuilder.toString();
     }
 
-    public Map<String, String> getDecodedMap(int minLen, int maxLen) {
+    public Map<String, String> getDecryptedMap(int minLen, int maxLen) {
         if(minLen<=0)
             throw new IllegalArgumentException("minLen must be positive number");
 
