@@ -15,6 +15,7 @@ import java.util.concurrent.Semaphore;
 public class RequestThread extends Thread {
 
     private static final Logger LOGGER = LogManager.getLogger();
+    //private static final ResponseHandler responseHand
 
     private final Semaphore semaphore;
 //    private final ResponseHandler responseHandler;
@@ -51,7 +52,7 @@ public class RequestThread extends Thread {
             } else {
                 LOGGER.info("sending response...");
                 byte[] requestBytes = Arrays.copyOfRange(buffer.array(), 0, bytesToRead);
-               // RESPONSE_HANDLER.getAndSendPhrase(requestBytes, client);
+                //RESPONSE_HANDLER.getAndSendPhrase(requestBytes, client);
             }
         }
     }

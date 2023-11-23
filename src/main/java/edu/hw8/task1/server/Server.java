@@ -9,6 +9,7 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
@@ -23,32 +24,27 @@ public class Server {
     private static final int CLIENT_MESSAGE_CAPACITY = 1024;
     private static final ResponseHandler RESPONSE_HANDLER = new ResponseHandler(CLIENT_MESSAGE_CAPACITY);
     private static final int THREAD_POOL_SIZE = 5;
+    private final ExecutorService threadPool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
 
-    private boolean running = true;
+    private volatile boolean running = true;
 
     public void start() throws IOException, InterruptedException {
         try (Selector selector = Selector.open()) {
             LOGGER.info("opened selector");
+            ByteBuffer buffer = ByteBuffer.allocate(CLIENT_MESSAGE_CAPACITY);
             try (ServerSocketChannel serverSocket = configureServerSocketChannel(selector)) {
 
-                ExecutorService executorService = Executors.newSingleThreadExecutor();
+                Set<SelectionKey> a = new HashSet<>();
+
                 while (running) {
 
                     selector.select();
-                    Set<SelectionKey> selectionKeys = selector.selectedKeys();
+                    var selectionKeys = selector.selectedKeys();
                     Iterator<SelectionKey> keyIterator = selectionKeys.iterator();
-
                     while (keyIterator.hasNext() && !selectionKeys.isEmpty()) {
                         SelectionKey key = keyIterator.next();
-                        executorService.submit(() -> {
-                                try {
-                                    handleSelectionKey(selector, key, serverSocket);
-                                } catch (Exception ex){
-
-                                }
-                            }
-                        );
-                        LOGGER.info("deleting element from selectionKeys");
+                        buffer.clear();
+                        handleSelectionKey(selector, key, buffer, serverSocket);
                         keyIterator.remove();
                         LOGGER.info("deleted element from selectionKeys, now size is {}", selectionKeys.size());
                     }
@@ -68,6 +64,7 @@ public class Server {
     private void handleSelectionKey(
         Selector selector,
         SelectionKey key,
+        ByteBuffer buffer,
         ServerSocketChannel serverSocketChannel
     ) throws IOException {
         if (key.isAcceptable()) {
@@ -79,29 +76,29 @@ public class Server {
         }
         if (key.isReadable()) {
             SocketChannel client = (SocketChannel) key.channel();
-            ByteBuffer buffer = ByteBuffer.allocate(CLIENT_MESSAGE_CAPACITY);
+
             int bytesToRead;
-            try {
-                bytesToRead = client.read(buffer);
-            } catch (Exception ex) {
-                client.close();
-                return;
-            }
+
+            bytesToRead = client.read(buffer);
+
             LOGGER.info("From client: {}", new String(buffer.array(), StandardCharsets.UTF_8));
+            LOGGER.info("Bytes to read: {}", bytesToRead);
             if (bytesToRead == -1) {
-                try {
-                    client.close();
-                } catch (Exception ex) {
-                    return;
-                }
+
+                client.close();
+
             } else {
                 LOGGER.info("sending response...");
                 byte[] requestBytes = Arrays.copyOfRange(buffer.array(), 0, bytesToRead);
-                try {
-                    RESPONSE_HANDLER.getAndSendPhrase(requestBytes, client);
-                } catch (Exception ex) {
-                    return;
-                }
+
+                threadPool.execute(() -> {
+                    try {
+                        RESPONSE_HANDLER.getAndSendPhrase(requestBytes, client);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+
             }
         }
     }
@@ -124,5 +121,6 @@ public class Server {
         serverSocket.register(selector, SelectionKey.OP_ACCEPT);
         return serverSocket;
     }
+    //TODO add close
 
 }
