@@ -1,5 +1,7 @@
 package edu.hw8.task3;
 
+import edu.hw8.task3.decryptors.MultiThreadDecrypter;
+import edu.hw8.task3.decryptors.SingleThreadDecrypter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -34,7 +36,6 @@ public class Driver {
         var start = System.nanoTime();
         for (int i = 0; i < SIMULATIONS; i++) {
             SINGLE_THREAD_DECRYPTER.getDecryptedMap(MIN_LEN, MAX_LEN);
-
         }
         var end = System.nanoTime();
         double nanoseconds = (double) (end - start) / SIMULATIONS;
@@ -45,7 +46,6 @@ public class Driver {
         var start = System.nanoTime();
         for (int i = 0; i < SIMULATIONS; i++) {
             MULTI_THREAD_DECRYPTER.getDecryptedMap(MIN_LEN, MAX_LEN, nThread);
-            LOGGER.info(nThread);
         }
         var end = System.nanoTime();
         double nanoseconds = (double) (end - start) / SIMULATIONS;
