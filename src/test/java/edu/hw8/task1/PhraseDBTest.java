@@ -38,7 +38,7 @@ public class PhraseDBTest {
     @DisplayName("PhraseDB should be able to add new phrases")
     void phraseDB_should_beAble_toAddNewPhrases() {
         String newPhrase = "Smart thoughts chased him.... buf he was faster.";
-        String word ="him";
+        String word = "him";
 
         phraseDB.addNewPhrase(newPhrase);
         var returnedPhrase = phraseDB.getPhrase(word).get().toLowerCase();

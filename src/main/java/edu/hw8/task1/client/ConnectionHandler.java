@@ -64,7 +64,7 @@ public class ConnectionHandler {
         selector.select();
         byteBuffer.clear();
         int bytesToRead = socketChannel.read(byteBuffer);
-        byte[] responseBytes = Arrays.copyOfRange(byteBuffer.array(),0,bytesToRead);
+        byte[] responseBytes = Arrays.copyOfRange(byteBuffer.array(), 0, bytesToRead);
         return new String(responseBytes, DEFAULT_CHARSET).trim();
     }
 

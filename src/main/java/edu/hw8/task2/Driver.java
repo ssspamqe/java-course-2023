@@ -10,8 +10,7 @@ public class Driver {
     private static final int MIN_N = 1;
     private static final int MAX_N = 40;
 
-
-    public static void main(String[] params){
+    public static void main(String[] params) {
         launch();
     }
 

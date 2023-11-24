@@ -1,11 +1,9 @@
 package edu.hw8;
 
 import edu.hw8.task2.MyThreadPool;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.locks.ReentrantLock;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MyThreadPoolTest {
@@ -19,7 +17,7 @@ public class MyThreadPoolTest {
 
         try (MyThreadPool threadPool = new MyThreadPool(threadPoolSize)) {
 
-            for(int i =0; i< increment;i++){
+            for (int i = 0; i < increment; i++) {
                 threadPool.execute(atomicInteger::incrementAndGet);
             }
 

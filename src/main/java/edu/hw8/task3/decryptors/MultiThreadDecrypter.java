@@ -17,7 +17,7 @@ public class MultiThreadDecrypter extends AbstractDecrypter {
     }
 
     public Map<String, String> getDecryptedMap(int minLen, int maxLen, int nThreads) {
-        return getDecryptedMap(List.of(), minLen, maxLen,nThreads);
+        return getDecryptedMap(List.of(), minLen, maxLen, nThreads);
     }
 
     public Map<String, String> getDecryptedMap(List<String> paths, int minLen, int maxLen, int nThreads) {
