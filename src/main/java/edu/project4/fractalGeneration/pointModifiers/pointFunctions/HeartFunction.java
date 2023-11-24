@@ -6,8 +6,8 @@ public class HeartFunction implements PointFunction {
 
     @Override
     public Point apply(Point oldPoint) {
-        double x = oldPoint.getX();
-        double y = oldPoint.getY();
+        double x = oldPoint.x();
+        double y = oldPoint.y();
 
         double sqrt = Math.sqrt(x * x + y * y);
         double trigonomArg = sqrt * Math.atan(y / x);

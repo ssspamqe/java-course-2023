@@ -4,7 +4,6 @@ import edu.project4.fractalGeneration.coordinateObjects.Dot;
 import edu.project4.fractalGeneration.coordinateObjects.Point;
 import edu.project4.fractalGeneration.graphics.Pixel;
 import edu.project4.fractalGeneration.graphics.PixelCanvas;
-import edu.project4.fractalGeneration.pointModifiers.AffineTransformation;
 import edu.project4.fractalGeneration.pointModifiers.pointFunctions.PointFunction;
 import java.awt.Color;
 import java.util.List;
@@ -33,8 +32,8 @@ public abstract class AbstractFractalCreator {
     }
 
     protected static Dot getDot(Point point, int height, int width) {
-        int x = height - (int) (((X_MAX - point.getX()) / (X_MAX - X_MIN)) * height);
-        int y = width - (int) (((Y_MAX - point.getY()) / (Y_MAX - Y_MIN)) * width);
+        int x = height - (int) (((X_MAX - point.x()) / (X_MAX - X_MIN)) * height);
+        int y = width - (int) (((Y_MAX - point.y()) / (Y_MAX - Y_MIN)) * width);
 
         return new Dot(x, y);
     }

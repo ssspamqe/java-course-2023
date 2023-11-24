@@ -1,5 +1,6 @@
 package edu.project4.fractalGeneration.pointModifiers;
 
+import edu.project4.fractalGeneration.coordinateObjects.Point;
 import java.awt.Color;
 
 public class AffineTransformation {
@@ -20,6 +21,13 @@ public class AffineTransformation {
         this.e = e;
         this.f = f;
         this.color = color;
+    }
+
+    public Point apply(Point point){
+        double newX = a * point.x() + b * point.y() + c;
+        double newY = d * point.x() + e * point.y() + f;
+
+        return new Point(newX, newY);
     }
 
     public double getA() {

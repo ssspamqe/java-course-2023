@@ -5,8 +5,8 @@ import edu.project4.fractalGeneration.coordinateObjects.Point;
 public class DiskFunction implements PointFunction {
     @Override
     public Point apply(Point oldPoint) {
-        double x = oldPoint.getX();
-        double y = oldPoint.getY();
+        double x = oldPoint.x();
+        double y = oldPoint.y();
 
         double trigonomArg = Math.PI * Math.sqrt(x * x + y * y);
         double coeff = Math.atan(y / x) / Math.PI;

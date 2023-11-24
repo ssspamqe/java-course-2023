@@ -6,8 +6,8 @@ public class SphericalFunction implements PointFunction {
 
     @Override
     public Point apply(Point oldPoint) {
-        double x = oldPoint.getX();
-        double y = oldPoint.getY();
+        double x = oldPoint.x();
+        double y = oldPoint.y();
 
         double newX = x / (x * x + y * y);
         double newY = y / (x * x + y * y);
