@@ -15,14 +15,13 @@ public class Task1 {
         var res = new AtomicInteger(num);
 
         Stream.generate(() ->
-            new Thread(() -> {
-                res.incrementAndGet();
-                countDownLatch.countDown();
-            })
-        )
+                new Thread(() -> {
+                    res.incrementAndGet();
+                    countDownLatch.countDown();
+                })
+            )
             .limit(threads)
             .forEach(Thread::start);
-        
 
         countDownLatch.await();
 
