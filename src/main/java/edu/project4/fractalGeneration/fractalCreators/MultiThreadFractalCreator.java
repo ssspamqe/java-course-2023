@@ -16,20 +16,15 @@ public class MultiThreadFractalCreator extends AbstractFractalCreator {
 
     private static final ReadWriteLock rwLock = new ReentrantReadWriteLock();
 
-    //TODO fill canvas -> reduce number of parameters
-    public static PixelCanvas create(
+    public static void fillCanvas(
+        PixelCanvas canvas,
         int samples,
         int iterationsPerSample,
         int offset,
-        int height,
-        int width,
-        boolean verticalSymmetry,
-        boolean horizontalSymmetry,
         List<AffineTransformation> transformations,
         List<PointFunction> pointFunctions,
         int threads
     ) {
-        PixelCanvas canvas = new PixelCanvas(height, width, verticalSymmetry, horizontalSymmetry);
         int samplesPerThread = samples / threads;
 
         ExecutorService executorService = Executors.newFixedThreadPool(threads);
@@ -45,8 +40,6 @@ public class MultiThreadFractalCreator extends AbstractFractalCreator {
         );
 
         executorService.close();
-
-        return canvas;
     }
 
     private static void procedureGeneration(
@@ -57,41 +50,21 @@ public class MultiThreadFractalCreator extends AbstractFractalCreator {
         List<PointFunction> pointFunctions,
         PixelCanvas canvas
     ) {
-        int height = canvas.getHeight();
-        int width = canvas.getWidth();
-
         for (int sample = 0; sample < samples; sample++) {
-            Point newPoint = getRandomInitialPoint();
-
-            for (int iteration = offset; iteration < iterationsPerSample; iteration++) {
-                AffineTransformation transformation = getRandomTransformationWithLock(transformations);
-
-                Point transformedPoint = newPoint.getTransformedPoint(transformation);
-                newPoint = applyPointFunctions(transformedPoint, pointFunctions);
-
-                if (iteration >= 0
-                    && (newPoint.getX() >= X_MIN && newPoint.getX() <= X_MAX)
-                    && (newPoint.getY() >= Y_MIN && newPoint.getY() <= Y_MAX)) {
-
-                    Dot dot = getDot(newPoint, height, width);
-
-                    if (dot.x() < height && dot.y() < width) {
-                        paintPixelWithLock(dot, canvas, transformation.getColor());
-                    }
-                }
-            }
+            Point startPoint = getRandomInitialPoint();
+            iteratePoint(startPoint,offset,iterationsPerSample,transformations,pointFunctions,canvas);
         }
     }
 
-    private static AffineTransformation getRandomTransformationWithLock(List<AffineTransformation> transformations) {
+    private static <T> T getRandomElementWithLock(List<T> list) {
         rwLock.readLock().lock();
-        AffineTransformation transformation = null;
+        T element = null;
         try {
-            transformation = getRandomTransformation(transformations);
+            element = getRandomElement(list);
         } finally {
             rwLock.readLock().unlock();
         }
-        return transformation;
+        return element;
     }
 
     private static void paintPixelWithLock(Dot dot, PixelCanvas canvas, Color color) {
@@ -100,6 +73,34 @@ public class MultiThreadFractalCreator extends AbstractFractalCreator {
             paintPixel(dot, canvas, color);
         } finally {
             rwLock.writeLock().unlock();
+        }
+    }
+
+     private static void iteratePoint(
+        Point point,
+        int offset,
+        int iterationsPerSample,
+        List<AffineTransformation> transformations,
+        List<PointFunction> pointFunctions,
+        PixelCanvas canvas
+    ) {
+        Point newPoint = point;
+        for (int iteration = offset; iteration < iterationsPerSample; iteration++) {
+            AffineTransformation transformation = getRandomElementWithLock(transformations);
+
+            Point transformedPoint = newPoint.getTransformedPoint(transformation);
+            newPoint = applyPointFunctions(transformedPoint, pointFunctions);
+
+            if (iteration >= 0
+                && (newPoint.getX() >= X_MIN && newPoint.getX() <= X_MAX)
+                && (newPoint.getY() >= Y_MIN && newPoint.getY() <= Y_MAX)) {
+
+                Dot dot = getDot(newPoint, canvas.getHeight(), canvas.getWidth());
+
+                if (dot.x() < canvas.getHeight() && dot.y() < canvas.getWidth()) {
+                    paintPixelWithLock(dot, canvas, transformation.getColor());
+                }
+            }
         }
     }
 }

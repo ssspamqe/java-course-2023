@@ -9,42 +9,45 @@ import java.util.List;
 
 public class SingleThreadFractalCreator extends AbstractFractalCreator {
 
-    //TODO check multithread
-    public static PixelCanvas create(
+    public static void fillCanvas(
+        PixelCanvas canvas,
         int samples,
         int iterationsPerSample,
         int offset,
-        int height,
-        int width,
-        boolean verticalSymmetry,
-        boolean horizontalSymmetry,
         List<AffineTransformation> transformations,
         List<PointFunction> pointFunctions
     ) {
-        PixelCanvas canvas = new PixelCanvas(height, width, verticalSymmetry, horizontalSymmetry);
-
         for (int sample = 0; sample < samples; sample++) {
-            Point newPoint = getRandomInitialPoint();
+            Point startPoint = getRandomInitialPoint();
+            iteratePoint(startPoint, offset,iterationsPerSample,transformations,pointFunctions,canvas);
+        }
+    }
 
-            for (int iteration = offset; iteration < iterationsPerSample; iteration++) {
-                AffineTransformation transformation = getRandomTransformation(transformations);
+    private static void iteratePoint(
+        Point point,
+        int offset,
+        int iterationsPerSample,
+        List<AffineTransformation> transformations,
+        List<PointFunction> pointFunctions,
+        PixelCanvas canvas
+    ) {
+        Point newPoint = point;
+        for (int iteration = offset; iteration < iterationsPerSample; iteration++) {
+            AffineTransformation transformation = getRandomElement(transformations);
 
-                Point transformedPoint = newPoint.getTransformedPoint(transformation);
-                newPoint = applyPointFunctions(transformedPoint, pointFunctions);
+            Point transformedPoint = newPoint.getTransformedPoint(transformation);
+            newPoint = applyPointFunctions(transformedPoint, pointFunctions);
 
-                if (iteration >= 0
-                    && (newPoint.getX() >= X_MIN && newPoint.getX() <= X_MAX)
-                    && (newPoint.getY() >= Y_MIN && newPoint.getY() <= Y_MAX)) {
+            if (iteration >= 0
+                && (newPoint.getX() >= X_MIN && newPoint.getX() <= X_MAX)
+                && (newPoint.getY() >= Y_MIN && newPoint.getY() <= Y_MAX)) {
 
-                    Dot dot = getDot(newPoint, height, width);
+                Dot dot = getDot(newPoint, canvas.getHeight(), canvas.getWidth());
 
-                    if (dot.x() < height && dot.y() < width) {
-                        paintPixel(dot, canvas, transformation.getColor());
-                    }
+                if (dot.x() < canvas.getHeight() && dot.y() < canvas.getWidth()) {
+                    paintPixel(dot, canvas, transformation.getColor());
                 }
             }
         }
-
-        return canvas;
     }
 }
