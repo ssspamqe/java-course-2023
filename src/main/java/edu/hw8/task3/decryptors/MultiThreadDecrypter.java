@@ -12,10 +12,6 @@ public class MultiThreadDecrypter extends AbstractDecrypter {
     private ExecutorService threadPool;
     AtomicBoolean running = new AtomicBoolean(false);
 
-    public MultiThreadDecrypter() {
-        super();
-    }
-
     public Map<String, String> getDecryptedMap(int minLen, int maxLen, int nThreads) {
         return getDecryptedMap(List.of(), minLen, maxLen, nThreads);
     }

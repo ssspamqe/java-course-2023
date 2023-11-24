@@ -48,7 +48,7 @@ public class Server {
                     try {
                         selectionKey.channel().close();
                     } catch (Exception ex) {
-                        ex.printStackTrace();
+                        LOGGER.warn(ex);
                     }
                 });
             threadPool.close();

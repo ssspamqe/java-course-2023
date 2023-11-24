@@ -23,6 +23,7 @@ public class AbstractDecrypter {
         countingSystem = alphabet.length();
     }
 
+    @SuppressWarnings("MagicNumber")
     private void loadAlphabet(String... specialCharacters) {
         StringBuilder stringBuilder = new StringBuilder(alphabet);
         for (int i = 0; i < 26; i++) {

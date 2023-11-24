@@ -1,2 +1,2 @@
 Java is good programming language.
-Garbage collector do not delete strings from string pool.
+Garbage collector does not delete strings from string pool.

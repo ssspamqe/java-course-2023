@@ -6,10 +6,6 @@ import java.util.Map;
 
 public class SingleThreadDecrypter extends AbstractDecrypter {
 
-    public SingleThreadDecrypter() {
-        super();
-    }
-
     public Map<String, String> getDecryptedMap(int minLen, int maxLen) {
         return getDecryptedMap(List.of(), minLen, maxLen);
     }

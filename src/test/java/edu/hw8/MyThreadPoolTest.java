@@ -16,11 +16,9 @@ public class MyThreadPoolTest {
         int increment = 100;
 
         try (MyThreadPool threadPool = new MyThreadPool(threadPoolSize)) {
-
             for (int i = 0; i < increment; i++) {
                 threadPool.execute(atomicInteger::incrementAndGet);
             }
-
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }

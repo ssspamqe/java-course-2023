@@ -18,8 +18,7 @@ public class Driver {
 
     private static final int SIMULATIONS = 5;
 
-    public static void main(String[] params) throws InterruptedException {
-        launch();
+    private Driver() {
     }
 
     public static void launch() {
@@ -52,7 +51,7 @@ public class Driver {
         return convertNanosecondsToMilliseconds(nanoseconds);
     }
 
-    @SuppressWarnings("MagicalNumber")
+    @SuppressWarnings("MagicNumber")
     private static double convertNanosecondsToMilliseconds(double nanoseconds) {
         return nanoseconds / 1_000_000;
     }

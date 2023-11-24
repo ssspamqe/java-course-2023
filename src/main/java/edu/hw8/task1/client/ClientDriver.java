@@ -9,8 +9,7 @@ public class ClientDriver {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final int SERVER_PORT = 1337;
 
-    public static void main(String[] params) throws Exception {
-        launch();
+    private ClientDriver() {
     }
 
     public static void launch() {
