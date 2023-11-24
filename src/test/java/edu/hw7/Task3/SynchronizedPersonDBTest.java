@@ -1,7 +1,8 @@
 package edu.hw7.Task3;
 
+import edu.hw7.Task3.sleepy.SleepySynchronizedPersonDB;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -85,20 +86,21 @@ public class SynchronizedPersonDBTest {
     @Test
     @DisplayName("SynchronizedPersonDB should store Persons and work synchronizely")
     void synchronizedPersonDB_should_workSynchronizely() throws Exception {
+        personDAO = new SleepySynchronizedPersonDB();
         String name = "default_name";
 
         Person person = new Person(0, name, "default_address", "default_phone");
-        AtomicReference<List<Person>> atomicReturnedPersonList = new AtomicReference<>();
+        List<Person> returnedPersonList = new ArrayList<>();
         var writingThread = new Thread(() -> personDAO.add(person));
-        var readingThread = new Thread(() -> atomicReturnedPersonList.set(personDAO.findByName(name)));
+        var readingThread = new Thread(() -> returnedPersonList.addAll(personDAO.findByName(name)));
 
-        writingThread.start();    //не уверен на все 100 что так можно затестить
+        writingThread.start();
         readingThread.start();
 
         writingThread.join();
         readingThread.join();
 
-        Person returnedPerson = atomicReturnedPersonList.get().get(0);
+        Person returnedPerson = returnedPersonList.get(0);
 
         assertThat(returnedPerson).isEqualTo(person);
     }
