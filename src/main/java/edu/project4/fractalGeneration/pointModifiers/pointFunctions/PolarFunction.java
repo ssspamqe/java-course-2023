@@ -9,7 +9,7 @@ public class PolarFunction implements PointFunction {
         double y = oldPoint.getY();
 
         double newX = Math.atan(y / x) / Math.PI;
-        double newY = Math.sqrt(x * x + y * y)-1;
+        double newY = Math.sqrt(x * x + y * y) - 1;
 
         return new Point(newX, newY);
     }

@@ -130,11 +130,11 @@ public class PixelCanvas {
         return width / 2 + (1 - width % 2);
     }
 
-
-    public Pixel getPixel(int x, int y){
+    public Pixel getPixel(int x, int y) {
         return canvas.get(x).get(y);
     }
-    public Pixel getPixel(Dot dot){
+
+    public Pixel getPixel(Dot dot) {
         return getPixel(dot.x(), dot.y());
     }
 

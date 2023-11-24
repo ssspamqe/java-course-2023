@@ -16,6 +16,7 @@ public class MultiThreadFractalCreator extends AbstractFractalCreator {
 
     private static final ReadWriteLock rwLock = new ReentrantReadWriteLock();
 
+    //TODO fill canvas -> reduce number of parameters
     public static PixelCanvas create(
         int samples,
         int iterationsPerSample,
@@ -75,17 +76,17 @@ public class MultiThreadFractalCreator extends AbstractFractalCreator {
                     Dot dot = getDot(newPoint, height, width);
 
                     if (dot.x() < height && dot.y() < width) {
-                        paintPixelWithLock(dot,canvas,transformation.getColor());
+                        paintPixelWithLock(dot, canvas, transformation.getColor());
                     }
                 }
             }
         }
     }
 
-    private static AffineTransformation getRandomTransformationWithLock(List<AffineTransformation> transformations){
+    private static AffineTransformation getRandomTransformationWithLock(List<AffineTransformation> transformations) {
         rwLock.readLock().lock();
         AffineTransformation transformation = null;
-        try{
+        try {
             transformation = getRandomTransformation(transformations);
         } finally {
             rwLock.readLock().unlock();
@@ -93,13 +94,12 @@ public class MultiThreadFractalCreator extends AbstractFractalCreator {
         return transformation;
     }
 
-    private static void paintPixelWithLock(Dot dot, PixelCanvas canvas, Color color){
+    private static void paintPixelWithLock(Dot dot, PixelCanvas canvas, Color color) {
         rwLock.writeLock().lock();
-        try{
-            paintPixel(dot,canvas,color);
-        } finally{
+        try {
+            paintPixel(dot, canvas, color);
+        } finally {
             rwLock.writeLock().unlock();
         }
     }
-
 }

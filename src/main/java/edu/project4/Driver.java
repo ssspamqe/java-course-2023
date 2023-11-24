@@ -6,8 +6,6 @@ import edu.project4.fractalGeneration.pointModifiers.AffineTransformation;
 import edu.project4.fractalGeneration.pointModifiers.pointFunctions.PointFunction;
 import edu.project4.fractalGeneration.pointModifiers.pointFunctions.PolarFunction;
 import edu.project4.fractalGeneration.pointModifiers.pointFunctions.SinusoidalFunction;
-import edu.project4.fractalGeneration.postProcessing.GammaCorrection;
-import edu.project4.fractalGeneration.postProcessing.PostProcessing;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +52,6 @@ public class Driver {
         singleThreadTime /= 5_000_000_000L;
         System.out.println(singleThreadTime);
 
-
         for (int threads = 2; threads <= 10; threads++) {
             double allTime = 0;
 
@@ -73,11 +70,11 @@ public class Driver {
                     threads
                 );
                 var end = System.nanoTime();
-                allTime+=end-start;
+                allTime += end - start;
             }
-            allTime/=5_000_000_000L;
+            allTime /= 5_000_000_000L;
 
-            System.out.println(threads + " - " +singleThreadTime/allTime);
+            System.out.println(threads + " - " + singleThreadTime / allTime);
         }
 
 //        PostProcessing gammaCorrection = new GammaCorrection();

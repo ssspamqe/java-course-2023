@@ -8,7 +8,8 @@ import java.util.Set;
 
 public class GammaCorrection implements PostProcessing {
 
-    private static final double GAMMA =3;
+    private static final double GAMMA = 3;
+
     @Override
     public void applyProcedure(PixelCanvas canvas) {
         int height = canvas.getHeight();
@@ -31,7 +32,7 @@ public class GammaCorrection implements PostProcessing {
         for (int row = 0; row < height; row++) {
             for (int column = 0; column < width; column++) {
                 var pixel = canvas.getPixel(row, column);
-                if(!correctedPixels.contains(pixel)) {
+                if (!correctedPixels.contains(pixel)) {
                     rePaintPixel(pixel, maxGamma);
                 }
                 correctedPixels.add(pixel);

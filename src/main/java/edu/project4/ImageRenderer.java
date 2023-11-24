@@ -15,13 +15,12 @@ public class ImageRenderer {
         int height = canvas.getHeight();
         int width = canvas.getWidth();
 
-
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics g = image.getGraphics();
 
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                var pixel = canvas.getPixel(i,j);
+                var pixel = canvas.getPixel(i, j);
                 g.setColor(pixel.getColor());
                 g.fillRect(i, j, 1, 1);
             }
@@ -30,7 +29,7 @@ public class ImageRenderer {
         String path = "./sampleFiles/";
         int i = 0;
         String fileName = "img";
-        while (Files.exists(Path.of(path + fileName +i+".png"))) {
+        while (Files.exists(Path.of(path + fileName + i + ".png"))) {
             i++;
         }
         try {

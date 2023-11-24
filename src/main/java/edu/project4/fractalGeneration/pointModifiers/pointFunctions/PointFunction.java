@@ -6,5 +6,4 @@ public interface PointFunction {
 
     public Point apply(Point oldPoint);
 
-
 }

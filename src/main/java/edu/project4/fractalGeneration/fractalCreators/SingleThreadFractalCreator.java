@@ -1,17 +1,15 @@
 package edu.project4.fractalGeneration.fractalCreators;
 
-import edu.project4.fractalGeneration.graphics.Pixel;
-import edu.project4.fractalGeneration.graphics.PixelCanvas;
 import edu.project4.fractalGeneration.coordinateObjects.Dot;
 import edu.project4.fractalGeneration.coordinateObjects.Point;
+import edu.project4.fractalGeneration.graphics.PixelCanvas;
 import edu.project4.fractalGeneration.pointModifiers.AffineTransformation;
 import edu.project4.fractalGeneration.pointModifiers.pointFunctions.PointFunction;
-import java.awt.Color;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class SingleThreadFractalCreator extends AbstractFractalCreator {
 
+    //TODO check multithread
     public static PixelCanvas create(
         int samples,
         int iterationsPerSample,
@@ -41,7 +39,7 @@ public class SingleThreadFractalCreator extends AbstractFractalCreator {
                     Dot dot = getDot(newPoint, height, width);
 
                     if (dot.x() < height && dot.y() < width) {
-                        paintPixel(dot,canvas,transformation.getColor());
+                        paintPixel(dot, canvas, transformation.getColor());
                     }
                 }
             }

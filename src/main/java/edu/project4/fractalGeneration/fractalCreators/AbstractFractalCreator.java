@@ -50,7 +50,7 @@ public abstract class AbstractFractalCreator {
         pixel.incrementHits();
     }
 
-    protected static AffineTransformation getRandomTransformation(List<AffineTransformation> transformations){
+    protected static AffineTransformation getRandomTransformation(List<AffineTransformation> transformations) {
         return transformations.get(ThreadLocalRandom.current().nextInt(0, transformations.size()));
     }
 }
