@@ -1,6 +1,7 @@
 package edu.hw8.task3.decryptors;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
@@ -12,6 +13,13 @@ public class MultiThreadDecrypter extends AbstractDecrypter{
     private ExecutorService threadPool;
     AtomicBoolean running = new AtomicBoolean(false);
 
+    public MultiThreadDecrypter(List<String> filePaths) {
+        super(filePaths);
+    }
+
+    public MultiThreadDecrypter(){
+        super();
+    }
 
     public Map<String, String> getDecryptedMap(int minLen, int maxLen, int nThreads)  {
         if (minLen <= 0) {

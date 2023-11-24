@@ -1,9 +1,19 @@
 package edu.hw8.task3.decryptors;
 
+import edu.hw8.task3.coded.CodedDB;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SingleThreadDecrypter extends AbstractDecrypter {
+
+    public SingleThreadDecrypter(List<String> filePaths) {
+        super(filePaths);
+    }
+
+    public SingleThreadDecrypter(){
+        super();
+    }
 
     public Map<String, String> getDecryptedMap(int minLen, int maxLen) {
         if (minLen <= 0) {

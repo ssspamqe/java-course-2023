@@ -22,7 +22,6 @@ public class AbstractDecrypter {
         fakeDB = new CodedDB(filePaths);
         loadAlphabet();
         countingSystem = alphabet.length();
-
     }
 
     public AbstractDecrypter(){
