@@ -21,11 +21,13 @@ public class Server {
     private static final int CLIENT_MESSAGE_CAPACITY = 1024;
     private static final ResponseHandler RESPONSE_HANDLER = new ResponseHandler(CLIENT_MESSAGE_CAPACITY);
     private static final int THREAD_POOL_SIZE = 5;
-    private final ExecutorService threadPool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
+    private ExecutorService threadPool;
 
     private volatile boolean running = true;
 
     public void start() throws IOException, InterruptedException {
+        threadPool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
+
         try (Selector selector = Selector.open()) {
             ByteBuffer buffer = ByteBuffer.allocate(CLIENT_MESSAGE_CAPACITY);
             try (ServerSocketChannel serverSocket = configureServerSocketChannel(selector)) {
@@ -49,6 +51,7 @@ public class Server {
                         ex.printStackTrace();
                     }
                 });
+            threadPool.close();
         }
     }
 
@@ -75,7 +78,7 @@ public class Server {
             bytesToRead = client.read(buffer);
         } catch (Exception ex) {
             LOGGER.warn("Unable to read data from client");
-            bytesToRead=-1;
+            bytesToRead = -1;
         }
 
         if (bytesToRead == -1) {
