@@ -27,11 +27,13 @@ public class SynchronizedPersonDBTest {
         Person person2WithName1 = new Person(2, name1, "", "2");
         Person person3WithName2 = new Person(3, name2, "", "3");
 
+
         personDAO.add(person1WithName1);
         personDAO.add(person2WithName1);
         personDAO.add(person3WithName2);
         List<Person> returnedList = personDAO.findByName(name1);
 
+        
         assertThat(returnedList).containsExactlyInAnyOrder(person1WithName1, person2WithName1);
     }
 

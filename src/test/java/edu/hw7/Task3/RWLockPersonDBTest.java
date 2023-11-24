@@ -27,10 +27,12 @@ public class RWLockPersonDBTest {
         Person person2WithName1 = new Person(2, name1, "", "2");
         Person person3WithName2 = new Person(3, name2, "", "3");
 
+
         personDAO.add(person1WithName1);
         personDAO.add(person2WithName1);
         personDAO.add(person3WithName2);
         List<Person> returnedList = personDAO.findByName(name1);
+
 
         assertThat(returnedList).containsExactlyInAnyOrder(person1WithName1, person2WithName1);
     }
@@ -45,10 +47,12 @@ public class RWLockPersonDBTest {
         Person person2WithAddress1 = new Person(2, "", address1, "2");
         Person person3WithAddress2 = new Person(3, "", address2, "3");
 
+
         personDAO.add(person1WithAddress1);
         personDAO.add(person2WithAddress1);
         personDAO.add(person3WithAddress2);
         List<Person> returnedList = personDAO.findByAddress(address1);
+
 
         assertThat(returnedList).containsExactlyInAnyOrder(person1WithAddress1, person2WithAddress1);
     }
@@ -62,9 +66,11 @@ public class RWLockPersonDBTest {
         Person personWithPhone1 = new Person(1, "", "", phone1);
         Person personWithPhone2 = new Person(2, "", "", phone2);
 
+
         personDAO.add(personWithPhone1);
         personDAO.add(personWithPhone2);
         Person returnedPerson = personDAO.findByPhone(phone1);
+
 
         assertThat(returnedPerson).isEqualTo(personWithPhone1);
     }
@@ -76,9 +82,11 @@ public class RWLockPersonDBTest {
         String phone = "121";
         Person person = new Person(id, "", "", phone);
 
+
         personDAO.add(person);
         personDAO.delete(id);
         Person returnedPerson = personDAO.findByPhone(phone);
+
 
         assertThat(returnedPerson).isNull();
     }
@@ -90,6 +98,8 @@ public class RWLockPersonDBTest {
         String name = "default_name";
 
         Person person = new Person(0, name, "default_address", "default_phone");
+
+
         List<Person> returnedPersonList = new ArrayList<>();
         var writingThread = new Thread(() -> personDAO.add(person));
         var readingThread = new Thread(() -> returnedPersonList.addAll(personDAO.findByName(name)));
@@ -101,6 +111,7 @@ public class RWLockPersonDBTest {
         readingThread.join();
 
         Person returnedPerson = returnedPersonList.get(0);
+
 
         assertThat(returnedPerson).isEqualTo(person);
     }
