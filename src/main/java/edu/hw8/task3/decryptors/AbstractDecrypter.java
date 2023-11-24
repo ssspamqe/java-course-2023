@@ -4,6 +4,7 @@ import edu.hw8.task3.coded.CodedDB;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -13,24 +14,17 @@ public class AbstractDecrypter {
 
     protected static final Logger LOGGER = LogManager.getLogger();
 
-    protected final CodedDB fakeDB;
+    protected CodedDB fakeDB;
     protected String alphabet = " ";
     protected final int countingSystem;
     protected Map<String, String> decodedPasswords;
 
-    public AbstractDecrypter(List<String> filePaths) {
-        fakeDB = new CodedDB(filePaths);
+    public AbstractDecrypter() {
         loadAlphabet();
         countingSystem = alphabet.length();
     }
 
-    public AbstractDecrypter(){
-        fakeDB = new CodedDB();
-        loadAlphabet();
-        countingSystem = alphabet.length();
-    }
-
-    protected void loadAlphabet(String... specialCharacters) {
+    private void loadAlphabet(String... specialCharacters) {
         StringBuilder stringBuilder = new StringBuilder(alphabet);
         for (int i = 0; i < 26; i++) {
             stringBuilder.append((char) ('a' + i));
@@ -84,5 +78,13 @@ public class AbstractDecrypter {
             number[i] = 1;
         }
         return number;
+    }
+
+    protected void loadDB(List<String> paths) {
+        if (paths.isEmpty()) {
+            fakeDB = new CodedDB();
+        } else {
+            fakeDB = new CodedDB(paths);
+        }
     }
 }

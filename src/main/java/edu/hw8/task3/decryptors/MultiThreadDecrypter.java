@@ -7,24 +7,25 @@ import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
-import org.apache.commons.codec.digest.DigestUtils;
 
-public class MultiThreadDecrypter extends AbstractDecrypter{
+public class MultiThreadDecrypter extends AbstractDecrypter {
     private ExecutorService threadPool;
     AtomicBoolean running = new AtomicBoolean(false);
 
-    public MultiThreadDecrypter(List<String> filePaths) {
-        super(filePaths);
-    }
-
-    public MultiThreadDecrypter(){
+    public MultiThreadDecrypter() {
         super();
     }
 
-    public Map<String, String> getDecryptedMap(int minLen, int maxLen, int nThreads)  {
+    public Map<String, String> getDecryptedMap(int minLen, int maxLen, int nThreads) {
+        return getDecryptedMap(List.of(), minLen, maxLen,nThreads);
+    }
+
+    public Map<String, String> getDecryptedMap(List<String> paths, int minLen, int maxLen, int nThreads) {
         if (minLen <= 0) {
             throw new IllegalArgumentException("minLen must be positive number");
         }
+
+        loadDB(paths);
 
         decodedPasswords = new HashMap<>();
         threadPool = Executors.newFixedThreadPool(nThreads);
@@ -34,7 +35,7 @@ public class MultiThreadDecrypter extends AbstractDecrypter{
 
         for (int fistDigit = 1; fistDigit < alphabet.length() && running.get(); fistDigit++) {
             int finalFistDigit = fistDigit;
-            threadPool.execute(() -> threadPoolTask(finalFistDigit,firstNumber));
+            threadPool.execute(() -> threadPoolTask(finalFistDigit, firstNumber));
         }
 
         threadPool.close();
@@ -42,7 +43,7 @@ public class MultiThreadDecrypter extends AbstractDecrypter{
         return decodedPasswords;
     }
 
-    private void threadPoolTask(int firstDigit, int[] firstNumber){
+    private void threadPoolTask(int firstDigit, int[] firstNumber) {
         var currentNumber = firstNumber.clone();
         currentNumber[0] = firstDigit;
 
