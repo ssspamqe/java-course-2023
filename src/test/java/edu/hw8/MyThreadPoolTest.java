@@ -13,15 +13,24 @@ public class MyThreadPoolTest {
     void threadPool_should_executeTasksAsynchronously() {
         var atomicInteger = new AtomicInteger();
         int threadPoolSize = 5;
-        int increment = 100;
+        int increment = 20;
+        int sleepTime = 500;
 
         try (MyThreadPool threadPool = new MyThreadPool(threadPoolSize)) {
             for (int i = 0; i < increment; i++) {
-                threadPool.execute(atomicInteger::incrementAndGet);
+                threadPool.execute(() -> {
+                    try {
+                        Thread.sleep(sleepTime);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    atomicInteger.getAndIncrement();
+                });
             }
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
+
 
         assertThat(atomicInteger.get()).isEqualTo(increment);
     }
