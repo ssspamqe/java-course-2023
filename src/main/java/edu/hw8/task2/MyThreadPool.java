@@ -74,7 +74,6 @@ public class MyThreadPool implements ThreadPool {
     }
 
 
-    
 
     private class Worker extends Thread {
         private boolean waitingForWork = false;
