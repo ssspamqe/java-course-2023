@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -11,9 +13,13 @@ public class MyThreadPool implements ThreadPool {
 
     private final static Logger LOGGER = LogManager.getLogger();
 
+    private final ReentrantLock lock = new ReentrantLock();
+    private final Condition queueIsEmpty = lock.newCondition();
+
     private final BlockingQueue<Runnable> taskQueue;
     private final List<Worker> workers;
-    private volatile boolean closing = false;
+
+    private boolean closing = false;
 
     public MyThreadPool(int poolSize) {
         taskQueue = new LinkedBlockingQueue<>();
@@ -42,9 +48,11 @@ public class MyThreadPool implements ThreadPool {
     public void close() throws Exception {
         closing = true;
 
+        waitEmptyQueue();
+
         workers.forEach(it -> {
             try {
-                if (taskQueue.isEmpty()) {
+                if (it.isWaitingForWork()) {
                     it.interrupt();
                 }
                 it.join();
@@ -54,17 +62,54 @@ public class MyThreadPool implements ThreadPool {
         });
     }
 
+    private void waitEmptyQueue() {
+        lock.lock();
+        try {
+            queueIsEmpty.await();
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        } finally {
+            lock.unlock();
+        }
+    }
+
+
+    
+
     private class Worker extends Thread {
+        private boolean waitingForWork = false;
+
         public void run() {
             while (!closing || !taskQueue.isEmpty()) {
                 Runnable task;
                 try {
+                    waitingForWork = true;
                     task = taskQueue.take();
+                    waitingForWork = false;
                 } catch (InterruptedException e) {
                     continue;
                 }
+                signalIfNoTasks();
                 task.run();
+            }
+
+        }
+
+        public boolean isWaitingForWork() {
+            return waitingForWork;
+        }
+
+        private void signalIfNoTasks() {
+            if (taskQueue.isEmpty()) {
+                lock.lock();
+                try {
+                    queueIsEmpty.signal();
+                } catch (Exception ex) {
+                } finally {
+                    lock.unlock();
+                }
             }
         }
     }
 }
+
