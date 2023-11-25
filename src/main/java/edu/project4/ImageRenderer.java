@@ -10,8 +10,12 @@ import javax.imageio.ImageIO;
 
 public class ImageRenderer {
 
-    public static void renderImage(PixelCanvas canvas) {
+    private static final String IMAGE_EXTENSION = ".png";
 
+    private ImageRenderer() {
+    }
+
+    public static void renderImage(PixelCanvas canvas) {
         int height = canvas.getHeight();
         int width = canvas.getWidth();
 
@@ -29,14 +33,13 @@ public class ImageRenderer {
         String path = "./sampleFiles/";
         int i = 0;
         String fileName = "img";
-        while (Files.exists(Path.of(path + fileName + i + ".png"))) {
+        while (Files.exists(Path.of(path + fileName + i + IMAGE_EXTENSION))) {
             i++;
         }
         try {
-            ImageIO.write(image, "png", new File(path + fileName + i + ".png"));
+            ImageIO.write(image, "png", new File(path + fileName + i + IMAGE_EXTENSION));
         } catch (Exception ex) {
-            ex.printStackTrace();
+            throw new RuntimeException(ex);
         }
-
     }
 }

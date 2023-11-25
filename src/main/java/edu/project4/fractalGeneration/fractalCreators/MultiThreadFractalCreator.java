@@ -14,7 +14,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class MultiThreadFractalCreator extends AbstractFractalCreator {
 
-    private static final ReadWriteLock rwLock = new ReentrantReadWriteLock();
+    private static final ReadWriteLock RW_LOCK = new ReentrantReadWriteLock();
 
     public static void fillCanvas(
         PixelCanvas canvas,
@@ -57,22 +57,22 @@ public class MultiThreadFractalCreator extends AbstractFractalCreator {
     }
 
     private static <T> T getRandomElementWithLock(List<T> list) {
-        rwLock.readLock().lock();
+        RW_LOCK.readLock().lock();
         T element = null;
         try {
             element = getRandomElement(list);
         } finally {
-            rwLock.readLock().unlock();
+            RW_LOCK.readLock().unlock();
         }
         return element;
     }
 
     private static void paintPixelWithLock(Dot dot, PixelCanvas canvas, Color color) {
-        rwLock.writeLock().lock();
+        RW_LOCK.writeLock().lock();
         try {
             paintPixel(dot, canvas, color);
         } finally {
-            rwLock.writeLock().unlock();
+            RW_LOCK.writeLock().unlock();
         }
     }
 

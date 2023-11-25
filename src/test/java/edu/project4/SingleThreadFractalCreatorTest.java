@@ -45,7 +45,6 @@ public class SingleThreadFractalCreatorTest {
 
         int blackPixels = getAmountOfBlackPixels(canvas);
 
-
         assertThat(blackPixels).isNotEqualTo(HEIGHT * WIDTH);
     }
 

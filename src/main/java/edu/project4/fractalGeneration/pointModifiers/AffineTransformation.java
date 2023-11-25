@@ -23,7 +23,7 @@ public class AffineTransformation {
         this.color = color;
     }
 
-    public Point apply(Point point){
+    public Point apply(Point point) {
         double newX = a * point.x() + b * point.y() + c;
         double newY = d * point.x() + e * point.y() + f;
 

@@ -4,6 +4,6 @@ import edu.project4.fractalGeneration.coordinateObjects.Point;
 
 public interface PointFunction {
 
-    public Point apply(Point oldPoint);
+    Point apply(Point oldPoint);
 
 }

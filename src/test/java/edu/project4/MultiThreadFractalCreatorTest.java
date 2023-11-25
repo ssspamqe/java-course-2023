@@ -48,7 +48,6 @@ public class MultiThreadFractalCreatorTest {
         var color = new Color(5, 17, 1);
         var transformations = List.of(new AffineTransformation(a, b, c, d, e, f, color));
 
-
         MultiThreadFractalCreator.fillCanvas(
             canvas,
             SAMPLES,
@@ -60,7 +59,6 @@ public class MultiThreadFractalCreatorTest {
         );
 
         int blackPixels = getAmountOfBlackPixels(canvas);
-
 
         assertThat(blackPixels).isNotEqualTo(HEIGHT * WIDTH);
     }

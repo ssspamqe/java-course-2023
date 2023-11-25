@@ -30,12 +30,24 @@ public class Driver {
     private static final boolean VERTICAL_SYMMETRY = false;
     private static final boolean HORIZONTAL_SYMMETRY = false;
 
-    public static void main(String[] params) {
-        launch();
+    private static final int MAX_COLOR = 255;
+
+    private static final int MAX_ABSOLUTE_SHIFT = 10;
+
+    private static final double NANO_IN_MILLI = 1_000_000;
+
+    private static final int SIMULATIONS = 5;
+
+    private static final int MIN_THREADS = 2;
+    private static final int MAX_THREADS = 10;
+
+    private static final int AMOUNT_OF_AFFINE_TRANSFORMATIONS = 70;
+
+    private Driver() {
     }
 
     public static void launch() {
-        List<AffineTransformation> transformations = getListOfAffineTransformations(70);
+        List<AffineTransformation> transformations = getListOfAffineTransformations(AMOUNT_OF_AFFINE_TRANSFORMATIONS);
         List<PointFunction> pointFunctions =
             List.of(
                 new SinusoidalFunction(),
@@ -65,12 +77,12 @@ public class Driver {
             double d = ThreadLocalRandom.current().nextDouble(-1, 1);
             double e = ThreadLocalRandom.current().nextDouble(-1, 1);
 
-            double c = ThreadLocalRandom.current().nextDouble(-10, 10);
-            double f = ThreadLocalRandom.current().nextDouble(-10, 10);
+            double c = ThreadLocalRandom.current().nextDouble(-MAX_ABSOLUTE_SHIFT, MAX_ABSOLUTE_SHIFT);
+            double f = ThreadLocalRandom.current().nextDouble(-MAX_ABSOLUTE_SHIFT, MAX_ABSOLUTE_SHIFT);
 
-            int red = ThreadLocalRandom.current().nextInt(0, 256);
-            int green = ThreadLocalRandom.current().nextInt(0, 256);
-            int blue = ThreadLocalRandom.current().nextInt(0, 256);
+            int red = ThreadLocalRandom.current().nextInt(0, MAX_COLOR + 1);
+            int green = ThreadLocalRandom.current().nextInt(0, MAX_COLOR + 1);
+            int blue = ThreadLocalRandom.current().nextInt(0, MAX_COLOR + 1);
 
             Color color = new Color(red, green, blue);
 
@@ -93,7 +105,7 @@ public class Driver {
     ) {
         double singleThreadTime = 0;
         PixelCanvas canvas = new PixelCanvas(HEIGHT, WIDTH, VERTICAL_SYMMETRY, HORIZONTAL_SYMMETRY);
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < SIMULATIONS; i++) {
             var start = System.nanoTime();
             SingleThreadFractalCreator.fillCanvas(
                 canvas,
@@ -104,10 +116,10 @@ public class Driver {
                 pointFunctions
             );
             var end = System.nanoTime();
-            System.out.println(end - start);
             singleThreadTime += end - start;
         }
-        singleThreadTime /= 5_000_000_000L;
+        singleThreadTime /= NANO_IN_MILLI;
+        singleThreadTime /= SIMULATIONS;
 
         return singleThreadTime;
     }
@@ -118,12 +130,12 @@ public class Driver {
     ) {
         Map<Integer, Double> times = new HashMap<>();
 
-        PixelCanvas canvas = new PixelCanvas(HEIGHT,WIDTH);
+        PixelCanvas canvas = new PixelCanvas(HEIGHT, WIDTH);
 
-        for (int threads = 2; threads <= 10; threads++) {
+        for (int threads = MIN_THREADS; threads <= MAX_THREADS; threads++) {
             double allTime = 0;
 
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < SIMULATIONS; i++) {
                 var start = System.nanoTime();
                 MultiThreadFractalCreator.fillCanvas(
                     canvas,
@@ -137,7 +149,8 @@ public class Driver {
                 var end = System.nanoTime();
                 allTime += end - start;
             }
-            allTime /= 5_000_000_000L;
+            allTime /= NANO_IN_MILLI;
+            allTime /= SIMULATIONS;
 
             times.put(threads, allTime);
         }

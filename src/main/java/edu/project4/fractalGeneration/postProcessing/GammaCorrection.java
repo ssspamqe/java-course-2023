@@ -14,10 +14,10 @@ public class GammaCorrection implements PostProcessing {
     public void applyProcedure(PixelCanvas canvas) {
         setPixelNormal(canvas);
         double maxGamma = getMaxGamma(canvas);
-        rePaintCanvas(canvas,maxGamma);
+        rePaintCanvas(canvas, maxGamma);
     }
 
-    private void rePaintCanvas(PixelCanvas canvas, double maxGamma){
+    private void rePaintCanvas(PixelCanvas canvas, double maxGamma) {
         Set<Pixel> correctedPixels = new HashSet<>();
         for (int row = 0; row < canvas.getHeight(); row++) {
             for (int column = 0; column < canvas.getWidth(); column++) {
@@ -44,8 +44,7 @@ public class GammaCorrection implements PostProcessing {
         pixel.setColor(newColor);
     }
 
-
-    private void setPixelNormal(PixelCanvas canvas){
+    private void setPixelNormal(PixelCanvas canvas) {
         for (int row = 0; row < canvas.getHeight(); row++) {
             for (int col = 0; col < canvas.getWidth(); col++) {
                 var pixel = canvas.getPixel(row, col);

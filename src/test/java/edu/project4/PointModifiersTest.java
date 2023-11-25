@@ -82,7 +82,7 @@ public class PointModifiersTest {
         double f = 0;
         var color = new Color(5, 17, 1);
         var transformation = new AffineTransformation(a, b, c, d, e, f, color);
-        var correctPoint = new Point(-1.0699999999999998,0.22999999999999998);
+        var correctPoint = new Point(-1.0699999999999998, 0.22999999999999998);
 
         var returnedPoint = transformation.apply(point);
 

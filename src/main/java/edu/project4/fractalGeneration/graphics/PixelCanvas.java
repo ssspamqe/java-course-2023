@@ -1,7 +1,6 @@
 package edu.project4.fractalGeneration.graphics;
 
 import edu.project4.fractalGeneration.coordinateObjects.Dot;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 

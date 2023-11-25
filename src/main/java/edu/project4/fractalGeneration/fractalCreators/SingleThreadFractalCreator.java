@@ -19,7 +19,7 @@ public class SingleThreadFractalCreator extends AbstractFractalCreator {
     ) {
         for (int sample = 0; sample < samples; sample++) {
             Point startPoint = getRandomInitialPoint();
-            iteratePoint(startPoint, offset,iterationsPerSample,transformations,pointFunctions,canvas);
+            iteratePoint(startPoint, offset, iterationsPerSample, transformations, pointFunctions, canvas);
         }
     }
 
@@ -35,7 +35,7 @@ public class SingleThreadFractalCreator extends AbstractFractalCreator {
         for (int iteration = offset; iteration < iterationsPerSample; iteration++) {
             AffineTransformation transformation = getRandomElement(transformations);
 
-            Point transformedPoint =transformation.apply(newPoint);
+            Point transformedPoint = transformation.apply(newPoint);
             newPoint = applyPointFunctions(transformedPoint, pointFunctions);
 
             if (iteration >= 0
