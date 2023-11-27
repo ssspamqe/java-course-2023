@@ -16,7 +16,7 @@ public class MyThreadPoolTest {
         int increment = 20;
         int sleepTime = 500;
 
-        try (MyThreadPool threadPool = new MyThreadPool(threadPoolSize)) {
+        try (MyThreadPool threadPool = MyThreadPool.create(threadPoolSize)) {
             for (int i = 0; i < increment; i++) {
                 threadPool.execute(() -> {
                     try {
@@ -30,7 +30,6 @@ public class MyThreadPoolTest {
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
-
 
         assertThat(atomicInteger.get()).isEqualTo(increment);
     }

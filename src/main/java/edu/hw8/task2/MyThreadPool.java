@@ -21,7 +21,7 @@ public class MyThreadPool implements ThreadPool {
 
     private boolean closing = false;
 
-    public MyThreadPool(int poolSize) {
+    private MyThreadPool(int poolSize) {
         taskQueue = new LinkedBlockingQueue<>();
 
         workers = new ArrayList<>();
@@ -31,9 +31,13 @@ public class MyThreadPool implements ThreadPool {
         }
     }
 
+    public static MyThreadPool create(int nThread) {
+        return new MyThreadPool(nThread);
+    }
+
     @Override
     public void start() {
-        throw new RuntimeException("Not implemented");
+        workers.forEach(Thread::start);
     }
 
     @Override
@@ -72,8 +76,6 @@ public class MyThreadPool implements ThreadPool {
             lock.unlock();
         }
     }
-
-
 
     private class Worker extends Thread {
         private boolean waitingForWork = false;

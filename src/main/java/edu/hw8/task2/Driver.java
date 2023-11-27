@@ -15,7 +15,7 @@ public class Driver {
     }
 
     public static void launch() {
-        try (MyThreadPool threadPool = new MyThreadPool(THREAD_POOL_SIZE)) {
+        try (MyThreadPool threadPool = MyThreadPool.create(THREAD_POOL_SIZE)) {
             for (int n = MIN_N; n <= MAX_N; n++) {
                 int finalN = n;
                 threadPool.execute(() ->
