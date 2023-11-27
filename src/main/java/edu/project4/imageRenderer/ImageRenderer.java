@@ -37,12 +37,11 @@ public class ImageRenderer {
     }
 
     private static void saveFile(BufferedImage image, Path directoryPath, String fileName, FileFormat fileFormat) {
-        String fullFileName = directoryPath + fileName + "." + fileFormat;
-        if (Files.notExists(Path.of(fullFileName))) {
-            int i = 1;
-            while (Files.exists(Path.of(directoryPath + fileName + i + "." + fileFormat))) {
-                i++;
-            }
+        String fullFileName = directoryPath + "\\" + fileName + "." + fileFormat;
+        int i = 0;
+        while (Files.exists(Path.of(fullFileName))) {
+            i++;
+            fullFileName = directoryPath + "\\" + fileName + i + "." + fileFormat;
         }
 
         try {
