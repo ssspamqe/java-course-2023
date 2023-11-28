@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -13,6 +15,8 @@ public class CodedDB {
 
     private static final Logger LOGGER = LogManager.getLogger();
     private static final String DEFAULT_DB_PATH = "./src/main/java/edu/hw8/task3/coded/coded.txt";
+    private static final ReadWriteLock READ_WRITE_LOCK = new ReentrantReadWriteLock();
+
     private final Map<String, String> usersByHash = new HashMap<>();
 
     public CodedDB(List<String> paths) {
@@ -44,17 +48,36 @@ public class CodedDB {
             if (data.length != 2) {
                 throw new Exception();
             }
-            usersByHash.put(data[1], data[0]);
+            put(data[1], data[0]);
         } catch (Exception ex) {
             LOGGER.warn("line \"{}\" is not correct", line);
         }
     }
 
+    public void put(String hash, String user) {
+        READ_WRITE_LOCK.writeLock().lock();
+        try {
+            usersByHash.put(hash, user);
+        } finally {
+            READ_WRITE_LOCK.writeLock().unlock();
+        }
+    }
+
     public String remove(String key) {
-        return usersByHash.remove(key);
+        READ_WRITE_LOCK.writeLock().lock();
+        try {
+            return usersByHash.remove(key);
+        } finally {
+            READ_WRITE_LOCK.writeLock().unlock();
+        }
     }
 
     public boolean isEmpty() {
-        return usersByHash.isEmpty();
+        READ_WRITE_LOCK.readLock().lock();
+        try {
+            return usersByHash.isEmpty();
+        } finally {
+            READ_WRITE_LOCK.readLock().unlock();
+        }
     }
 }
