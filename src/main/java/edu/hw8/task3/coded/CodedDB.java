@@ -35,23 +35,23 @@ public class CodedDB {
         try (Scanner scanner = new Scanner(new FileInputStream(path))) {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
-                handleLine(line);
+                String[] parsedLine = parseLine(line);
+                if (parsedLine != null) {
+                    usersByHash.put(parsedLine[1], parsedLine[0]);
+                }
             }
         } catch (IOException ex) {
             LOGGER.warn("File {} was not found", path);
         }
     }
 
-    private void handleLine(String line) {
+    private String[] parseLine(String line) {
         String[] data = line.split(" ");
-        try {
-            if (data.length != 2) {
-                throw new Exception();
-            }
-            put(data[1], data[0]);
-        } catch (Exception ex) {
+        if (data.length != 2) {
             LOGGER.warn("line \"{}\" is not correct", line);
+            return null;
         }
+        return data;
     }
 
     public void put(String hash, String user) {
