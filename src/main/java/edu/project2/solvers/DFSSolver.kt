@@ -1,16 +1,16 @@
 package edu.project2.solvers
 
-import edu.project2.Maze.Cell
+import edu.project2.Maze.CellCoordinates
 import edu.project2.Maze.CellType
 import edu.project2.Maze.Maze
 
 class DFSSolver : MazeSolver() {
 
     private lateinit var maze: Maze
-    private lateinit var visited: HashSet<Cell>
-    private lateinit var ancestors: List<List<Cell>>
+    private lateinit var visited: HashSet<CellCoordinates>
+    private lateinit var ancestors: List<List<CellCoordinates>>
 
-    override fun solve(mazeParam: Maze, start: Cell, end: Cell): Maze {
+    override fun solve(mazeParam: Maze, start: CellCoordinates, end: CellCoordinates): Maze {
         maze = mazeParam.clone()
 
         if (maze.getCellType(start) != CellType.PASSAGE)
@@ -20,7 +20,7 @@ class DFSSolver : MazeSolver() {
             throw IllegalArgumentException("End cell is not a passage")
 
         ancestors = List(maze.height) { _ ->
-            List(maze.width) { Cell(-1, -1) }
+            List(maze.width) { CellCoordinates(-1, -1) }
         }
 
         visited = hashSetOf()
@@ -31,17 +31,17 @@ class DFSSolver : MazeSolver() {
         return buildSolvedMaze(maze, start, end, ancestors)
     }
 
-    private fun dfs(cell: Cell) {
+    private fun dfs(cellCoordinates: CellCoordinates) {
 
-        visited.add(cell)
+        visited.add(cellCoordinates)
 
-        val nextCells = maze.getAdjacentCells(cell).filter {
-            it !in visited && maze.getCellType(cell) == CellType.PASSAGE
+        val nextCells = maze.getAdjacentCells(cellCoordinates).filter {
+            it !in visited && maze.getCellType(cellCoordinates) == CellType.PASSAGE
         }
 
 
         nextCells.forEach {
-            (ancestors[it.row] as MutableList<Cell>)[it.column] = cell
+            (ancestors[it.row] as MutableList<CellCoordinates>)[it.column] = cellCoordinates
             dfs(it)
         }
     }

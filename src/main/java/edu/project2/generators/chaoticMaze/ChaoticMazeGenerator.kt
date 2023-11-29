@@ -1,6 +1,6 @@
 package edu.project2.generators.chaoticMaze
 
-import edu.project2.Maze.Cell
+import edu.project2.Maze.CellCoordinates
 import edu.project2.Maze.CellType
 import edu.project2.Maze.Maze
 import edu.project2.generators.MazeGenerator
@@ -26,12 +26,12 @@ class ChaoticMazeGenerator() : MazeGenerator {
 
         maze = Maze(height, width)
 
-        val startCell = Cell(Random.nextInt(height), Random.nextInt(width))
+        val startCellCoordinates = CellCoordinates(Random.nextInt(height), Random.nextInt(width))
 
-        val trace: Stack<Cell> = Stack()
-        trace.add(startCell)
+        val trace: Stack<CellCoordinates> = Stack()
+        trace.add(startCellCoordinates)
 
-        val visited = hashSetOf(startCell)
+        val visited = hashSetOf(startCellCoordinates)
 
         //start bfs
         while (trace.isNotEmpty()) {

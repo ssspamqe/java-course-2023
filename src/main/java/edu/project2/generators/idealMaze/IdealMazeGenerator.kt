@@ -1,6 +1,6 @@
 package edu.project2.generators.idealMaze
 
-import edu.project2.Maze.Cell
+import edu.project2.Maze.CellCoordinates
 import edu.project2.Maze.CellType
 import edu.project2.Maze.Maze
 import edu.project2.generators.MazeGenerator
@@ -9,7 +9,7 @@ import java.util.*
 class IdealMazeGenerator : MazeGenerator {
 
     private lateinit var maze: Maze
-    private lateinit var visited: HashSet<Cell>
+    private lateinit var visited: HashSet<CellCoordinates>
 
     private var height = 0
     private var width = 0
@@ -26,7 +26,7 @@ class IdealMazeGenerator : MazeGenerator {
         maze = Maze(height, width)
         visited = hashSetOf()
 
-        val start = Cell(0, 0)
+        val start = CellCoordinates(0, 0)
         maze.setCellType(start, CellType.PASSAGE)
 
         procedureBacktracking(start)
@@ -44,9 +44,9 @@ class IdealMazeGenerator : MazeGenerator {
     public fun getMaze(side: Int): Maze = getMaze(side, side)
 
 
-    private fun procedureBacktracking(start: Cell) {
+    private fun procedureBacktracking(start: CellCoordinates) {
 
-        val trace = Stack<Cell>()
+        val trace = Stack<CellCoordinates>()
         trace.add(start)
         var currentCell = start
         while (trace.isNotEmpty()) {
@@ -72,36 +72,36 @@ class IdealMazeGenerator : MazeGenerator {
         }
     }
 
-    private fun changeTransitionCellTypeToPassage(currentCell: Cell, shift: Shift) {
+    private fun changeTransitionCellTypeToPassage(currentCellCoordinates: CellCoordinates, shift: Shift) {
         when (shift) {
             Shift.UP ->
-                maze.setCellType(Cell(currentCell.row - 1, currentCell.column), CellType.PASSAGE)
+                maze.setCellType(CellCoordinates(currentCellCoordinates.row - 1, currentCellCoordinates.column), CellType.PASSAGE)
 
             Shift.RIGHT ->
-                maze.setCellType(Cell(currentCell.row, currentCell.column + 1), CellType.PASSAGE)
+                maze.setCellType(CellCoordinates(currentCellCoordinates.row, currentCellCoordinates.column + 1), CellType.PASSAGE)
 
             Shift.DOWN ->
-                maze.setCellType(Cell(currentCell.row + 1, currentCell.column), CellType.PASSAGE)
+                maze.setCellType(CellCoordinates(currentCellCoordinates.row + 1, currentCellCoordinates.column), CellType.PASSAGE)
 
             Shift.LEFT ->
-                maze.setCellType(Cell(currentCell.row, currentCell.column - 1), CellType.PASSAGE)
+                maze.setCellType(CellCoordinates(currentCellCoordinates.row, currentCellCoordinates.column - 1), CellType.PASSAGE)
 
             Shift.UNKNOWN -> return
         }
     }
 
-    private fun getCellShift(originalCell: Cell, cell: Cell): Shift {
-        if (originalCell == cell)
+    private fun getCellShift(originalCellCoordinates: CellCoordinates, cellCoordinates: CellCoordinates): Shift {
+        if (originalCellCoordinates == cellCoordinates)
             return Shift.UNKNOWN
 
-        if (originalCell.row == cell.row) {
-            if (originalCell.column > cell.column)
+        if (originalCellCoordinates.row == cellCoordinates.row) {
+            if (originalCellCoordinates.column > cellCoordinates.column)
                 return Shift.LEFT
             return Shift.RIGHT
         }
 
-        if (originalCell.column == cell.column) {
-            if (originalCell.row > cell.row)
+        if (originalCellCoordinates.column == cellCoordinates.column) {
+            if (originalCellCoordinates.row > cellCoordinates.row)
                 return Shift.UP
             return Shift.DOWN
         }
@@ -115,11 +115,11 @@ class IdealMazeGenerator : MazeGenerator {
         var prevFilled = false
 
         for (row in 0 until height) {
-            if (maze.getCellType(Cell(row, column - 1)) == CellType.PASSAGE
+            if (maze.getCellType(CellCoordinates(row, column - 1)) == CellType.PASSAGE
                 && random.nextBoolean()
                 && !prevFilled
             ) {
-                maze.setCellType(Cell(row, column), CellType.PASSAGE)
+                maze.setCellType(CellCoordinates(row, column), CellType.PASSAGE)
                 prevFilled = true
             } else
                 prevFilled = false
@@ -132,11 +132,11 @@ class IdealMazeGenerator : MazeGenerator {
         var prevFilled = false
 
         for (column in 0 until width) {
-            if (maze.getCellType(Cell(row - 1, column)) == CellType.PASSAGE
+            if (maze.getCellType(CellCoordinates(row - 1, column)) == CellType.PASSAGE
                 && random.nextBoolean()
                 && !prevFilled
             ) {
-                maze.setCellType(Cell(row, column), CellType.PASSAGE)
+                maze.setCellType(CellCoordinates(row, column), CellType.PASSAGE)
                 prevFilled = true
             } else
                 prevFilled = false

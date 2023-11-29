@@ -9,8 +9,7 @@ import java.util.concurrent.ForkJoinPool;
 public class Driver {
 
     public static void main(String[] params){
-        AsyncDFS dfs = new AsyncDFS(Path.of("C://"),10000);
-
+        AsyncDFS dfs = new AsyncDFS(Path.of("C://"),1000);
         System.out.println(new Date());
         ForkJoinPool forkJoinPool = new ForkJoinPool();
         System.out.println(forkJoinPool.invoke(dfs));

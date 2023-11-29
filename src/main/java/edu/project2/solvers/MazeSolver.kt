@@ -1,12 +1,12 @@
 package edu.project2.solvers
 
-import edu.project2.Maze.Cell
+import edu.project2.Maze.CellCoordinates
 import edu.project2.Maze.CellType
 import edu.project2.Maze.Maze
 
 abstract class MazeSolver {
-    public abstract fun solve(mazeParam: Maze, start: Cell, end: Cell): Maze
-    protected fun buildSolvedMaze(maze: Maze, start: Cell, end: Cell, ancestors: List<List<Cell>>): Maze {
+    public abstract fun solve(mazeParam: Maze, start: CellCoordinates, end: CellCoordinates): Maze
+    protected fun buildSolvedMaze(maze: Maze, start: CellCoordinates, end: CellCoordinates, ancestors: List<List<CellCoordinates>>): Maze {
 
         var currentCell = end
 

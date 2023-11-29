@@ -1,6 +1,6 @@
 package edu.project2
 
-import edu.project2.Maze.Cell
+import edu.project2.Maze.CellCoordinates
 import edu.project2.Maze.CellType
 import edu.project2.Maze.Maze
 import edu.project2.generators.idealMaze.IdealMazeGenerator
@@ -28,11 +28,11 @@ class BFSSolverTest : ShouldSpec({
     should("throw an exception if not passing CellType.WALL as start cell") {
         checkAll(Arb.int(-height, 2 * height), Arb.int(-width, 2 * width)) { row, column ->
 
-            val start = Cell(row, column)
+            val start = CellCoordinates(row, column)
 
             checkAll(Arb.int(-height, 2 * height), Arb.int(-width, 2 * width)) { row, column ->
 
-                val end = Cell(row, column)
+                val end = CellCoordinates(row, column)
 
                 // вот тут нам нужно узнать, является ли ячейка свободной или нет, и исходя из этого определить тест
                 if (maze.getCellType(start) != CellType.PASSAGE || maze.getCellType(end) != CellType.PASSAGE) {

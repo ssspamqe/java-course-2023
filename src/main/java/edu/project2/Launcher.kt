@@ -1,6 +1,6 @@
 package edu.project2
 
-import edu.project2.Maze.Cell
+import edu.project2.Maze.CellCoordinates
 import edu.project2.Maze.Maze
 import edu.project2.generators.MazeGenerator
 import edu.project2.generators.chaoticMaze.ChaoticMazeGenerator
@@ -29,8 +29,8 @@ class Launcher {
     private var solver: MazeSolver = BFSSolver()
 
 
-    private var start = Cell(0, 0)
-    private var end = Cell(0, 0)
+    private var start = CellCoordinates(0, 0)
+    private var end = CellCoordinates(0, 0)
 
 
     private var choice: Char = 'a'
@@ -144,7 +144,7 @@ class Launcher {
         LOGGER.info("Input column of start cell")
         var column: Int = sc.nextInt()
 
-        start = Cell(row, column)
+        start = CellCoordinates(row, column)
 
 
         LOGGER.info("Input row of end cell")
@@ -153,7 +153,7 @@ class Launcher {
         LOGGER.info("Input column of end cell")
         column = sc.nextInt()
 
-        end = Cell(row, column)
+        end = CellCoordinates(row, column)
     }
 
     private fun chooseMazeGenerator() {
