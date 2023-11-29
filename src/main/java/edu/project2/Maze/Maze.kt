@@ -58,7 +58,7 @@ data class Maze(
             }
 
             if (printBounds)
-                LOGGER.info("${CellType.WALL.getSymbol()}$symbolLine + ${CellType.WALL.getSymbol()}")
+                LOGGER.info("${CellType.WALL.getSymbol()}$symbolLine${CellType.WALL.getSymbol()}")
             else
                 LOGGER.info(symbolLine)
         }
