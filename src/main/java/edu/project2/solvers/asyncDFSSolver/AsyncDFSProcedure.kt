@@ -6,16 +6,13 @@ import java.util.concurrent.RecursiveTask
 
 internal class AsyncDFSProcedure(
     private val currentCoordinates: CellCoordinates,
-    private var path: List<CellCoordinates>,
-    private var visited: Set<CellCoordinates>,
+    private val path: Map<CellCoordinates, CellCoordinates>,
+    private val visited: Set<CellCoordinates>,
     private val finish: CellCoordinates,
     private val maze: Maze
-) : RecursiveTask<List<CellCoordinates>?>() {
-
-    override fun compute(): List<CellCoordinates>? {
-        visited = visited.plusElement(currentCoordinates)
-        path = path.plusElement(currentCoordinates)
-
+) : RecursiveTask<Map<CellCoordinates, CellCoordinates>?>() {
+    
+    override fun compute(): Map<CellCoordinates, CellCoordinates>? {
         if (currentCoordinates == finish) {
             return path;
         }
@@ -25,7 +22,15 @@ internal class AsyncDFSProcedure(
         val forks = mutableListOf<AsyncDFSProcedure>()
         adjacentCells.forEach {
             if (!visited.contains(it)) {
-                forks.add(AsyncDFSProcedure(it, path, visited, finish, maze))
+                forks.add(
+                    AsyncDFSProcedure(
+                        it,
+                        path.plus(currentCoordinates to it),
+                        visited.plusElement(currentCoordinates),
+                        finish,
+                        maze
+                    )
+                )
             }
         }
 
@@ -35,8 +40,8 @@ internal class AsyncDFSProcedure(
         return getShortestPath(forks)
     }
 
-    private fun getShortestPath(forks: List<AsyncDFSProcedure>): List<CellCoordinates>? {
-        var completePath: List<CellCoordinates>? = null
+    private fun getShortestPath(forks: List<AsyncDFSProcedure>): Map<CellCoordinates, CellCoordinates>? {
+        var completePath: Map<CellCoordinates, CellCoordinates>? = null
         forks.forEach { fork ->
             val path = fork.join()
             if (path != null) {
