@@ -28,7 +28,6 @@ public class AsyncDFS extends RecursiveTask<List<Path>> {
             return List.of();
         }
 
-        //creating new objects
         List<AsyncDFS> forks = new ArrayList<>();
         AtomicInteger files = new AtomicInteger();
         Files.list(currentPath).forEach(it -> {
@@ -41,13 +40,10 @@ public class AsyncDFS extends RecursiveTask<List<Path>> {
             }
         );
 
-        //joining forks
         List<Path> result = new ArrayList<>();
-
         if (files.get() >= minFilesInDirectory) {
             result.add(currentPath);
         }
-
         forks.forEach(it -> {
             result.addAll(it.join());
         });

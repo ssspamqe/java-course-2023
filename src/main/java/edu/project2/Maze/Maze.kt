@@ -9,9 +9,7 @@ data class Maze(
 
     private val LOGGER = LogManager.getLogger()
 
-    private var matrix: List<List<CellType>>? = null //такова цена дата класса....
-    // (тут все равно надо копировать это поле, а если вызвать .copy(), то скопируются только height:Int и width:Int
-    // и в init{} матрица снова будет состоять только из стен) Зато повторяющегося кода меньше стало
+    private var matrix: List<List<CellType>>? = null
 
     init {
         if (matrix == null)
@@ -45,26 +43,25 @@ data class Maze(
     }
 
     public fun printMaze(printBounds: Boolean = false) {
-
         if (printBounds)
-            LOGGER.info(CellType.WALL.getSymbol().repeat(width + 2))
+            LOGGER.info(CellType.WALL.symbol.repeat(width + 2))
 
         matrix!!.forEach { line ->
 
             val symbolLine = buildString {
                 line.forEach {
-                    append(it.getSymbol())
+                    append(it.symbol)
                 }
             }
 
             if (printBounds)
-                LOGGER.info("${CellType.WALL.getSymbol()}$symbolLine${CellType.WALL.getSymbol()}")
+                LOGGER.info("${CellType.WALL.symbol}$symbolLine${CellType.WALL.symbol}")
             else
                 LOGGER.info(symbolLine)
         }
 
         if (printBounds)
-            LOGGER.info(CellType.WALL.getSymbol().repeat(width + 2))
+            LOGGER.info(CellType.WALL.symbol.repeat(width + 2))
     }
 
     public fun getCellType(cellCoordinates: CellCoordinates): CellType =
@@ -76,7 +73,6 @@ data class Maze(
 
 
     fun getAdjacentCells(cellCoordinates: CellCoordinates, distance: Int): List<CellCoordinates> {
-
         if (distance <= 0)
             throw IllegalArgumentException("Distance must be positive number ")
 

@@ -12,7 +12,6 @@ class ChaoticMazeGenerator() : MazeGenerator {
     private lateinit var maze: Maze
 
     public fun getMaze(height: Int, width: Int, wallChance: Int = 75): Maze {
-
         if (height <= 0 || width <= 0)
             throw IllegalArgumentException("Sizes of maze must be positive integers")
 
@@ -23,7 +22,6 @@ class ChaoticMazeGenerator() : MazeGenerator {
 
 
     private fun generateMaze(height: Int, width: Int, wallChance: Int): Maze {
-
         maze = Maze(height, width)
 
         val startCellCoordinates = CellCoordinates(Random.nextInt(height), Random.nextInt(width))
@@ -58,7 +56,6 @@ class ChaoticMazeGenerator() : MazeGenerator {
     }
 
     private fun getNextCellsAssignment(amount: Int, wallChance: Int): List<CellType> {
-
         if (amount == 0)
             return emptyList()
 
