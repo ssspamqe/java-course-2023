@@ -8,8 +8,14 @@ import edu.project2.generators.idealMaze.IdealMazeGenerator
 import edu.project2.solvers.BFSSolver
 import edu.project2.solvers.DFSSolver
 import edu.project2.solvers.MazeSolver
+import edu.project2.solvers.asyncDFSSolver.AsyncDFSSolver
 import org.apache.logging.log4j.LogManager
 import java.util.*
+
+fun main() {
+    val l = Launcher()
+    l.startGame()
+}
 
 class Launcher {
 
@@ -36,7 +42,6 @@ class Launcher {
     private var choice: Char = 'a'
 
     fun startGame() {
-
         sc = Scanner(System.`in`)
         LOGGER.info("WELCOME TO MAZE GENERATOR!")
 
@@ -188,23 +193,35 @@ class Launcher {
         Select maze solving algorithm:
             1 for bfs
             2 for dfs
+            3 for async dfs
         """
         )
         var solverType = -1
-        while (solverType !in 1..2) {
-            LOGGER.info("type either '1' or '2'")
+        while (solverType !in 1..3) {
+            LOGGER.info("type integer in [1;3]")
             solverType = sc.nextInt()
         }
 
-        solver =
-            if (solverType == 1) {
+        solver = when (solverType) {
+            1 -> {
                 LOGGER.info("You've chosen bfs")
                 BFSSolver()
-            } else {
+            }
+
+            2 -> {
                 LOGGER.info("You've chosen dfs")
                 DFSSolver()
             }
 
-    }
+            3 -> {
+                LOGGER.info("You've chosen async dfs")
+                AsyncDFSSolver()
+            }
 
+            else -> {
+                LOGGER.info("You've chosen bfs")
+                BFSSolver()
+            }
+        }
+    }
 }

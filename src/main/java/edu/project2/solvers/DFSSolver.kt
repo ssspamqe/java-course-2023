@@ -13,12 +13,6 @@ class DFSSolver : MazeSolver() {
     override fun solve(mazeParam: Maze, start: CellCoordinates, end: CellCoordinates): Maze {
         maze = mazeParam.clone()
 
-        if (maze.getCellType(start) != CellType.PASSAGE)
-            throw IllegalArgumentException("Start cell is not a passage")
-
-        if (maze.getCellType(end) != CellType.PASSAGE)
-            throw IllegalArgumentException("End cell is not a passage")
-
         ancestors = hashMapOf()
         visited = hashSetOf()
 
@@ -32,8 +26,8 @@ class DFSSolver : MazeSolver() {
 
         val nextCells = maze.getAdjacentCells(cellCoordinates).filter {
             it !in visited && maze.getCellType(cellCoordinates) == CellType.PASSAGE
-        }
 
+        }
 
         nextCells.forEach {
             (ancestors as HashMap<CellCoordinates, CellCoordinates>)[it] = cellCoordinates

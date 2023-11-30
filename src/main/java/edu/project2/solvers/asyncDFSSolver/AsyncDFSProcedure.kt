@@ -2,6 +2,7 @@ package edu.project2.solvers.asyncDFSSolver
 
 import edu.project2.Maze.CellCoordinates
 import edu.project2.Maze.Maze
+import org.apache.logging.log4j.LogManager
 import java.util.concurrent.RecursiveTask
 
 internal class AsyncDFSProcedure(
@@ -11,26 +12,29 @@ internal class AsyncDFSProcedure(
     private val finish: CellCoordinates,
     private val maze: Maze
 ) : RecursiveTask<Map<CellCoordinates, CellCoordinates>?>() {
-    
+
+    private val LOGGER = LogManager.getLogger()
+
     override fun compute(): Map<CellCoordinates, CellCoordinates>? {
         if (currentCoordinates == finish) {
             return path;
         }
 
-        val adjacentCells = maze.getAdjacentCells(currentCoordinates)
+        val adjacentPassages = maze.getAdjacentPassages(currentCoordinates)
 
         val forks = mutableListOf<AsyncDFSProcedure>()
-        adjacentCells.forEach {
+        adjacentPassages.forEach {
             if (!visited.contains(it)) {
                 forks.add(
                     AsyncDFSProcedure(
                         it,
-                        path.plus(currentCoordinates to it),
+                        path.plus(it to currentCoordinates),
                         visited.plusElement(currentCoordinates),
                         finish,
                         maze
                     )
                 )
+                forks.last.fork()
             }
         }
 
@@ -45,15 +49,11 @@ internal class AsyncDFSProcedure(
         forks.forEach { fork ->
             val path = fork.join()
             if (path != null) {
-                if (completePath == null) {
-                    completePath = path
-                } else if (path.size < completePath!!.size) {
+                if (completePath == null || path.size < completePath!!.size) {
                     completePath = path
                 }
             }
         }
         return completePath
     }
-
-
 }

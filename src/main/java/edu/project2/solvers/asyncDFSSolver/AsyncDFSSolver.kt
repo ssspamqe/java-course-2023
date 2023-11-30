@@ -7,7 +7,7 @@ import java.util.concurrent.ForkJoinPool
 
 class AsyncDFSSolver : MazeSolver() {
     override fun solve(maze: Maze, start: CellCoordinates, end: CellCoordinates): Maze {
-        val dfs = AsyncDFSProcedure(start, mapOf(), setOf(), end, maze)
+        val dfs = AsyncDFSProcedure(start, mapOf(), setOf(start), end, maze)
         val forkJoinPool = ForkJoinPool()
         val path = forkJoinPool.invoke(dfs)
 

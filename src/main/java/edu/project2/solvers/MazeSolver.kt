@@ -14,6 +14,12 @@ abstract class MazeSolver {
         end: CellCoordinates,
         ancestors: Map<CellCoordinates, CellCoordinates>
     ): Maze {
+        if (maze.getCellType(start) != CellType.PASSAGE)
+            throw IllegalArgumentException("Start cell is not a passage")
+
+        if (maze.getCellType(end) != CellType.PASSAGE)
+            throw IllegalArgumentException("End cell is not a passage")
+
         var currentCell = end
 
         while (currentCell != start) {

@@ -8,12 +8,6 @@ import java.util.*
 class BFSSolver : MazeSolver() {
 
     public override fun solve(mazeParam: Maze, start: CellCoordinates, end: CellCoordinates): Maze {
-        if (mazeParam.getCellType(start) != CellType.PASSAGE)
-            throw IllegalArgumentException("Start cell is not a passage")
-
-        if (mazeParam.getCellType(end) != CellType.PASSAGE)
-            throw IllegalArgumentException("End cell is not a passage")
-
         val maze = mazeParam.clone()
 
         val queue: Queue<CellCoordinates> = LinkedList()

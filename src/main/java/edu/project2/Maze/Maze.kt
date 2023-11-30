@@ -93,5 +93,12 @@ data class Maze(
         return adjacentCellCoordinates
     }
 
+    fun getAdjacentPassages(cellCoordinates: CellCoordinates, distance: Int): List<CellCoordinates> {
+        val adjacentCells = getAdjacentCells(cellCoordinates, distance)
+        return adjacentCells.filter { getCellType(it) == CellType.PASSAGE }
+    }
+
+    fun getAdjacentPassages(cellCoordinates: CellCoordinates) = getAdjacentPassages(cellCoordinates, 1)
+
     public override fun clone(): Maze = Maze(matrix!!)
 }
