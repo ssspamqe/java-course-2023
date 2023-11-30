@@ -7,8 +7,8 @@ import edu.project2.Maze.Maze
 class DFSSolver : MazeSolver() {
 
     private lateinit var maze: Maze
-    private lateinit var visited: HashSet<CellCoordinates>
-    private lateinit var ancestors: List<List<CellCoordinates>>
+    private lateinit var visited: Set<CellCoordinates>
+    private lateinit var ancestors: Map<CellCoordinates, CellCoordinates>
 
     override fun solve(mazeParam: Maze, start: CellCoordinates, end: CellCoordinates): Maze {
         maze = mazeParam.clone()
@@ -19,12 +19,8 @@ class DFSSolver : MazeSolver() {
         if (maze.getCellType(end) != CellType.PASSAGE)
             throw IllegalArgumentException("End cell is not a passage")
 
-        ancestors = List(maze.height) { _ ->
-            List(maze.width) { CellCoordinates(-1, -1) }
-        }
-
+        ancestors = hashMapOf()
         visited = hashSetOf()
-
 
         dfs(start)
 
@@ -32,8 +28,7 @@ class DFSSolver : MazeSolver() {
     }
 
     private fun dfs(cellCoordinates: CellCoordinates) {
-
-        visited.add(cellCoordinates)
+        (visited as HashSet<CellCoordinates>).add(cellCoordinates)
 
         val nextCells = maze.getAdjacentCells(cellCoordinates).filter {
             it !in visited && maze.getCellType(cellCoordinates) == CellType.PASSAGE
@@ -41,7 +36,7 @@ class DFSSolver : MazeSolver() {
 
 
         nextCells.forEach {
-            (ancestors[it.row] as MutableList<CellCoordinates>)[it.column] = cellCoordinates
+            (ancestors as HashMap<CellCoordinates, CellCoordinates>)[it] = cellCoordinates
             dfs(it)
         }
     }
