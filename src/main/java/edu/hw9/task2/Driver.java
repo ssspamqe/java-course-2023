@@ -9,12 +9,13 @@ import java.util.concurrent.ForkJoinPool;
 public class Driver {
 
     public static void main(String[] params){
-        AsyncDFS dfs = new AsyncDFS(Path.of("C://"),1000);
-        System.out.println(new Date());
+        launch("C://",10_000);
+    }
+
+    public static void launch(String rootDirectory, int minFilesInDirectory){
+        AsyncDFS dfs = new AsyncDFS(Path.of(rootDirectory),minFilesInDirectory);
         ForkJoinPool forkJoinPool = new ForkJoinPool();
         System.out.println(forkJoinPool.invoke(dfs));
-        System.out.println(new Date());
-
     }
 
 }

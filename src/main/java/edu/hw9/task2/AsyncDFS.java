@@ -48,9 +48,9 @@ public class AsyncDFS extends RecursiveTask<List<Path>> {
         if (files.get() >= minFilesInDirectory) {
             result.add(currentPath);
         }
-        forks.forEach(it -> {
-            result.addAll(it.join());
-        });
+        forks.forEach(it ->
+            result.addAll(it.join())
+        );
         return result;
     }
 }
