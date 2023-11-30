@@ -21,7 +21,15 @@ internal class AsyncDFSProcedure(
         }
 
         val adjacentPassages = maze.getAdjacentPassages(currentCoordinates)
+        val forks = getForkedChildren(adjacentPassages)
 
+        if (forks.isEmpty())
+            return null;
+
+        return getShortestPath(forks)
+    }
+
+    private fun getForkedChildren(adjacentPassages: List<CellCoordinates>): List<AsyncDFSProcedure> {
         val forks = mutableListOf<AsyncDFSProcedure>()
         adjacentPassages.forEach {
             if (!visited.contains(it)) {
@@ -37,11 +45,7 @@ internal class AsyncDFSProcedure(
                 forks.last.fork()
             }
         }
-
-        if (forks.isEmpty())
-            return null;
-
-        return getShortestPath(forks)
+        return forks
     }
 
     private fun getShortestPath(forks: List<AsyncDFSProcedure>): Map<CellCoordinates, CellCoordinates>? {
