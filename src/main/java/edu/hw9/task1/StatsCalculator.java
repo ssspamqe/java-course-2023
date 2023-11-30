@@ -15,8 +15,7 @@ public class StatsCalculator {
     }
 
     public static <T extends Number> double getSum(T[] array) {
-        return getDoubleStream(array)
-            .sum();
+        return getDoubleStream(array).sum();
     }
 
     public static <T extends Number> double getAverage(T[] array) {
