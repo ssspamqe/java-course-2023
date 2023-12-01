@@ -1,5 +1,8 @@
 package edu.project1;
 
+import javax.swing.MenuElement;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -24,9 +27,10 @@ class Session {
     }
 
     public int tryGuess(char c) {
-        if (remainingChars.contains(c)) {
+        if (!remainingChars.contains(c)) {
             throw new IllegalArgumentException("This character was already tried");
         }
+        remainingChars.remove(c);
 
         int guessedCnt = 0;
         for (int i = 0; i < currentState.length(); i++) {
@@ -46,6 +50,29 @@ class Session {
         return guessedCnt;
     }
 
+    public boolean wasTried(char c) {
+        return !remainingChars.contains(c);
+    }
+
+    public boolean won() {
+        return overallGuessed == currentState.length();
+    }
+
+    public boolean lost() {
+        return healthPoints <= 0;
+    }
+
+    public boolean ended(){
+        return won() || lost();
+    }
+
+    private void fillRemainingChars() {
+        remainingChars = new TreeSet<>();
+        for (int i = 0; i < ENGLISH_LETTERS_AMOUNT; i++) {
+            remainingChars.add((char) ('a' + i));
+        }
+    }
+
     public int getHealthPoints() {
         return getHealthPoints();
     }
@@ -62,22 +89,7 @@ class Session {
         return word;
     }
 
-    public boolean wasTried(char c) {
-        return !remainingChars.contains(c);
-    }
-
-    public boolean won() {
-        return overallGuessed == currentState.length();
-    }
-
-    public boolean lost() {
-        return healthPoints <= 0;
-    }
-
-    private void fillRemainingChars() {
-        remainingChars = new TreeSet<>();
-        for (int i = 0; i < ENGLISH_LETTERS_AMOUNT; i++) {
-            remainingChars.add((char) ('a' + i));
-        }
+    public List<Character> getRemainingChars(){
+        return remainingChars.stream().toList();
     }
 }
