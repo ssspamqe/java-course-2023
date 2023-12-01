@@ -42,7 +42,7 @@ internal class AsyncDFSProcedure(
                         maze
                     )
                 )
-                forks.last.fork()
+                forks.last().fork()
             }
         }
         return forks

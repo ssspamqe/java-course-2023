@@ -11,5 +11,5 @@ enum class CellType private constructor(val symbol: String, val solution: Boolea
 
     END("\uD83D\uDFEA", true),
 
-    PATH("🟥", true);
+    PATH("🟥", true)
 }

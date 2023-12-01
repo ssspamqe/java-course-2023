@@ -18,8 +18,8 @@ public class AsyncDirectorySearcherTest {
     private ForkJoinPool forkJoinPool = new ForkJoinPool();
 
     @Test
-    @DisplayName("AsyncDFS should return list of directories with >= n files")
-    void asyncDFS_should_return_listOfDirectories_withEqualOrGreaterThanNFiles() {
+    @DisplayName("AsyncDirectorySearcher should return list of directories with >= n files")
+    void asyncDirectorySearcher_should_return_listOfDirectories_withEqualOrGreaterThanNFiles() {
         directorySearcher = new AsyncDirectorySearcher(ROOT_DIRECTORY, MIN_FILES_IN_DIRECTORY);
 
         var paths = forkJoinPool.invoke(directorySearcher);
