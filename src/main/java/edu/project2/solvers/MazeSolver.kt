@@ -23,7 +23,7 @@ abstract class MazeSolver {
         var currentCell = end
 
         while (currentCell != start) {
-            if(ancestors[currentCell] == null){
+            if (ancestors[currentCell] == null) {
                 LOGGER.error("Given path was not completed")
                 break
             }

@@ -5,6 +5,9 @@ import java.util.stream.DoubleStream;
 
 public class StatsCalculator {
 
+    private StatsCalculator() {
+    }
+
     public static <T extends Number> double getMetric(MetricType type, T[] array) {
         return switch (type) {
             case MIN -> getMin(array);

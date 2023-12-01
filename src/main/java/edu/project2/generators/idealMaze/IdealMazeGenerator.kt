@@ -75,16 +75,28 @@ class IdealMazeGenerator : MazeGenerator {
     private fun changeTransitionCellTypeToPassage(currentCellCoordinates: CellCoordinates, shift: Shift) {
         when (shift) {
             Shift.UP ->
-                maze.setCellType(CellCoordinates(currentCellCoordinates.row - 1, currentCellCoordinates.column), CellType.PASSAGE)
+                maze.setCellType(
+                    CellCoordinates(currentCellCoordinates.row - 1, currentCellCoordinates.column),
+                    CellType.PASSAGE
+                )
 
             Shift.RIGHT ->
-                maze.setCellType(CellCoordinates(currentCellCoordinates.row, currentCellCoordinates.column + 1), CellType.PASSAGE)
+                maze.setCellType(
+                    CellCoordinates(currentCellCoordinates.row, currentCellCoordinates.column + 1),
+                    CellType.PASSAGE
+                )
 
             Shift.DOWN ->
-                maze.setCellType(CellCoordinates(currentCellCoordinates.row + 1, currentCellCoordinates.column), CellType.PASSAGE)
+                maze.setCellType(
+                    CellCoordinates(currentCellCoordinates.row + 1, currentCellCoordinates.column),
+                    CellType.PASSAGE
+                )
 
             Shift.LEFT ->
-                maze.setCellType(CellCoordinates(currentCellCoordinates.row, currentCellCoordinates.column - 1), CellType.PASSAGE)
+                maze.setCellType(
+                    CellCoordinates(currentCellCoordinates.row, currentCellCoordinates.column - 1),
+                    CellType.PASSAGE
+                )
 
             Shift.UNKNOWN -> return
         }

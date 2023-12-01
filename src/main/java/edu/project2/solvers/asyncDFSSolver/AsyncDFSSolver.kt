@@ -12,6 +12,6 @@ class AsyncDFSSolver : MazeSolver() {
         val forkJoinPool = ForkJoinPool()
         val path = forkJoinPool.invoke(dfs)
 
-        return buildSolvedMaze(maze,start,end,path!!)
+        return buildSolvedMaze(maze, start, end, path!!)
     }
 }
