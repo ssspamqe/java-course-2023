@@ -23,12 +23,11 @@ public class StatsCollector {
         int id = -1;
         LOCK.writeLock().lock();
         try {
-            id = getMetricId();
+            id = stats.size();
+            stats.add(threadPool.submit(() -> StatsCalculator.getMetric(type, array)));
         } finally {
             LOCK.writeLock().unlock();
         }
-
-        stats.set(id, threadPool.submit(() -> StatsCalculator.getMetric(type, array)));
 
         return id;
     }

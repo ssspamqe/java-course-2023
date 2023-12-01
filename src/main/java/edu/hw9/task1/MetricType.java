@@ -4,5 +4,5 @@ public enum MetricType {
     MIN,
     MAX,
     AVERAGE,
-    SUM;
+    SUM
 }
