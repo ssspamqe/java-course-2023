@@ -1,16 +1,18 @@
 package edu.project1;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 class Session {
-    private String word;
-    private StringBuffer currentState;
-    @SuppressWarnings("MagicNumber")
-    private int maxMistakes = 5;
-    private int mistakes = 0;
 
-    private final Set<Character> playedChars = new HashSet<>();
+    private static final int ENGLISH_LETTERS_AMOUNT = 26;
+
+    private int healthPoints = AsciiPictures.MAX_HEALTH_POINTS;
+
+    private final String word;
+    private final StringBuffer currentState;
+
+    private Set<Character> remainingChars;
     private int overallGuessed = 0;
 
     Dictionary dictionary = new Dictionary();
@@ -18,20 +20,17 @@ class Session {
     Session() {
         word = dictionary.getRandomWord();
         currentState = new StringBuffer("*".repeat(word.length()));
-    }
-
-    Session(int maxMistakes) {
-        this.maxMistakes = maxMistakes;
-        word = dictionary.getRandomWord();
-        currentState = new StringBuffer("*".repeat(word.length()));
+        fillRemainingChars();
     }
 
     public int tryGuess(char c) {
-        playedChars.add(c);
+        if (remainingChars.contains(c)) {
+            throw new IllegalArgumentException("This character was already tried");
+        }
 
         int guessedCnt = 0;
         for (int i = 0; i < currentState.length(); i++) {
-            if (word.charAt(i) == c && currentState.charAt(i) == '*') {
+            if (word.charAt(i) == c) {
                 currentState.setCharAt(i, c);
                 guessedCnt++;
             }
@@ -40,18 +39,19 @@ class Session {
         overallGuessed += guessedCnt;
 
         if (guessedCnt == 0) {
-            mistakes++;
+            healthPoints--;
+            guessedCnt = -1;
         }
 
         return guessedCnt;
     }
 
-    public int getMaxMistakes() {
-        return maxMistakes;
+    public int getHealthPoints() {
+        return getHealthPoints();
     }
 
-    public int getMistakes() {
-        return mistakes;
+    public String getHangmanPicture() {
+        return AsciiPictures.getHangmanPicture(healthPoints);
     }
 
     public String getCurrentState() {
@@ -62,11 +62,22 @@ class Session {
         return word;
     }
 
-    public boolean wasPlayed(char c) {
-        return playedChars.contains(c);
+    public boolean wasTried(char c) {
+        return !remainingChars.contains(c);
     }
 
     public boolean won() {
         return overallGuessed == currentState.length();
+    }
+
+    public boolean lost() {
+        return healthPoints <= 0;
+    }
+
+    private void fillRemainingChars() {
+        remainingChars = new TreeSet<>();
+        for (int i = 0; i < ENGLISH_LETTERS_AMOUNT; i++) {
+            remainingChars.add((char) ('a' + i));
+        }
     }
 }
