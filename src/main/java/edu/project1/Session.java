@@ -25,9 +25,8 @@ class Session {
     }
 
     public int tryGuess(char c) {
-        if (!remainingChars.contains(c)) {
-            throw new IllegalArgumentException("This character was already tried");
-        }
+        checkChar(c);
+
         remainingChars.remove(c);
 
         int guessedCnt = 0;
@@ -46,6 +45,15 @@ class Session {
         }
 
         return guessedCnt;
+    }
+
+    private void checkChar(char c){
+        if (!Character.isLetter(c)) {
+            throw new IllegalArgumentException(c + " is not a letter");
+        }
+        if (!remainingChars.contains(c)) {
+            throw new IllegalArgumentException("This character was already tried");
+        }
     }
 
     public boolean wasTried(char c) {
@@ -85,6 +93,10 @@ class Session {
 
     public String getWord() {
         return word;
+    }
+
+    public int getMaxHealthPoints() {
+        return AsciiPictures.MAX_HEALTH_POINTS;
     }
 
     public List<Character> getRemainingChars() {
