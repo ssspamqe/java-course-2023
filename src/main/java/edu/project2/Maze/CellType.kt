@@ -1,15 +1,15 @@
 package edu.project2.Maze
 
-enum class CellType private constructor(public val symbol: String) {
-    PASSAGE("⬛"),
+enum class CellType private constructor(val symbol: String, val solution:Boolean) {
+    PASSAGE("⬛",false),
 
-    WALL("⬜"),
+    WALL("⬜",false),
 
-    OUT_OF_BOUNDS("*"),
+    OUT_OF_BOUNDS("*",false),
 
-    START("\uD83D\uDFE6"),
+    START("\uD83D\uDFE6",true),
 
-    END("\uD83D\uDFEA"),
+    END("\uD83D\uDFEA",true),
 
-    PATH("🟥");
+    PATH("🟥",true);
 }
