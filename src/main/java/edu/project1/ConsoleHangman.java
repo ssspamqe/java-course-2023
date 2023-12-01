@@ -8,8 +8,7 @@ public class ConsoleHangman {
 
     private final static Logger LOGGER = LogManager.getLogger();
 
-    public static void main(String[] params) {
-        launch();
+    private ConsoleHangman() {
     }
 
     public static void launch() {
@@ -44,7 +43,7 @@ public class ConsoleHangman {
             }
             char c = line.charAt(0);
 
-            handleCharacter(c,session);
+            handleCharacter(c, session);
 
             if (session.ended()) {
                 LOGGER.info("Word: {}", session.getWord());
@@ -53,7 +52,7 @@ public class ConsoleHangman {
         }
     }
 
-    private static void handleCharacter(char c,Session session) {
+    private static void handleCharacter(char c, Session session) {
         if (session.wasTried(c)) {
             LOGGER.info("Such character was already played");
         } else {

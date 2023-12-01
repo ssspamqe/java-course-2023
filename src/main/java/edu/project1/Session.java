@@ -1,7 +1,5 @@
 package edu.project1;
 
-import javax.swing.MenuElement;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -62,7 +60,7 @@ class Session {
         return healthPoints <= 0;
     }
 
-    public boolean ended(){
+    public boolean ended() {
         return won() || lost();
     }
 
@@ -89,7 +87,7 @@ class Session {
         return word;
     }
 
-    public List<Character> getRemainingChars(){
+    public List<Character> getRemainingChars() {
         return remainingChars.stream().toList();
     }
 }

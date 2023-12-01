@@ -13,11 +13,11 @@ class Dictionary {
 
     private List<String> dictionary = List.of();
 
-    public Dictionary(String filePath) {
+    Dictionary(String filePath) {
         loadFile(filePath);
     }
 
-    public Dictionary() {
+    Dictionary() {
         this(DEFAULT_WORDS_PATH);
     }
 

@@ -3,6 +3,10 @@ package edu.project1;
 import java.util.List;
 
 public class AsciiPictures {
+
+    private AsciiPictures() {
+    }
+
     public static final int MAX_HEALTH_POINTS = 5;
     public static final String TITLE = """
 
@@ -71,8 +75,7 @@ public class AsciiPictures {
                  |      / \\
                  |
                 _|___
-            """
-        ,
+            """,
         """
 
                   _______
@@ -83,8 +86,7 @@ public class AsciiPictures {
                  |      /
                  |
                 _|___
-            """
-        ,
+            """,
         """
 
                   _______
@@ -95,8 +97,7 @@ public class AsciiPictures {
                  |
                  |
                 _|___
-            """
-        ,
+            """,
         """
 
                   _______
@@ -107,8 +108,7 @@ public class AsciiPictures {
                  |
                  |
                 _|___
-            """
-        ,
+            """,
         """
 
                   _______
@@ -119,8 +119,7 @@ public class AsciiPictures {
                  |
                  |
                 _|___
-            """
-        ,
+            """,
         """
 
                   _______
