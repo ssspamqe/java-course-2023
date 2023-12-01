@@ -10,14 +10,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class AsyncDFS extends RecursiveTask<List<Path>> {
+public class AsyncDirectorySearcher extends RecursiveTask<List<Path>> {
 
     private static final Logger LOGGER = LogManager.getLogger();
 
     private final Path currentPath;
     private final int minFilesInDirectory;
 
-    public AsyncDFS(Path currentPath, int minFilesInDirectory) {
+    public AsyncDirectorySearcher(Path currentPath, int minFilesInDirectory) {
         this.currentPath = currentPath;
         this.minFilesInDirectory = minFilesInDirectory;
     }
@@ -28,12 +28,12 @@ public class AsyncDFS extends RecursiveTask<List<Path>> {
             return List.of();
         }
 
-        List<AsyncDFS> forks = new ArrayList<>();
+        List<AsyncDirectorySearcher> forks = new ArrayList<>();
         AtomicInteger files = new AtomicInteger();
         try {
             Files.list(currentPath).forEach(it -> {
                     if (Files.isDirectory(it)) {
-                        forks.add(new AsyncDFS(it, minFilesInDirectory));
+                        forks.add(new AsyncDirectorySearcher(it, minFilesInDirectory));
                         forks.getLast().fork();
                     } else {
                         files.getAndIncrement();

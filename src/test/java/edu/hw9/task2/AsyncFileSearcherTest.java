@@ -12,6 +12,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class AsyncFileSearcherTest {
 
+    private static final Path ROOT_DIRECTORY = Path.of("./src/test/java/edu/hw9/task2/testFiles/");
+
     AsyncFileSearcher fileSearcher;
 
     @Test
@@ -24,7 +26,7 @@ public class AsyncFileSearcherTest {
                 throw new RuntimeException(e);
             }
         });
-        fileSearcher = new AsyncFileSearcher(Path.of("./src/test/java/edu/hw9/task2/testFiles/"), predicates);
+        fileSearcher = new AsyncFileSearcher(ROOT_DIRECTORY, predicates);
 
         ForkJoinPool pool = new ForkJoinPool();
         var files = pool.invoke(fileSearcher);
