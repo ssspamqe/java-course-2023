@@ -31,6 +31,5 @@ public class Driver {
             return num;
         }
         return getFibonacciNumber(num - 1) + getFibonacciNumber(num - 2);
-
     }
 }

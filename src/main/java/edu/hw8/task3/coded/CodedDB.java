@@ -13,9 +13,10 @@ import org.apache.logging.log4j.Logger;
 
 public class CodedDB {
 
+    private final ReadWriteLock lock = new ReentrantReadWriteLock();
+
     private static final Logger LOGGER = LogManager.getLogger();
     private static final String DEFAULT_DB_PATH = "./src/main/java/edu/hw8/task3/coded/coded.txt";
-    private static final ReadWriteLock READ_WRITE_LOCK = new ReentrantReadWriteLock();
 
     private final Map<String, String> usersByHash = new HashMap<>();
 
@@ -55,29 +56,29 @@ public class CodedDB {
     }
 
     public void put(String hash, String user) {
-        READ_WRITE_LOCK.writeLock().lock();
+        lock.writeLock().lock();
         try {
             usersByHash.put(hash, user);
         } finally {
-            READ_WRITE_LOCK.writeLock().unlock();
+            lock.writeLock().unlock();
         }
     }
 
     public String remove(String key) {
-        READ_WRITE_LOCK.writeLock().lock();
+        lock.writeLock().lock();
         try {
             return usersByHash.remove(key);
         } finally {
-            READ_WRITE_LOCK.writeLock().unlock();
+            lock.writeLock().unlock();
         }
     }
 
     public boolean isEmpty() {
-        READ_WRITE_LOCK.readLock().lock();
+        lock.readLock().lock();
         try {
             return usersByHash.isEmpty();
         } finally {
-            READ_WRITE_LOCK.readLock().unlock();
+            lock.readLock().unlock();
         }
     }
 }

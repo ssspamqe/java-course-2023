@@ -8,10 +8,14 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class PhraseDB {
+
+    private final ReadWriteLock lock = new ReentrantReadWriteLock();
 
     private static final Logger LOGGER = LogManager.getLogger();
     private static final String DEFAULT_FILE_PATH = "./src/main/java/edu/hw8/task1/server/phraseDB/phrases.txt";
@@ -19,7 +23,7 @@ public class PhraseDB {
     private final Map<String, List<String>> phrasesByWord = new HashMap<>();
 
     public PhraseDB(List<String> filePaths) {
-        loadPhrases(filePaths);
+        loadFiles(filePaths);
         LOGGER.info("loaded phrases: {}", phrasesByWord);
     }
 
@@ -27,7 +31,7 @@ public class PhraseDB {
         this(List.of(DEFAULT_FILE_PATH));
     }
 
-    private void loadPhrases(List<String> filePaths) {
+    private void loadFiles(List<String> filePaths) {
         for (var path : filePaths) {
             try (Scanner scanner = new Scanner(new FileInputStream(path))) {
                 while (scanner.hasNextLine()) {
@@ -46,10 +50,17 @@ public class PhraseDB {
             if (currentWord.isBlank()) {
                 continue;
             }
-            if (!phrasesByWord.containsKey(word)) {
-                phrasesByWord.put(currentWord, new ArrayList<>());
+
+            lock.writeLock().lock();
+            try {
+                if (!phrasesByWord.containsKey(word)) {
+                    phrasesByWord.put(currentWord, new ArrayList<>());
+                }
+                phrasesByWord.get(currentWord).add(phrase);
+            } finally {
+                lock.writeLock().unlock();
             }
-            phrasesByWord.get(currentWord).add(phrase);
+
         }
     }
 
@@ -79,11 +90,19 @@ public class PhraseDB {
     }
 
     public Optional<String> getPhrase(String word) {
-        if (!phrasesByWord.containsKey(word.toLowerCase())) {
-            LOGGER.info("No phrase");
+        List<String> phrases;
+        lock.readLock().lock();
+        try {
+            phrases = phrasesByWord.get(word.toLowerCase());
+        } finally {
+            lock.readLock().unlock();
+        }
+
+        if (phrases == null) {
+            LOGGER.info("No phrase with word '{}'", word);
             return Optional.empty();
         }
-        var phrases = phrasesByWord.get(word.toLowerCase());
+
         var phrase = getRandomElement(phrases);
         LOGGER.info("found phrase: {}", phrase);
 
