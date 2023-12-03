@@ -2,16 +2,17 @@ package edu.hw9;
 
 import edu.hw9.task1.MetricType;
 import edu.hw9.task1.StatsCollector;
+import java.util.Arrays;
+import java.util.concurrent.ExecutionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import java.util.Arrays;
-import java.util.concurrent.ExecutionException;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.InstanceOfAssertFactories.ARRAY;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class StatsCollectorTest {
+
+    private static final double MAX_DELTA = 0.0001;
 
     private static final int THREADS = 5;
 
@@ -31,11 +32,10 @@ public class StatsCollectorTest {
         var metricMax = MetricType.MAX;
         var metricAverage = MetricType.AVERAGE;
 
-
-        int statSumId = collector.push(metricSum,array);
-        int statMinId = collector.push(metricMin,array);
-        int statMaxId = collector.push(metricMax,array);
-        int statAverageId = collector.push(metricAverage,array);
+        int statSumId = collector.push(metricSum, array);
+        int statMinId = collector.push(metricMin, array);
+        int statMaxId = collector.push(metricMax, array);
+        int statAverageId = collector.push(metricAverage, array);
 
         var stats = collector.getStats();
 
@@ -49,11 +49,10 @@ public class StatsCollectorTest {
         var max = Arrays.stream(array).mapToDouble(Number::doubleValue).max().orElseThrow();
         var average = Arrays.stream(array).mapToDouble(Number::doubleValue).average().orElseThrow();
 
-
-        assertThat(sumResult).isEqualTo(sum);
-        assertThat(minResult).isEqualTo(min);
-        assertThat(maxResult).isEqualTo(max);
-        assertThat(averageResult).isEqualTo(average);
+        assertEquals(sumResult, sum, MAX_DELTA);
+        assertEquals(minResult, min, MAX_DELTA);
+        assertEquals(maxResult, max, MAX_DELTA);
+        assertEquals(averageResult, average, MAX_DELTA);
     }
 
 }

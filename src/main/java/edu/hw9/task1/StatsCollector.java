@@ -10,7 +10,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class StatsCollector {
 
-    private static final ReadWriteLock LOCK = new ReentrantReadWriteLock();
+    private final ReadWriteLock lock = new ReentrantReadWriteLock();
 
     private final ExecutorService threadPool;
     private final List<Future<Double>> stats = new ArrayList<>();
@@ -21,28 +21,23 @@ public class StatsCollector {
 
     public <T extends Number> int push(MetricType type, T[] array) {
         int id = -1;
-        LOCK.writeLock().lock();
+        lock.writeLock().lock();
         try {
             id = stats.size();
             stats.add(threadPool.submit(() -> StatsCalculator.getMetric(type, array)));
         } finally {
-            LOCK.writeLock().unlock();
+            lock.writeLock().unlock();
         }
 
         return id;
     }
 
-    private synchronized int getMetricId() {
-        stats.add(null);
-        return stats.size() - 1;
-    }
-
     public List<Future<Double>> getStats() {
-        LOCK.readLock().lock();
+        lock.readLock().lock();
         try {
             return stats;
         } finally {
-            LOCK.readLock().unlock();
+            lock.readLock().unlock();
         }
     }
 }
