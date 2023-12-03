@@ -12,14 +12,10 @@ public class Pixel {
     }
 
     public void mixColor(Color newColor) {
-        int oldRed = color.getRed();
-        int oldGreen = color.getGreen();
-        int oldBlue = color.getBlue();
-
         color = new Color(
-            (oldRed + newColor.getRed()) / 2,
-            (oldGreen + newColor.getGreen()) / 2,
-            (oldBlue + newColor.getBlue()) / 2
+            (color.getRed() + newColor.getRed()) / 2,
+            (color.getGreen() + newColor.getGreen()) / 2,
+            (color.getBlue() + newColor.getBlue()) / 2
         );
     }
 

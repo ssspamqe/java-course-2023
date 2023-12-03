@@ -154,8 +154,6 @@ public class Driver {
 
             times.put(threads, allTime);
         }
-
         return times;
     }
-
 }

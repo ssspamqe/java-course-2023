@@ -5,13 +5,13 @@ import java.awt.Color;
 
 public class AffineTransformation {
 
-    private double a;
-    private double b;
-    private double c;
-    private double d;
-    private double e;
-    private double f;
-    private Color color;
+    private final double a;
+    private final double b;
+    private final double c;
+    private final double d;
+    private final double e;
+    private final double f;
+    private final Color color;
 
     public AffineTransformation(double a, double b, double c, double d, double e, double f, Color color) {
         this.a = a;
