@@ -34,7 +34,7 @@ public class ConsoleHangman {
         while (true) {
             LOGGER.info(session.getHangmanPicture());
             LOGGER.info("Your current state: {}", session.getCurrentState());
-            LOGGER.info("Please, choose one character from these: {}", session.getRemainingChars());
+            LOGGER.info("\nPlease, choose one character from these:\n{}", session.getRemainingChars());
 
             String line = getNextLine(scanner);
             if (line.length() != 1) {

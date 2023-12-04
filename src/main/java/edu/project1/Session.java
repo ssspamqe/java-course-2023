@@ -47,7 +47,7 @@ class Session {
         return guessedCnt;
     }
 
-    private void checkChar(char c){
+    private void checkChar(char c) {
         if (!Character.isLetter(c)) {
             throw new IllegalArgumentException(c + " is not a letter");
         }
