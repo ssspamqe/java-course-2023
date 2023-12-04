@@ -73,6 +73,5 @@ public class ConnectionHandler {
             socketChannel.close();
             selector.close();
         }
-
     }
 }

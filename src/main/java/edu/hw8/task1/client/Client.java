@@ -5,14 +5,14 @@ import java.util.Scanner;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class ClientDriver {
+public class Client {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final int SERVER_PORT = 1337;
 
-    private ClientDriver() {
+    private Client() {
     }
 
-    public static void launch() {
+    public static void start() {
         ConnectionHandler connectionHandler = new ConnectionHandler(SERVER_PORT);
 
         try {
@@ -45,4 +45,11 @@ public class ClientDriver {
         }
     }
 
+    public static Client getInstance() {
+        return SingletonHolder.CLIENT_INSTANCE;
+    }
+
+    private static class SingletonHolder {
+        public static final Client CLIENT_INSTANCE = new Client();
+    }
 }

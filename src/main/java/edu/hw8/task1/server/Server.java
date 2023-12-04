@@ -25,6 +25,9 @@ public class Server {
 
     private volatile boolean running = true;
 
+    private Server() {
+    }
+
     public void start() throws IOException, InterruptedException {
         threadPool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
 
@@ -127,5 +130,13 @@ public class Server {
             throw new RuntimeException(ex);
         }
         return serverSocket;
+    }
+
+    public static Server getInstance() {
+        return SingletonHolder.SERVER_INSTANCE;
+    }
+
+    private static class SingletonHolder {
+        public static final Server SERVER_INSTANCE = new Server();
     }
 }
