@@ -11,7 +11,6 @@ public class DictionaryTest {
     @Test
     @DisplayName("Check the adding words to dictionary")
     void should_addWordToDictionary() {
-
         String newWord = "myword";
 
         dictionary.addNewWord(newWord);
@@ -20,9 +19,8 @@ public class DictionaryTest {
     }
 
     @Test
-    @DisplayName("Check the getting of random words")
+    @DisplayName("Check getting of random words")
     void should_returnRandomWordFromDictionary() {
-
         String randomWord = dictionary.getRandomWord();
 
         assertThat(dictionary.getDictionary()).asList().contains(randomWord);
