@@ -3,7 +3,6 @@ package edu.hw8.task3.coded;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -20,19 +19,15 @@ public class CodedDB {
 
     private final Map<String, String> usersByHash = new HashMap<>();
 
-    public CodedDB(List<String> paths) {
-        loadDB(paths);
+    private CodedDB(String filePath) {
+        loadFile(filePath);
     }
 
-    public CodedDB() {
-        this(List.of(DEFAULT_DB_PATH));
+    private CodedDB() {
+        this(DEFAULT_DB_PATH);
     }
 
-    private void loadDB(List<String> paths) {
-        paths.forEach(this::loadFile);
-    }
-
-    private void loadFile(String path) {
+    public void loadFile(String path) {
         try (Scanner scanner = new Scanner(new FileInputStream(path))) {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
@@ -80,5 +75,13 @@ public class CodedDB {
         } finally {
             lock.readLock().unlock();
         }
+    }
+
+    public static CodedDB getInstance() {
+        return SingletonHolder.CODED_DB_INSTANCE;
+    }
+
+    private static class SingletonHolder {
+        public static final CodedDB CODED_DB_INSTANCE = new CodedDB();
     }
 }

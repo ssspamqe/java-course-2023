@@ -13,7 +13,7 @@ public class AbstractDecrypter {
 
     protected static final Logger LOGGER = LogManager.getLogger();
 
-    protected CodedDB fakeDB;
+    protected CodedDB fakeDB = CodedDB.getInstance();
     protected String alphabet = " ";
     protected final int countingSystem;
     protected Map<String, String> decodedPasswords;
@@ -80,11 +80,11 @@ public class AbstractDecrypter {
         return number;
     }
 
-    protected void loadDB(List<String> paths) {
-        if (paths.isEmpty()) {
-            fakeDB = new CodedDB();
-        } else {
-            fakeDB = new CodedDB(paths);
-        }
+    protected void loadFile(String filePath) {
+        fakeDB.loadFile(filePath);
+    }
+
+    protected void loadAll(List<String> filePaths) {
+        filePaths.forEach(this::loadFile);
     }
 }

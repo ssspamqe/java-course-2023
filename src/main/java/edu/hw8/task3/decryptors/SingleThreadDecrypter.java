@@ -15,7 +15,7 @@ public class SingleThreadDecrypter extends AbstractDecrypter {
             throw new IllegalArgumentException("minLen must be positive number");
         }
 
-        loadDB(paths);
+        loadAll(paths);
 
         decodedPasswords = new HashMap<>();
 

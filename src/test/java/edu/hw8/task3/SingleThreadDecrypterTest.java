@@ -10,10 +10,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class SingleThreadDecrypterTest {
 
-    private static List<String> DEFAULT_FILE_PATHS = List.of("./src/test/java/edu/hw8/task3/testFile.txt");
+    private static final List<String> DEFAULT_FILE_PATHS = List.of("./src/test/java/edu/hw8/task3/testFile.txt");
 
-    private static int MIN_PASSWORD_LEN = 1;
-    private static int MAX_PASSWORD_LEN = 3;
+    private static final int MIN_PASSWORD_LEN = 1;
+    private static final int MAX_PASSWORD_LEN = 3;
 
     private SingleThreadDecrypter decrypter = new SingleThreadDecrypter();
 
@@ -27,7 +27,7 @@ public class SingleThreadDecrypterTest {
 
         var returnedMap = decrypter.getDecryptedMap(DEFAULT_FILE_PATHS, MIN_PASSWORD_LEN, MAX_PASSWORD_LEN);
 
-        assertThat(returnedMap).containsExactlyEntriesOf(correctPasswords);
+        assertThat(returnedMap).containsAllEntriesOf(correctPasswords);
 
     }
 

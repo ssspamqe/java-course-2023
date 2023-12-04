@@ -21,7 +21,7 @@ public class MultiThreadDecrypter extends AbstractDecrypter {
             throw new IllegalArgumentException("minLen must be positive number");
         }
 
-        loadDB(paths);
+        loadAll(paths);
 
         decodedPasswords = new HashMap<>();
         threadPool = Executors.newFixedThreadPool(nThreads);

@@ -1,8 +1,7 @@
 package edu.hw8.task1;
 
 import edu.hw8.task1.server.phraseDB.PhraseDB;
-import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -11,11 +10,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PhraseDBTest {
 
-    PhraseDB phraseDB;
+    private static final String TEST_FILE_PATH = "./src/test/java/edu/hw8/task1/testFile.txt";
 
-    @BeforeEach
-    void initPhraseDB() {
-        phraseDB = new PhraseDB(List.of("./src/test/java/edu/hw8/task1/testFile.txt"));
+    static PhraseDB phraseDB = PhraseDB.getInstance();
+
+    @BeforeAll static void loadTestFile() {
+        phraseDB.loadFile(TEST_FILE_PATH);
     }
 
     @ParameterizedTest

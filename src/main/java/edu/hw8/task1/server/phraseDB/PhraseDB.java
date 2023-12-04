@@ -22,24 +22,21 @@ public class PhraseDB {
 
     private final Map<String, List<String>> phrasesByWord = new HashMap<>();
 
-    public PhraseDB(List<String> filePaths) {
-        loadFiles(filePaths);
-        LOGGER.info("loaded phrases: {}", phrasesByWord);
+    private PhraseDB() {
+        this(DEFAULT_FILE_PATH);
     }
 
-    public PhraseDB() {
-        this(List.of(DEFAULT_FILE_PATH));
+    private PhraseDB(String filePath) {
+        loadFile(filePath);
     }
 
-    private void loadFiles(List<String> filePaths) {
-        for (var path : filePaths) {
-            try (Scanner scanner = new Scanner(new FileInputStream(path))) {
-                while (scanner.hasNextLine()) {
-                    addNewPhrase(scanner.nextLine());
-                }
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
+    public void loadFile(String filePath) {
+        try (Scanner scanner = new Scanner(new FileInputStream(filePath))) {
+            while (scanner.hasNextLine()) {
+                addNewPhrase(scanner.nextLine());
             }
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
         }
     }
 
@@ -113,4 +110,11 @@ public class PhraseDB {
         return list.get(ThreadLocalRandom.current().nextInt(0, list.size()));
     }
 
+    public static PhraseDB getInstance() {
+        return SingletonHolder.PHRASE_DB_INSTANCE;
+    }
+
+    private static class SingletonHolder {
+        public static final PhraseDB PHRASE_DB_INSTANCE = new PhraseDB();
+    }
 }

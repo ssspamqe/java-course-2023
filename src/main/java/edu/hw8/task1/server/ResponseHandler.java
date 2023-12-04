@@ -11,7 +11,7 @@ import org.apache.logging.log4j.Logger;
 
 public class ResponseHandler {
 
-    private static final PhraseDB PHRASE_DB = new PhraseDB();
+    private static final PhraseDB PHRASE_DB = PhraseDB.getInstance();
     private static final int DEFAULT_BUFFER_CAPACITY = 1024;
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
     private static final Logger LOGGER = LogManager.getLogger();

@@ -27,6 +27,6 @@ public class MultiThreadDecrypterTest {
 
         var returnedMap = decrypter.getDecryptedMap(DEFAULT_FILE_PATHS, MIN_PASSWORD_LEN, MAX_PASSWORD_LEN, 5);
 
-        assertThat(returnedMap).containsExactlyEntriesOf(correctPasswords);
+        assertThat(returnedMap).containsAllEntriesOf(correctPasswords);
     }
 }
