@@ -1,16 +1,20 @@
 package edu.hw10.Task1;
 
-import jakarta.validation.constraints.NotNull;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
+import edu.hw10.Task1.annotations.Max;
+import edu.hw10.Task1.annotations.Min;
+import edu.hw10.Task1.annotations.NotNull;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
+import java.lang.reflect.Parameter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 
 public class RandomObjectGenerator {
 
@@ -19,10 +23,22 @@ public class RandomObjectGenerator {
     private static final ThreadLocalRandom RANDOM = ThreadLocalRandom.current();
     private static final RandomObjectGenerator ROG = new RandomObjectGenerator();
 
+    private static final Method ANNOTATION_MIN_VALUE;
+    private static final Method ANNOTATION_MAX_VALUE;
+
+    static {
+        try {
+            ANNOTATION_MIN_VALUE = Min.class.getMethod("value");
+            ANNOTATION_MAX_VALUE = Max.class.getMethod("value");
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public Object nextObject(Class<?> objectClass) {
         var constructor = getConstructorWithBiggestParameterAmount(objectClass);
-        var parameterTypes = constructor.getParameterTypes();
-        var arguments = generateArguments(parameterTypes);
+        var parameters = constructor.getParameters();
+        var arguments = generateAllArguments(parameters);
 
         try {
             return constructor.newInstance(arguments.toArray(new Object[0]));
@@ -35,11 +51,11 @@ public class RandomObjectGenerator {
 
     public Object nextObject(Class<?> objectClass, String fabricMethodName) {
         var fabricMethod = getMethodWithBiggestParametersAmountWithName(fabricMethodName, objectClass);
-        var parameterTypes = fabricMethod.getParameterTypes();
-        var rawArguments = generateArguments(parameterTypes);
+        var parameters = fabricMethod.getParameters();
+        var arguments = generateAllArguments(parameters);
 
         try {
-            return fabricMethod.invoke(null,rawArguments.toArray(new Object[0]));
+            return fabricMethod.invoke(null, arguments.toArray(new Object[0]));
         } catch (Exception ex) {
             LOGGER.warn(ex);
             return null;
@@ -57,7 +73,8 @@ public class RandomObjectGenerator {
                     return y;
                 }
             })
-            .orElseThrow(()->new IllegalArgumentException(objectClass + " do not have static fabric method with such name"));
+            .orElseThrow(() -> new IllegalArgumentException(
+                objectClass + " do not have static fabric method with such name"));
     }
 
     private Constructor<?> getConstructorWithBiggestParameterAmount(Class<?> objectClass) {
@@ -73,41 +90,86 @@ public class RandomObjectGenerator {
         return biggestConstructor;
     }
 
-    private List<Object> generateArguments(Class<?>[] argumentTypes) {
-        List<Object> arguments = new ArrayList<>();
-        for (var type : argumentTypes) {
-            if (type.isPrimitive()) {
-                arguments.add(generatePrimitiveInstance(type));
-            } else {
-                try {
-                    arguments.add(ROG.nextObject(type));
-                } catch (Exception ex) {
-                    LOGGER.warn(ex);
-                    arguments.add(null);
-                }
-            }
-        }
-        return arguments;
+    private List<Object> generateAllArguments(Parameter[] argumentTypes) {
+        return Arrays.stream(argumentTypes).map(this::generateArgument).toList();
     }
 
-    private Object generatePrimitiveInstance(Class<?> primitive) {
-        if (primitive == byte.class || primitive == Byte.class) {
-            return RANDOM.nextInt(Byte.MIN_VALUE, Byte.MAX_VALUE);
-        } else if (primitive == short.class || primitive == Short.class) {
-            return RANDOM.nextInt(Short.MIN_VALUE, Short.MAX_VALUE);
-        } else if (primitive == int.class || primitive == Integer.class) {
-            return RANDOM.nextInt();
-        } else if (primitive == long.class || primitive == Long.class) {
-            return RANDOM.nextLong();
-        } else if (primitive == float.class || primitive == Float.class) {
-            return RANDOM.nextFloat();
-        } else if (primitive == double.class || primitive == Double.class) {
-            return RANDOM.nextDouble();
-        } else if (primitive == char.class || primitive == Character.class) {
-            return (char) RANDOM.nextLong(0, (long) Math.pow(2, 16));
-        } else if (primitive == boolean.class || primitive == Boolean.class) {
-            return RANDOM.nextBoolean();
+    private Object generateArgument(Parameter parameter) {
+        var annotations = parameter.getAnnotations();
+        ParameterConstraints constraints;
+
+        try {
+            constraints = getParameterConstraints(annotations);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
         }
-        throw new IllegalArgumentException("Given class is not a primitive one");
+
+        return generateInstance(parameter.getClass(), constraints);
+    }
+
+    private ParameterConstraints getParameterConstraints(Annotation[] annotations)
+        throws InvocationTargetException, IllegalAccessException {
+        boolean notNull = false;
+        long min = Long.MIN_VALUE;
+        long max = Long.MAX_VALUE;
+
+        for (var annotation : annotations) {
+            if (annotation.annotationType() == NotNull.class) {
+                notNull = true;
+            } else if (annotation.annotationType() == Min.class) {
+                min = (long) ANNOTATION_MIN_VALUE.invoke(annotation);
+            } else if (annotation.annotationType() == Max.class) {
+                max = (long) ANNOTATION_MAX_VALUE.invoke(annotation);
+            }
+        }
+
+        return new ParameterConstraints(notNull, min, max);
+    }
+
+    private Object generateInstance(Class<?> objectClass, ParameterConstraints constraints) {
+        if (!constraints.notNull()
+            && !objectClass.isPrimitive()
+            && RANDOM.nextBoolean()) {
+            return null;
+        }
+
+        if (objectClass == char.class || objectClass == Character.class) {
+            return (char) RANDOM.nextLong(
+                (long) max(0, constraints.min()),
+                (long) min(Math.pow(2, 16), constraints.max())
+            );
+        } else if (objectClass == boolean.class || objectClass == Boolean.class) {
+            return RANDOM.nextBoolean();
+        } else if (Number.class.isAssignableFrom(objectClass)) {
+            return generateNumberWithConstraints(constraints, objectClass);
+        }
+        return ROG.nextObject(objectClass);
+    }
+
+    private Object generateNumberWithConstraints(ParameterConstraints constraints, Class<?> numberClass) {
+        double minValue = Double.MIN_VALUE;
+        double maxValue = Double.MAX_VALUE;
+
+        if (numberClass == byte.class || numberClass == Byte.class) {
+            minValue = max(Byte.MIN_VALUE, constraints.min());
+            maxValue = min(Byte.MAX_VALUE, constraints.max());
+        } else if (numberClass == short.class || numberClass == Short.class) {
+            minValue = max(Short.MIN_VALUE, constraints.min());
+            maxValue = min(Short.MAX_VALUE, constraints.max());
+        } else if (numberClass == int.class || numberClass == Integer.class) {
+            minValue = max(Short.MIN_VALUE, constraints.min());
+            maxValue = min(Short.MAX_VALUE, constraints.max());
+        } else if (numberClass == long.class || numberClass == Long.class) {
+            minValue = max(Long.MIN_VALUE, constraints.min());
+            maxValue = min(Long.MAX_VALUE, constraints.max());
+        } else if (numberClass == float.class || numberClass == Float.class) {
+            minValue = max(Float.MIN_VALUE, constraints.min());
+            maxValue = min(Float.MAX_VALUE, constraints.max());
+        } else {
+            minValue = max(minValue, constraints.min());
+            maxValue = max(maxValue, constraints.max());
+        }
+
+        return RANDOM.nextDouble(minValue, maxValue);
     }
 }
