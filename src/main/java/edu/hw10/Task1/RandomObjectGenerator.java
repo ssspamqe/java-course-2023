@@ -104,22 +104,22 @@ public class RandomObjectGenerator {
             throw new RuntimeException(ex);
         }
 
-        return generateInstance(parameter.getClass(), constraints);
+        return generateInstance(parameter.getType(), constraints);
     }
 
     private ParameterConstraints getParameterConstraints(Annotation[] annotations)
         throws InvocationTargetException, IllegalAccessException {
         boolean notNull = false;
-        long min = Long.MIN_VALUE;
-        long max = Long.MAX_VALUE;
+        double min = Long.MIN_VALUE;
+        double max = Long.MAX_VALUE;
 
         for (var annotation : annotations) {
             if (annotation.annotationType() == NotNull.class) {
                 notNull = true;
             } else if (annotation.annotationType() == Min.class) {
-                min = (long) ANNOTATION_MIN_VALUE.invoke(annotation);
+                min = (double) ANNOTATION_MIN_VALUE.invoke(annotation);
             } else if (annotation.annotationType() == Max.class) {
-                max = (long) ANNOTATION_MAX_VALUE.invoke(annotation);
+                max = (double) ANNOTATION_MAX_VALUE.invoke(annotation);
             }
         }
 
@@ -140,36 +140,9 @@ public class RandomObjectGenerator {
             );
         } else if (objectClass == boolean.class || objectClass == Boolean.class) {
             return RANDOM.nextBoolean();
-        } else if (Number.class.isAssignableFrom(objectClass)) {
-            return generateNumberWithConstraints(constraints, objectClass);
+        } else if (Number.class.isAssignableFrom(objectClass) || objectClass.isPrimitive()) {
+            return NumberGenerator.generateNumberWithConstraints(constraints, objectClass);
         }
         return ROG.nextObject(objectClass);
-    }
-
-    private Object generateNumberWithConstraints(ParameterConstraints constraints, Class<?> numberClass) {
-        double minValue = Double.MIN_VALUE;
-        double maxValue = Double.MAX_VALUE;
-
-        if (numberClass == byte.class || numberClass == Byte.class) {
-            minValue = max(Byte.MIN_VALUE, constraints.min());
-            maxValue = min(Byte.MAX_VALUE, constraints.max());
-        } else if (numberClass == short.class || numberClass == Short.class) {
-            minValue = max(Short.MIN_VALUE, constraints.min());
-            maxValue = min(Short.MAX_VALUE, constraints.max());
-        } else if (numberClass == int.class || numberClass == Integer.class) {
-            minValue = max(Short.MIN_VALUE, constraints.min());
-            maxValue = min(Short.MAX_VALUE, constraints.max());
-        } else if (numberClass == long.class || numberClass == Long.class) {
-            minValue = max(Long.MIN_VALUE, constraints.min());
-            maxValue = min(Long.MAX_VALUE, constraints.max());
-        } else if (numberClass == float.class || numberClass == Float.class) {
-            minValue = max(Float.MIN_VALUE, constraints.min());
-            maxValue = min(Float.MAX_VALUE, constraints.max());
-        } else {
-            minValue = max(minValue, constraints.min());
-            maxValue = max(maxValue, constraints.max());
-        }
-
-        return RANDOM.nextDouble(minValue, maxValue);
     }
 }
