@@ -94,8 +94,8 @@ public class RandomObjectGenerator {
         return biggestConstructor;
     }
 
-    private List<Object> generateAllArguments(Parameter[] argumentTypes) {
-        return Arrays.stream(argumentTypes).map(this::generateArgument).toList();
+    private List<Object> generateAllArguments(Parameter[] parameters) {
+        return Arrays.stream(parameters).map(this::generateArgument).toList();
     }
 
     private Object generateArgument(Parameter parameter) {
