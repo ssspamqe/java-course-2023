@@ -46,7 +46,7 @@ public class RandomObjectGenerator {
         }
     }
 
-    private Method getMethodWithBiggestParametersAmountWithName(@NotNull String name, Class<?> objectClass) {
+    private Method getMethodWithBiggestParametersAmountWithName(String name, Class<?> objectClass) {
         var methods = objectClass.getMethods();
         return Arrays.stream(methods)
             .filter(it -> it.getName().equals(name))
@@ -57,7 +57,7 @@ public class RandomObjectGenerator {
                     return y;
                 }
             })
-            .orElseThrow(()->new IllegalArgumentException(objectClass + "do not have static fabric method with such name"));
+            .orElseThrow(()->new IllegalArgumentException(objectClass + " do not have static fabric method with such name"));
     }
 
     private Constructor<?> getConstructorWithBiggestParameterAmount(Class<?> objectClass) {
@@ -90,7 +90,7 @@ public class RandomObjectGenerator {
         return arguments;
     }
 
-    public Object generatePrimitiveInstance(Class<?> primitive) {
+    private Object generatePrimitiveInstance(Class<?> primitive) {
         if (primitive == byte.class || primitive == Byte.class) {
             return RANDOM.nextInt(Byte.MIN_VALUE, Byte.MAX_VALUE);
         } else if (primitive == short.class || primitive == Short.class) {
@@ -110,6 +110,4 @@ public class RandomObjectGenerator {
         }
         throw new IllegalArgumentException("Given class is not a primitive one");
     }
-
-    //TODO singleton???
 }
