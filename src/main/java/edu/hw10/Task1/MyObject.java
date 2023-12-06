@@ -17,11 +17,11 @@ public class MyObject {
     }
 
     @Override public String toString() {
-        return "MyObject{" +
-            "a=" + a +
-            ", b=" + b +
-            ", c=" + c +
-            '}';
+        return "MyObject{"
+            + "a=" + a
+            + ", b=" + b
+            + ", c=" + c
+            + '}';
     }
 
 }

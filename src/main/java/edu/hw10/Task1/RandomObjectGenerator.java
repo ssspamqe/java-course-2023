@@ -11,6 +11,7 @@ import java.lang.reflect.Parameter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import org.apache.commons.lang3.ClassUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import static java.lang.Math.max;
@@ -20,16 +21,19 @@ public class RandomObjectGenerator {
 
     private static final Logger LOGGER = LogManager.getLogger();
 
+    private static final Long CHAR_MAX = (long) Math.pow(2, 16);
+
     private static final ThreadLocalRandom RANDOM = ThreadLocalRandom.current();
     private static final RandomObjectGenerator ROG = new RandomObjectGenerator();
 
+    private static final String VALUE_GETTER_NAME = "value";
     private static final Method ANNOTATION_MIN_VALUE;
     private static final Method ANNOTATION_MAX_VALUE;
 
     static {
         try {
-            ANNOTATION_MIN_VALUE = Min.class.getMethod("value");
-            ANNOTATION_MAX_VALUE = Max.class.getMethod("value");
+            ANNOTATION_MIN_VALUE = Min.class.getMethod(VALUE_GETTER_NAME);
+            ANNOTATION_MAX_VALUE = Max.class.getMethod(VALUE_GETTER_NAME);
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
@@ -104,7 +108,10 @@ public class RandomObjectGenerator {
             throw new RuntimeException(ex);
         }
 
-        return generateInstance(parameter.getType(), constraints);
+        if (ClassUtils.isPrimitiveOrWrapper(parameter.getType())) {
+            return generatePrimitiveOrWrapperInstance(parameter.getType(), constraints);
+        }
+        return ROG.nextObject(parameter.getType());
     }
 
     private ParameterConstraints getParameterConstraints(Annotation[] annotations)
@@ -126,7 +133,7 @@ public class RandomObjectGenerator {
         return new ParameterConstraints(notNull, min, max);
     }
 
-    private Object generateInstance(Class<?> objectClass, ParameterConstraints constraints) {
+    private Object generatePrimitiveOrWrapperInstance(Class<?> objectClass, ParameterConstraints constraints) {
         if (!constraints.notNull()
             && !objectClass.isPrimitive()
             && RANDOM.nextBoolean()) {
@@ -136,13 +143,14 @@ public class RandomObjectGenerator {
         if (objectClass == char.class || objectClass == Character.class) {
             return (char) RANDOM.nextLong(
                 (long) max(0, constraints.min()),
-                (long) min(Math.pow(2, 16), constraints.max())
+                (long) min(CHAR_MAX, constraints.max())
             );
         } else if (objectClass == boolean.class || objectClass == Boolean.class) {
             return RANDOM.nextBoolean();
         } else if (Number.class.isAssignableFrom(objectClass) || objectClass.isPrimitive()) {
             return NumberGenerator.generateNumberWithConstraints(constraints, objectClass);
         }
-        return ROG.nextObject(objectClass);
+
+        throw new IllegalArgumentException("Given class neither primitive nor wrapper");
     }
 }
