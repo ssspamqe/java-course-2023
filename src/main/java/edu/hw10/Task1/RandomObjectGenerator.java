@@ -26,19 +26,6 @@ public class RandomObjectGenerator {
     private static final ThreadLocalRandom RANDOM = ThreadLocalRandom.current();
     private static final RandomObjectGenerator ROG = new RandomObjectGenerator();
 
-    private static final String VALUE_GETTER_NAME = "value";
-    private static final Method ANNOTATION_MIN_VALUE;
-    private static final Method ANNOTATION_MAX_VALUE;
-
-    static {
-        try {
-            ANNOTATION_MIN_VALUE = Min.class.getMethod(VALUE_GETTER_NAME);
-            ANNOTATION_MAX_VALUE = Max.class.getMethod(VALUE_GETTER_NAME);
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public Object nextObject(Class<?> objectClass) {
         var constructor = getConstructorWithBiggestParameterAmount(objectClass);
         var parameters = constructor.getParameters();
@@ -124,9 +111,9 @@ public class RandomObjectGenerator {
             if (annotation.annotationType() == NotNull.class) {
                 notNull = true;
             } else if (annotation.annotationType() == Min.class) {
-                min = (double) ANNOTATION_MIN_VALUE.invoke(annotation);
+                min = ((Min) annotation).value();
             } else if (annotation.annotationType() == Max.class) {
-                max = (double) ANNOTATION_MAX_VALUE.invoke(annotation);
+                max = ((Max) annotation).value();
             }
         }
 
