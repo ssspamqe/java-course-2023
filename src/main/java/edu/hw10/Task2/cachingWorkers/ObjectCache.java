@@ -7,11 +7,10 @@ import java.util.Map;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-//This class is thread safe
+
 public class ObjectCache {
 
-    private static final ReadWriteLock LOCK = new ReentrantReadWriteLock(true);
-
+    private final ReadWriteLock lock = new ReentrantReadWriteLock(true);
     private final Object object;
     private SoftReference<Map<Method, MethodCache>> methodCachesRef;
 
@@ -21,44 +20,25 @@ public class ObjectCache {
     }
 
     public Object readResult(Method method, Object[] args) {
-        var methodCaches = getCurrentMethodCaches();
+        var methodCaches = methodCachesRef.get();
 
-        LOCK.readLock().lock();
-        try {
-            if (methodCaches == null) {
-                return null;
-            }
-            return methodCaches.get(method).readResult(args);
-        } finally {
-            LOCK.readLock().unlock();
+        if (methodCaches == null) {
+            return null;
         }
+        return methodCaches.get(method).readResult(args);
     }
 
     public void writeResult(Method method, Object[] args, Object result) {
-        var methodCaches = getCurrentMethodCaches();
+        var methodCaches = methodCachesRef.get();
 
-        LOCK.writeLock().lock();
-        try {
-            if (methodCaches == null) {
-                methodCachesRef = new SoftReference<>(new HashMap<>());
-                methodCaches = methodCachesRef.get();
-            }
-
-            if (!methodCaches.containsKey(method)) {
-                methodCaches.put(method, new MethodCache(method));
-            }
-            methodCaches.get(method).writeResult(args, result);
-        } finally {
-            LOCK.writeLock().unlock();
+        if (methodCaches == null) {
+            methodCachesRef = new SoftReference<>(new HashMap<>());
+            methodCaches = methodCachesRef.get();
         }
-    }
 
-    private Map<Method, MethodCache> getCurrentMethodCaches() {
-        LOCK.readLock().lock();
-        try {
-            return methodCachesRef.get();
-        } finally {
-            LOCK.readLock().unlock();
+        if (!methodCaches.containsKey(method)) {
+            methodCaches.put(method, new MethodCache(method));
         }
+        methodCaches.get(method).writeResult(args, result);
     }
 }
