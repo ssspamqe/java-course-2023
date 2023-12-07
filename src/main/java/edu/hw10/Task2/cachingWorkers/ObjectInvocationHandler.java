@@ -61,8 +61,7 @@ public class ObjectInvocationHandler<T> implements InvocationHandler {
             if (cacheRef.get() == null) {
                 return null;
             }
-            var val = cache.readResult(method, args);
-            return val;
+            return cache.readResult(method, args);
         } finally {
             lock.readLock().unlock();
         }
@@ -85,13 +84,15 @@ public class ObjectInvocationHandler<T> implements InvocationHandler {
     private void writeToCacheFile(String line) {
         try (var fileWriter = new FileWriter(cacheFilePath, true);
              BufferedWriter fileOut = new BufferedWriter(fileWriter)) {
-            fileOut.append(line + "\n");
+            fileOut.append(line).append("\n");
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
     }
 
     private String getCacheLog(Method method, Object[] args, Object result) {
-        return STR. "\{ method }: \{ Arrays.asList(args) } -> [\{ result }]" ;
+        return object.getClass().getName()
+            + "::" + method.getName()
+            + ":" + Arrays.asList(args) + " -> [" + result + "]";
     }
 }

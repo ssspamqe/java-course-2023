@@ -5,7 +5,6 @@ import edu.hw10.Task1.annotations.Min;
 import edu.hw10.Task1.annotations.NotNull;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
@@ -41,7 +40,7 @@ public class RandomObjectGenerator {
     }
 
     public Object nextObject(Class<?> objectClass, String fabricMethodName) {
-        var fabricMethod = getMethodWithBiggestParametersAmountWithName(fabricMethodName, objectClass);
+        var fabricMethod = getFabricMethodWithBiggestParametersAmountWithName(fabricMethodName, objectClass);
         var parameters = fabricMethod.getParameters();
         var arguments = generateAllArguments(parameters);
 
@@ -51,21 +50,6 @@ public class RandomObjectGenerator {
             LOGGER.warn(ex);
             return null;
         }
-    }
-
-    private Method getMethodWithBiggestParametersAmountWithName(String name, Class<?> objectClass) {
-        var methods = objectClass.getMethods();
-        return Arrays.stream(methods)
-            .filter(it -> it.getName().equals(name))
-            .reduce((x, y) -> {
-                if (x.getParameterCount() > y.getParameterCount()) {
-                    return x;
-                } else {
-                    return y;
-                }
-            })
-            .orElseThrow(() -> new IllegalArgumentException(
-                objectClass + " do not have static fabric method with such name"));
     }
 
     private Constructor<?> getConstructorWithBiggestParameterAmount(Class<?> objectClass) {
@@ -79,6 +63,21 @@ public class RandomObjectGenerator {
         }
 
         return biggestConstructor;
+    }
+
+    private Method getFabricMethodWithBiggestParametersAmountWithName(String name, Class<?> objectClass) {
+        var methods = objectClass.getMethods();
+        return Arrays.stream(methods)
+            .filter(it -> it.getName().equals(name))
+            .reduce((x, y) -> {
+                if (x.getParameterCount() > y.getParameterCount()) {
+                    return x;
+                } else {
+                    return y;
+                }
+            })
+            .orElseThrow(() -> new IllegalArgumentException(
+                objectClass + " does not have static fabric method with such name"));
     }
 
     private List<Object> generateAllArguments(Parameter[] parameters) {
@@ -101,8 +100,7 @@ public class RandomObjectGenerator {
         return ROG.nextObject(parameter.getType());
     }
 
-    private ParameterConstraints getParameterConstraints(Annotation[] annotations)
-        throws InvocationTargetException, IllegalAccessException {
+    private ParameterConstraints getParameterConstraints(Annotation[] annotations) {
         boolean notNull = false;
         double min = Long.MIN_VALUE;
         double max = Long.MAX_VALUE;
