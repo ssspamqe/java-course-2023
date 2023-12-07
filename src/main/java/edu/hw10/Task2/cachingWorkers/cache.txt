@@ -1,0 +1,2 @@
+public abstract long edu.hw10.Task2.Calculator.calculate(long): [13] -> [610]
+public abstract long edu.hw10.Task2.Calculator.calculate(long): [12] -> [377]

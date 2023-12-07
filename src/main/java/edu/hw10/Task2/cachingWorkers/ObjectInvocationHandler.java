@@ -1,8 +1,11 @@
 package edu.hw10.Task2.cachingWorkers;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.lang.ref.SoftReference;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import org.apache.logging.log4j.LogManager;
@@ -10,17 +13,23 @@ import org.apache.logging.log4j.Logger;
 
 public class ObjectInvocationHandler<T> implements InvocationHandler {
 
-    private static final String DEFAULT_CACHE_DIRECTORY = "./src/main/java/edu/hw10/task2/cachingWorkers/";
+    private static final String DEFAULT_CACHE_FILE_PATH = "./src/main/java/edu/hw10/task2/cachingWorkers/cache.txt";
     private static final Logger LOGGER = LogManager.getLogger();
 
-    private SoftReference<ObjectCache> cacheRef;
     private final ReadWriteLock lock = new ReentrantReadWriteLock(true);
-
+    private final String cacheFilePath;
     private final T object;
 
-    public ObjectInvocationHandler(T object) {
+    private SoftReference<ObjectCache> cacheRef;
+
+    public ObjectInvocationHandler(T object, String cacheFilePath) {
         this.object = object;
+        this.cacheFilePath = cacheFilePath;
         cacheRef = new SoftReference<>(new ObjectCache(object));
+    }
+
+    public ObjectInvocationHandler(T object) {
+        this(object, DEFAULT_CACHE_FILE_PATH);
     }
 
     @Override
@@ -39,6 +48,9 @@ public class ObjectInvocationHandler<T> implements InvocationHandler {
 
         result = method.invoke(object, args);
         writeResultToCache(method, args, result);
+        if (cacheAnnotation.persist()) {
+            writeToCacheFile(getCacheLog(method, args, result));
+        }
         return result;
     }
 
@@ -68,5 +80,18 @@ public class ObjectInvocationHandler<T> implements InvocationHandler {
         } finally {
             lock.writeLock().unlock();
         }
+    }
+
+    private void writeToCacheFile(String line) {
+        try (var fileWriter = new FileWriter(cacheFilePath, true);
+             BufferedWriter fileOut = new BufferedWriter(fileWriter)) {
+            fileOut.append(line + "\n");
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    private String getCacheLog(Method method, Object[] args, Object result) {
+        return STR. "\{ method }: \{ Arrays.asList(args) } -> [\{ result }]" ;
     }
 }
