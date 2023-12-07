@@ -8,7 +8,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class ObjectInvocationHandler implements InvocationHandler {
+public class ObjectInvocationHandler<T> implements InvocationHandler {
 
     private static final String DEFAULT_CACHE_DIRECTORY = "./src/main/java/edu/hw10/task2/cachingWorkers/";
     private static final Logger LOGGER = LogManager.getLogger();
@@ -16,9 +16,9 @@ public class ObjectInvocationHandler implements InvocationHandler {
     private SoftReference<ObjectCache> cacheRef;
     private final ReadWriteLock lock = new ReentrantReadWriteLock(true);
 
-    private Object object;
+    private T object;
 
-    ObjectInvocationHandler(Object object) {
+    public ObjectInvocationHandler(T object) {
         this.object = object;
         cacheRef = new SoftReference<>(new ObjectCache(object));
     }
@@ -59,7 +59,7 @@ public class ObjectInvocationHandler implements InvocationHandler {
         try {
             var cache = cacheRef.get();
             if (cache == null) {
-                cacheRef = new SoftReference<>(new ObjectCache());
+                cacheRef = new SoftReference<>(new ObjectCache(object));
                 cache = cacheRef.get();
             }
             cache.writeResult(method, args, result);
