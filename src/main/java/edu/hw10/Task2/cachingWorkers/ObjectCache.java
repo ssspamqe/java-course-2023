@@ -9,6 +9,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class ObjectCache {
 
+    private final ReadWriteLock lock = new ReentrantReadWriteLock(true);
     private final Object object;
     private final Map<Method, MethodCache> methodCaches = new HashMap<>();
 
@@ -21,9 +22,6 @@ public class ObjectCache {
     }
 
     public void writeResult(Method method, Object[] args, Object result) {
-        if (!methodCaches.containsKey(method)) {
-            methodCaches.put(method, new MethodCache(method));
-        }
         methodCaches.get(method).writeResult(args, result);
     }
 }
