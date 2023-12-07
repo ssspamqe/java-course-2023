@@ -1,6 +1,5 @@
 package edu.hw10.Task2.cachingWorkers;
 
-import java.lang.ref.SoftReference;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -10,10 +9,11 @@ import java.util.Map;
 public class MethodCache {
 
     private final Method method;
-    private final Map<List<Object>, Object> cache = new HashMap<>();
+    private final Map<List<Object>, Object> cache;
 
     public MethodCache(Method method) {
         this.method = method;
+        cache = new HashMap<>();
     }
 
     public Object readResult(Object[] args) {

@@ -16,7 +16,7 @@ public class ObjectInvocationHandler<T> implements InvocationHandler {
     private SoftReference<ObjectCache> cacheRef;
     private final ReadWriteLock lock = new ReentrantReadWriteLock(true);
 
-    private T object;
+    private final T object;
 
     public ObjectInvocationHandler(T object) {
         this.object = object;
@@ -24,7 +24,7 @@ public class ObjectInvocationHandler<T> implements InvocationHandler {
     }
 
     @Override
-    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+    public Object invoke(Object proxy, Method method, Object[] args) throws Exception {
         var cacheAnnotation = method.getAnnotation(Cache.class);
         if (cacheAnnotation == null) {
             return method.invoke(proxy, args);
@@ -32,11 +32,12 @@ public class ObjectInvocationHandler<T> implements InvocationHandler {
 
         Object result = readResultFromCache(method, args);
         if (result != null) {
-            LOGGER.info("found {} on args {}", result, args);
+            LOGGER.info("{}: found {} on args {}", method, result, args);
             return result;
         }
+        LOGGER.info("{}: nothing on args {}", method, args);
 
-        result = method.invoke(proxy, args);
+        result = method.invoke(object, args);
         writeResultToCache(method, args, result);
         return result;
     }
@@ -48,7 +49,8 @@ public class ObjectInvocationHandler<T> implements InvocationHandler {
             if (cacheRef.get() == null) {
                 return null;
             }
-            return cache.readResult(method, args);
+            var val = cache.readResult(method, args);
+            return val;
         } finally {
             lock.readLock().unlock();
         }

@@ -1,26 +1,32 @@
 package edu.hw10.Task2.cachingWorkers;
 
-import java.lang.ref.SoftReference;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class ObjectCache {
 
     private final Object object;
-    private final Map<Method, MethodCache> methodCaches = new HashMap<>();
+    private Map<Method, MethodCache> methodCaches;
 
     public ObjectCache(Object object) {
         this.object = object;
+        methodCaches = new HashMap<>();
     }
 
     public Object readResult(Method method, Object[] args) {
-        return methodCaches.get(method).readResult(args);
+        var methodCache = methodCaches.get(method);
+        if (methodCache == null) {
+            return null;
+        }
+        return methodCache.readResult(args);
     }
 
     public void writeResult(Method method, Object[] args, Object result) {
+        var methodCache = methodCaches.get(method);
+        if (methodCache == null) {
+            methodCaches.put(method, new MethodCache(method));
+        }
         methodCaches.get(method).writeResult(args, result);
     }
 }
