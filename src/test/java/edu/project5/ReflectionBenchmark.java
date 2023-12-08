@@ -23,12 +23,13 @@ import org.openjdk.jmh.runner.options.TimeValue;
 @State(Scope.Thread)
 public class ReflectionBenchmark {
 
-    @FunctionalInterface
-    interface FuncInt {
-        MethodType signature = MethodType.methodType(Object.class, Student.class);
+    private static final int N_FORKS = 1;
+    private static final int N_WARMUP_FORKS = 1;
+    private static final int N_WARMUP_ITERATIONS = 5;
+    private static final int N_MEASUREMENT_ITERATIONS = 5;
 
-        Object invoke(Student student);
-    }
+    private static final TimeValue WARMUP_TIME = TimeValue.seconds(5);
+    private static final TimeValue MEASUREMENT_TIME = TimeValue.seconds(5);
 
     public static void main(String[] args) throws Throwable {
         Options options = new OptionsBuilder()
@@ -37,12 +38,12 @@ public class ReflectionBenchmark {
             .shouldDoGC(true)
             .mode(Mode.AverageTime)
             .timeUnit(TimeUnit.NANOSECONDS)
-            .forks(1)
-            .warmupForks(1)
-            .warmupIterations(1)
-            .warmupTime(TimeValue.seconds(5))
-            .measurementIterations(1)
-            .measurementTime(TimeValue.seconds(5))
+            .forks(N_FORKS)
+            .warmupForks(N_WARMUP_FORKS)
+            .warmupIterations(N_WARMUP_ITERATIONS)
+            .warmupTime(WARMUP_TIME)
+            .measurementIterations(N_MEASUREMENT_ITERATIONS)
+            .measurementTime(MEASUREMENT_TIME)
             .build();
 
         new Runner(options).run();
@@ -59,30 +60,32 @@ public class ReflectionBenchmark {
     @Setup
     public void setup() throws Throwable {
         student = new Student("Alexander", "Biryukov");
-        var lookup = MethodHandles.lookup();
-        var methodType = MethodType.methodType(String.class);
 
         method = Student.class.getMethod("name");
 
+        var lookup = MethodHandles.lookup();
+        var methodType = MethodType.methodType(String.class);
         methodHandle = lookup.findVirtual(Student.class, "name", methodType);
 
-        function = setUpLambdaFunction();
+        function = getLambdaFunction();
     }
 
-    private Function setUpLambdaFunction() throws Throwable {
+    private Function<Student, String> getLambdaFunction() throws Throwable {
+        var functionInterfaceMethodType = MethodType.methodType(Function.class);
+        var lambdaType = MethodType.methodType(Object.class, Object.class);
         var lookup = MethodHandles.lookup();
+        var studentMethod = lookup.findVirtual(Student.class, "name", MethodType.methodType(String.class))
+
         MethodType functionSignature = MethodType.methodType(Object.class, Student.class);
         CallSite secondSite = LambdaMetafactory.metafactory(
-            MethodHandles.lookup(),
+            lookup,
             "apply",
-            MethodType.methodType(Function.class),
-            MethodType.methodType(Object.class, Object.class),
-            lookup.findVirtual(Student.class, "name", MethodType.methodType(String.class)),
+            functionInterfaceMethodType,
+            lambdaType,
+            studentMethod,
             functionSignature
         );
-        return (Function) secondSite.getTarget().invokeExact();
-
-//        System.out.println(func.apply(student));
+        return (Function<Student, String>) secondSite.getTarget().invokeExact();
     }
 
     @Benchmark
