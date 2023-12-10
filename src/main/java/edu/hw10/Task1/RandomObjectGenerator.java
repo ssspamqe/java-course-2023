@@ -8,7 +8,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.logging.log4j.LogManager;
@@ -19,10 +18,9 @@ import static java.lang.Math.min;
 public class RandomObjectGenerator {
 
     private static final Logger LOGGER = LogManager.getLogger();
-
     private static final Long CHAR_MAX = (long) Math.pow(2, 16);
-
     private static final ThreadLocalRandom RANDOM = ThreadLocalRandom.current();
+
     private static final RandomObjectGenerator ROG = new RandomObjectGenerator();
 
     public Object nextObject(Class<?> objectClass) {
@@ -31,12 +29,11 @@ public class RandomObjectGenerator {
         var arguments = generateAllArguments(parameters);
 
         try {
-            return constructor.newInstance(arguments.toArray(new Object[0]));
+            return constructor.newInstance(arguments);
         } catch (Exception ex) {
             LOGGER.warn(ex);
             return null;
         }
-
     }
 
     public Object nextObject(Class<?> objectClass, String fabricMethodName) {
@@ -45,7 +42,7 @@ public class RandomObjectGenerator {
         var arguments = generateAllArguments(parameters);
 
         try {
-            return fabricMethod.invoke(null, arguments.toArray(new Object[0]));
+            return fabricMethod.invoke(null, arguments);
         } catch (Exception ex) {
             LOGGER.warn(ex);
             return null;
@@ -80,8 +77,8 @@ public class RandomObjectGenerator {
                 objectClass + " does not have static fabric method with such name"));
     }
 
-    private List<Object> generateAllArguments(Parameter[] parameters) {
-        return Arrays.stream(parameters).map(this::generateArgument).toList();
+    private Object[] generateAllArguments(Parameter[] parameters) {
+        return Arrays.stream(parameters).map(this::generateArgument).toArray();
     }
 
     private Object generateArgument(Parameter parameter) {

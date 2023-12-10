@@ -1,4 +1,4 @@
-package edu.hw10.Task2.cachingWorkers;
+package edu.hw10.Task2;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -49,7 +49,7 @@ public class ObjectInvocationHandler<T> implements InvocationHandler {
         result = method.invoke(object, args);
         writeResultToCache(method, args, result);
         if (cacheAnnotation.persist()) {
-            writeToCacheFile(getCacheLog(method, args, result));
+            writeCacheToFile(getCacheLog(method, args, result));
         }
         return result;
     }
@@ -81,7 +81,7 @@ public class ObjectInvocationHandler<T> implements InvocationHandler {
         }
     }
 
-    private void writeToCacheFile(String line) {
+    private void writeCacheToFile(String line) {
         try (var fileWriter = new FileWriter(cacheFilePath, true);
              BufferedWriter fileOut = new BufferedWriter(fileWriter)) {
             fileOut.append(line).append("\n");

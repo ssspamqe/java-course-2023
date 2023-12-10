@@ -1,10 +1,6 @@
 package edu.hw10.task2;
 
 public class FibonacciCalculator implements Calculator
-
-
-
-
 {
     @Override
     public long calculate(long n) {
@@ -15,7 +11,6 @@ public class FibonacciCalculator implements Calculator
             first = second;
             second = next;
         }
-
         return second;
     }
 }

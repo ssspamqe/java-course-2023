@@ -1,6 +1,6 @@
 package edu.hw10.task2;
 
-import edu.hw10.Task2.cachingWorkers.CacheProxy;
+import edu.hw10.Task2.CacheProxy;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -28,6 +28,7 @@ public class CacheProxyTest {
         Calculator proxyCalculator = (Calculator) CacheProxy.create(fibonacciCalculator, CACHE_FILE.toString());
         proxyCalculator.calculate(12);
         proxyCalculator.calculate(13);
+        proxyCalculator.calculate(12);
 
         List<String> filesLines = Files.lines(CACHE_FILE).toList();
 

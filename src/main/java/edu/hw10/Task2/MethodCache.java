@@ -1,4 +1,4 @@
-package edu.hw10.Task2.cachingWorkers;
+package edu.hw10.Task2;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package edu.hw10.Task2.cachingWorkers;
+package edu.hw10.Task2;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -7,7 +7,7 @@ import java.util.Map;
 public class ObjectCache {
 
     private final Object object;
-    private Map<Method, MethodCache> methodCaches;
+    private final Map<Method, MethodCache> methodCaches;
 
     public ObjectCache(Object object) {
         this.object = object;
@@ -23,10 +23,7 @@ public class ObjectCache {
     }
 
     public void writeResult(Method method, Object[] args, Object result) {
-        var methodCache = methodCaches.get(method);
-        if (methodCache == null) {
-            methodCaches.put(method, new MethodCache(method));
-        }
+        methodCaches.computeIfAbsent(method, MethodCache::new);
         methodCaches.get(method).writeResult(args, result);
     }
 }

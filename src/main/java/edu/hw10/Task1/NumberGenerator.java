@@ -52,11 +52,12 @@ public class NumberGenerator {
     ) {
         if (numberClass == float.class || numberClass == Float.class) {
             return RANDOM.nextFloat((float) constraints.min(), (float) constraints.max());
+
         } else if (numberClass == double.class || numberClass == Double.class) {
             return RANDOM.nextDouble(constraints.min(), constraints.max());
         }
-        throw new IllegalArgumentException("Given class does not represent a non integral number");
 
+        throw new IllegalArgumentException("Given class does not represent a non integral number");
     }
 
     public static boolean isIntegral(Class<?> numberClass) {

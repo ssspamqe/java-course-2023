@@ -1,4 +1,4 @@
-package edu.hw10.Task2.cachingWorkers;
+package edu.hw10.Task2;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
