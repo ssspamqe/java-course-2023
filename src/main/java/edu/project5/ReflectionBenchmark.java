@@ -31,7 +31,14 @@ public class ReflectionBenchmark {
     private static final TimeValue WARMUP_TIME = TimeValue.seconds(5);
     private static final TimeValue MEASUREMENT_TIME = TimeValue.seconds(5);
 
-    public static void main(String[] args) throws Throwable {
+    private static final String FIELD_NAME = "name";
+
+    private static Student student;
+    private static Method method;
+    private static MethodHandle methodHandle;
+    private static Function function;
+
+    public static void launch() throws Throwable {
         Options options = new OptionsBuilder()
             .include(ReflectionBenchmark.class.getSimpleName())
             .shouldFailOnError(true)
@@ -49,32 +56,28 @@ public class ReflectionBenchmark {
         new Runner(options).run();
     }
 
-    record Student(String name, String surname) {
-    }
-
-    private static Student student;
-    private static Method method;
-    private static MethodHandle methodHandle;
-    private static Function function;
-
     @Setup
     public void setup() throws Throwable {
         student = new Student("Alexander", "Biryukov");
 
-        method = Student.class.getMethod("name");
+        method = Student.class.getMethod(FIELD_NAME);
 
-        var lookup = MethodHandles.lookup();
-        var methodType = MethodType.methodType(String.class);
-        methodHandle = lookup.findVirtual(Student.class, "name", methodType);
+        methodHandle = getMethodHandle();
 
         function = getLambdaFunction();
+    }
+
+    private MethodHandle getMethodHandle() throws Throwable {
+        var lookup = MethodHandles.lookup();
+        var methodType = MethodType.methodType(String.class);
+        return lookup.findVirtual(Student.class, FIELD_NAME, methodType);
     }
 
     private Function<Student, String> getLambdaFunction() throws Throwable {
         var functionInterfaceMethodType = MethodType.methodType(Function.class);
         var lambdaType = MethodType.methodType(Object.class, Object.class);
         var lookup = MethodHandles.lookup();
-        var studentMethod = lookup.findVirtual(Student.class, "name", MethodType.methodType(String.class))
+        var studentMethod = lookup.findVirtual(Student.class, FIELD_NAME, MethodType.methodType(String.class));
 
         MethodType functionSignature = MethodType.methodType(Object.class, Student.class);
         CallSite secondSite = LambdaMetafactory.metafactory(
