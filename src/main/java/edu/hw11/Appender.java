@@ -7,9 +7,9 @@ import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.implementation.bytecode.member.MethodVariableAccess;
 import net.bytebuddy.jar.asm.MethodVisitor;
 
-enum SumMethod implements ByteCodeAppender {
+enum Appender implements ByteCodeAppender {
 
-    INSTANCE; // singleton
+    INSTANCE;
 
     @Override
     public Size apply(
@@ -21,11 +21,7 @@ enum SumMethod implements ByteCodeAppender {
             throw new IllegalArgumentException(instrumentedMethod + " must return long");
         }
         StackManipulation.Size operandStackSize = new StackManipulation.Compound(
-            MethodVariableAccess.INTEGER.loadFrom(1),
-//
             LongFibonacci.INSTANCE
-
-            //MethodReturn.INTEGER
         ).apply(mv, implementationContext);
 
         return new Size(

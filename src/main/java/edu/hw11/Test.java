@@ -1,7 +1,7 @@
 package edu.hw11;
 
+import java.lang.reflect.Modifier;
 import net.bytebuddy.ByteBuddy;
-import net.bytebuddy.description.modifier.Visibility;
 import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
 
 public class Test {
@@ -9,18 +9,16 @@ public class Test {
     public static void main(String[] args) throws Exception {
         var a = new ByteBuddy()
             .subclass(Object.class)
-            .defineMethod("calculate", long.class, Visibility.PUBLIC)
+            .name("edu.hw11.FibonacciCalculator")
+            .defineMethod("calculate", long.class, Modifier.STATIC)
             .withParameters(int.class)
-            //.method(named("calculate"))
-            .intercept(SumImplementation.INSTANCE)
+            .intercept(FibonacciImplementation.INSTANCE)
             .make()
             .load(ClassLoader.getSystemClassLoader(), ClassLoadingStrategy.Default.INJECTION)
             .getLoaded();
 
-        var instance = a.newInstance();
-        var method = a.getMethod("calculate", int.class);
+        var method = a.getDeclaredMethod("calculate", int.class);
 
-        System.out.println(method.invoke(instance, 10));
-
+        System.out.println(method.invoke(null, 47));
     }
 }
