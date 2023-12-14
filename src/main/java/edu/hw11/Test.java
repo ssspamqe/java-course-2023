@@ -26,6 +26,6 @@ public class Test {
 
         var instance = a.newInstance();
 
-        System.out.println(instance.calculate(13));
+        System.out.println(instance.calculate(19));
     }
 }
