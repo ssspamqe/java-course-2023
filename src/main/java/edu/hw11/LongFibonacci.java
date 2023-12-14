@@ -43,7 +43,13 @@ enum LongFibonacci implements StackManipulation {
         mv.visitInsn(Opcodes.LCONST_1);
         mv.visitInsn(Opcodes.LSUB);
         mv.visitInsn(Opcodes.L2I);
-        mv.visitMethodInsn(Opcodes.INVOKESTATIC, "edu/hw11/FibonacciCalculator", "calculate", "(I)J", false);
+        mv.visitMethodInsn(
+            Opcodes.INVOKESTATIC,
+            "edu/hw11/FibonacciCalculator",
+            FibonacciClassProvider.methodName,
+            "(I)J",
+            false
+        );
 
         mv.visitVarInsn(Opcodes.ILOAD, 0);
         mv.visitInsn(Opcodes.I2L);
@@ -51,7 +57,13 @@ enum LongFibonacci implements StackManipulation {
         mv.visitInsn(Opcodes.I2L);
         mv.visitInsn(Opcodes.LSUB);
         mv.visitInsn(Opcodes.L2I);
-        mv.visitMethodInsn(Opcodes.INVOKESTATIC, "edu/hw11/FibonacciCalculator", "calculate", "(I)J", false);
+        mv.visitMethodInsn(
+            Opcodes.INVOKESTATIC,
+            "edu/hw11/FibonacciCalculator",
+            FibonacciClassProvider.methodName,
+            "(I)J",
+            false
+        );
 
         mv.visitInsn(Opcodes.LADD);
         mv.visitInsn(Opcodes.LRETURN);
