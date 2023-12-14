@@ -17,8 +17,8 @@ enum SumMethod implements ByteCodeAppender {
         Implementation.Context implementationContext,
         MethodDescription instrumentedMethod
     ) {
-        if (!instrumentedMethod.getReturnType().asErasure().represents(int.class)) {
-            throw new IllegalArgumentException(instrumentedMethod + " must return int");
+        if (!instrumentedMethod.getReturnType().asErasure().represents(long.class)) {
+            throw new IllegalArgumentException(instrumentedMethod + " must return long");
         }
         StackManipulation.Size operandStackSize = new StackManipulation.Compound(
             MethodVariableAccess.INTEGER.loadFrom(1),

@@ -8,12 +8,7 @@ public class Test {
 
     public static void main(String[] args) throws Exception {
         abstract class SumExample {
-            public abstract int calculate(int a);
-
-            @Override
-            public String toString() {
-                return "131231";
-            }
+            public abstract long calculate(int a);
         }
 
         var a = new ByteBuddy()
@@ -26,6 +21,6 @@ public class Test {
 
         var instance = a.newInstance();
 
-        System.out.println(instance.calculate(19));
+        System.out.println(instance.calculate(47));
     }
 }

@@ -2,7 +2,7 @@ package edu.hw11;
 
 public class Fib {
 
-    public static int fib(int n) {
+    public static long fib(int n) {
         if (n <= 1) {
             return n;
         } else {

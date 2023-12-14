@@ -45,24 +45,37 @@ enum LongFibonacci implements StackManipulation {
 
         mv.visitCode();
         //mv.visitVarInsn(Opcodes.ILOAD, 1);
-        mv.visitInsn(Opcodes.ICONST_1);
+
+        mv.visitInsn(Opcodes.I2L);
+
+        mv.visitInsn(Opcodes.LCONST_1);
+
+        mv.visitInsn(Opcodes.LCMP);
+
+
         Label elseLabel = new Label();
-        mv.visitJumpInsn(Opcodes.IF_ICMPGT, elseLabel);
+        mv.visitJumpInsn(Opcodes.IFGT, elseLabel);
         mv.visitVarInsn(Opcodes.ILOAD, 1);
-        mv.visitInsn(Opcodes.IRETURN);
+        mv.visitInsn(Opcodes.I2L);
+        mv.visitInsn(Opcodes.LRETURN);
         mv.visitLabel(elseLabel);
         mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
         //mv.visitInsn(Opcodes.POP);
         mv.visitVarInsn(Opcodes.ILOAD, 1);
-        mv.visitInsn(Opcodes.ICONST_1);
-        mv.visitInsn(Opcodes.ISUB);
-        mv.visitMethodInsn(Opcodes.INVOKESTATIC, "edu/hw11/Fib", "fib", "(I)I", false);
+        mv.visitInsn(Opcodes.I2L);
+        mv.visitInsn(Opcodes.LCONST_1);
+        mv.visitInsn(Opcodes.LSUB);
+        mv.visitInsn(Opcodes.L2I);
+        mv.visitMethodInsn(Opcodes.INVOKESTATIC, "edu/hw11/Fib", "fib", "(I)J", false);
         mv.visitVarInsn(Opcodes.ILOAD, 1);
+        mv.visitInsn(Opcodes.I2L);
         mv.visitInsn(Opcodes.ICONST_2);
-        mv.visitInsn(Opcodes.ISUB);
-        mv.visitMethodInsn(Opcodes.INVOKESTATIC, "edu/hw11/Fib", "fib", "(I)I", false);
-        mv.visitInsn(Opcodes.IADD);
-        mv.visitInsn(Opcodes.IRETURN);
+        mv.visitInsn(Opcodes.I2L);
+        mv.visitInsn(Opcodes.LSUB);
+        mv.visitInsn(Opcodes.L2I);
+        mv.visitMethodInsn(Opcodes.INVOKESTATIC, "edu/hw11/Fib", "fib", "(I)J", false);
+        mv.visitInsn(Opcodes.LADD);
+        mv.visitInsn(Opcodes.LRETURN);
         mv.visitMaxs(20, 20);
         mv.visitEnd();
 
