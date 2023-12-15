@@ -10,6 +10,12 @@ enum LongFibonacci implements StackManipulation {
 
     INSTANCE; // singleton
 
+    private static final int SIZE_IMPACT = 5;
+    private static final int MAXIMAL_SIZE = 6;
+
+    private static final String METHOD_DESCRIPTOR = "(I)J";
+    private static final String METHOD_OWNER = "edu/hw11/FibonacciCalculator";
+
     @Override
     public boolean isValid() {
         return true;
@@ -45,9 +51,9 @@ enum LongFibonacci implements StackManipulation {
         mv.visitInsn(Opcodes.L2I);
         mv.visitMethodInsn(
             Opcodes.INVOKESTATIC,
-            "edu/hw11/FibonacciCalculator",
-            FibonacciClassProvider.methodName,
-            "(I)J",
+            METHOD_OWNER,
+            FibonacciClassProvider.METHOD_NAME,
+            METHOD_DESCRIPTOR,
             false
         );
 
@@ -59,18 +65,17 @@ enum LongFibonacci implements StackManipulation {
         mv.visitInsn(Opcodes.L2I);
         mv.visitMethodInsn(
             Opcodes.INVOKESTATIC,
-            "edu/hw11/FibonacciCalculator",
-            FibonacciClassProvider.methodName,
-            "(I)J",
+            METHOD_OWNER,
+            FibonacciClassProvider.METHOD_NAME,
+            METHOD_DESCRIPTOR,
             false
         );
 
         mv.visitInsn(Opcodes.LADD);
         mv.visitInsn(Opcodes.LRETURN);
 
-        mv.visitMaxs(20, 20);
         mv.visitEnd();
 
-        return new Size(20, 20);
+        return new Size(SIZE_IMPACT, MAXIMAL_SIZE);
     }
 }

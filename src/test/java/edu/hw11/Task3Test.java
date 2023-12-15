@@ -14,7 +14,7 @@ public class Task3Test {
 
     static {
         try {
-            method = FibonacciClass.getDeclaredMethod(FibonacciClassProvider.methodName, int.class);
+            method = FibonacciClass.getDeclaredMethod(FibonacciClassProvider.METHOD_NAME, int.class);
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
