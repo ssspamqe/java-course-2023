@@ -23,11 +23,13 @@ public class Task2Test {
             .resolve();
         new ByteBuddy()
             .redefine(typeDescription, ClassFileLocator.ForClassLoader.ofSystemLoader())
-            .method(ElementMatchers.named("getSum")).intercept(MethodDelegation.to(CalculatorInterceptor.class))
+            .method(ElementMatchers.named("getSum"))
+            .intercept(MethodDelegation.to(new CalculatorInterceptor()))
             .make()
             .load(ClassLoader.getSystemClassLoader(), ClassLoadingStrategy.Default.INJECTION);
+        var instance = new Calculator();
+        int result = instance.getSum(a, b);
 
-        int result = Calculator.getSum(a, b);
         assertThat(result).isEqualTo(a * b);
     }
 
