@@ -1,5 +1,6 @@
 package edu.hw11;
 
+import edu.hw11.FibonacciClassProviderSupport.FibonacciImplementation;
 import java.lang.reflect.Modifier;
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;

@@ -1,4 +1,4 @@
-package edu.hw11;
+package edu.hw11.FibonacciClassProviderSupport;
 
 import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.implementation.Implementation;
@@ -8,7 +8,7 @@ import net.bytebuddy.jar.asm.MethodVisitor;
 
 class LongFibonacciAppender implements ByteCodeAppender {
 
-    private LongFibonacciAppender(){
+    private LongFibonacciAppender() {
 
     }
 
@@ -21,6 +21,7 @@ class LongFibonacciAppender implements ByteCodeAppender {
         if (!instrumentedMethod.getReturnType().asErasure().represents(long.class)) {
             throw new IllegalArgumentException(instrumentedMethod + " must return long");
         }
+
         StackManipulation.Size operandStackSize = new StackManipulation.Compound(
             LongFibonacci.getInstance()
         ).apply(mv, implementationContext);
@@ -31,11 +32,11 @@ class LongFibonacciAppender implements ByteCodeAppender {
         );
     }
 
-    private static class SingletonHolder{
-        public static final ByteCodeAppender INSTANCE = new LongFibonacciAppender();
+    public static ByteCodeAppender getInstance() {
+        return SingletonHolder.INSTANCE;
     }
 
-    public static ByteCodeAppender getInstance(){
-        return SingletonHolder.INSTANCE;
+    private static class SingletonHolder {
+        public static final ByteCodeAppender INSTANCE = new LongFibonacciAppender();
     }
 }

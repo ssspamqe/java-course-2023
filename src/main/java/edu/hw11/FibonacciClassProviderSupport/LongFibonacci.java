@@ -1,5 +1,6 @@
-package edu.hw11;
+package edu.hw11.FibonacciClassProviderSupport;
 
+import edu.hw11.FibonacciClassProvider;
 import net.bytebuddy.implementation.Implementation;
 import net.bytebuddy.implementation.bytecode.StackManipulation;
 import net.bytebuddy.jar.asm.Label;
@@ -81,11 +82,12 @@ class LongFibonacci implements StackManipulation {
         return String.join("/", FibonacciClassProvider.CLASS_NAME.split("[.]"));
     }
 
-    private static class SingletonHolder {
-        public static final StackManipulation INSTANCE = new LongFibonacci();
-    }
 
     public static StackManipulation getInstance() {
         return SingletonHolder.INSTANCE;
+    }
+
+    private static class SingletonHolder {
+        public static final StackManipulation INSTANCE = new LongFibonacci();
     }
 }

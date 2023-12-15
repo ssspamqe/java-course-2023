@@ -1,10 +1,10 @@
-package edu.hw11;
+package edu.hw11.FibonacciClassProviderSupport;
 
 import net.bytebuddy.dynamic.scaffold.InstrumentedType;
 import net.bytebuddy.implementation.Implementation;
 import net.bytebuddy.implementation.bytecode.ByteCodeAppender;
 
-class FibonacciImplementation implements Implementation {
+public class FibonacciImplementation implements Implementation {
 
     private FibonacciImplementation() {
 
@@ -20,11 +20,12 @@ class FibonacciImplementation implements Implementation {
         return LongFibonacciAppender.getInstance();
     }
 
-    private static class SingletonHolder {
-        public static final Implementation INSTANCE = new FibonacciImplementation();
-    }
 
     public static Implementation getInstance() {
         return SingletonHolder.INSTANCE;
+    }
+
+    private static class SingletonHolder {
+        public static final Implementation INSTANCE = new FibonacciImplementation();
     }
 }
