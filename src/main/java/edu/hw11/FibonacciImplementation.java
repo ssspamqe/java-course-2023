@@ -4,9 +4,11 @@ import net.bytebuddy.dynamic.scaffold.InstrumentedType;
 import net.bytebuddy.implementation.Implementation;
 import net.bytebuddy.implementation.bytecode.ByteCodeAppender;
 
-enum FibonacciImplementation implements Implementation {
+class FibonacciImplementation implements Implementation {
 
-    INSTANCE; // singleton
+    private FibonacciImplementation() {
+
+    }
 
     @Override
     public InstrumentedType prepare(InstrumentedType instrumentedType) {
@@ -15,6 +17,14 @@ enum FibonacciImplementation implements Implementation {
 
     @Override
     public ByteCodeAppender appender(Target implementationTarget) {
-        return Appender.INSTANCE;
+        return LongFibonacciAppender.getInstance();
+    }
+
+    private static class SingletonHolder {
+        public static final Implementation INSTANCE = new FibonacciImplementation();
+    }
+
+    public static Implementation getInstance() {
+        return SingletonHolder.INSTANCE;
     }
 }

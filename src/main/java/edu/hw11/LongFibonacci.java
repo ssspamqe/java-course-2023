@@ -6,15 +6,13 @@ import net.bytebuddy.jar.asm.Label;
 import net.bytebuddy.jar.asm.MethodVisitor;
 import net.bytebuddy.jar.asm.Opcodes;
 
-enum LongFibonacci implements StackManipulation {
-
-    INSTANCE; // singleton
+class LongFibonacci implements StackManipulation {
 
     private static final int SIZE_IMPACT = 5;
     private static final int MAXIMAL_SIZE = 6;
 
     private static final String METHOD_DESCRIPTOR = "(I)J";
-    private static final String METHOD_OWNER = "edu/hw11/FibonacciCalculator";
+    private static final String METHOD_OWNER = getMethodOwner();
 
     @Override
     public boolean isValid() {
@@ -77,5 +75,17 @@ enum LongFibonacci implements StackManipulation {
         mv.visitEnd();
 
         return new Size(SIZE_IMPACT, MAXIMAL_SIZE);
+    }
+
+    private static String getMethodOwner() {
+        return String.join("/", FibonacciClassProvider.CLASS_NAME.split("[.]"));
+    }
+
+    private static class SingletonHolder {
+        public static final StackManipulation INSTANCE = new LongFibonacci();
+    }
+
+    public static StackManipulation getInstance() {
+        return SingletonHolder.INSTANCE;
     }
 }

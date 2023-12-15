@@ -19,7 +19,7 @@ public class FibonacciClassProvider {
             .name(CLASS_NAME)
             .defineMethod(METHOD_NAME, long.class, Modifier.STATIC)
             .withParameters(int.class)
-            .intercept(FibonacciImplementation.INSTANCE)
+            .intercept(FibonacciImplementation.getInstance())
             .make()
             .load(ClassLoader.getSystemClassLoader(), ClassLoadingStrategy.Default.INJECTION)
             .getLoaded();
