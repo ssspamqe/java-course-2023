@@ -88,7 +88,7 @@ public class RandomObjectGenerator {
         try {
             constraints = getParameterConstraints(annotations);
         } catch (Exception ex) {
-            throw new RuntimeException(ex);
+            throw ex;
         }
 
         if (ClassUtils.isPrimitiveOrWrapper(parameter.getType())) {

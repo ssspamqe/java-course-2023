@@ -1,8 +1,10 @@
 package edu.hw10.task1;
 
 import edu.hw10.Task1.RandomObjectGenerator;
+import edu.hw10.Task1.exceptions.IncorrectConstraintsException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class RandomObjectGeneratorTest {
@@ -36,4 +38,13 @@ class RandomObjectGeneratorTest {
             (sampleDoubleWrapper >= LOWER_BOUND && sampleDoubleWrapper <= UPPER_BOUND));
     }
 
+    @Test
+    @DisplayName("nextObject should throw an IncorrectConstraintsException" +
+        " while trying to pass incorrect Min/Max constraints")
+    void nextObject_should_throwException_when_passingIncorrectConstraints() {
+        assertThrows(
+            IncorrectConstraintsException.class,
+            () -> ROG.nextObject(IncorrectConstraintsRecord.class)
+        );
+    }
 }
