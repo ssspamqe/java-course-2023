@@ -83,13 +83,7 @@ public class RandomObjectGenerator {
 
     private Object generateArgument(Parameter parameter) {
         var annotations = parameter.getAnnotations();
-        ParameterConstraints constraints;
-
-        try {
-            constraints = getParameterConstraints(annotations);
-        } catch (Exception ex) {
-            throw ex;
-        }
+        ParameterConstraints constraints = getParameterConstraints(annotations);
 
         if (ClassUtils.isPrimitiveOrWrapper(parameter.getType())) {
             return generatePrimitiveOrWrapperInstance(parameter.getType(), constraints);
