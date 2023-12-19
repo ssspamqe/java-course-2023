@@ -23,7 +23,7 @@ class LongFibonacciAppender implements ByteCodeAppender {
         }
 
         StackManipulation.Size operandStackSize = new StackManipulation.Compound(
-            LongFibonacci.getInstance()
+            LongFibonacciManipulation.getInstance()
         ).apply(mv, implementationContext);
 
         return new Size(

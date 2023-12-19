@@ -7,7 +7,7 @@ import net.bytebuddy.jar.asm.Label;
 import net.bytebuddy.jar.asm.MethodVisitor;
 import net.bytebuddy.jar.asm.Opcodes;
 
-class LongFibonacci implements StackManipulation {
+class LongFibonacciManipulation implements StackManipulation {
 
     private static final int SIZE_IMPACT = 5;
     private static final int MAXIMAL_SIZE = 6;
@@ -28,14 +28,10 @@ class LongFibonacci implements StackManipulation {
         mv.visitCode();
 
         mv.visitVarInsn(Opcodes.ILOAD, 0);
-        mv.visitInsn(Opcodes.I2L);
-
-        mv.visitInsn(Opcodes.LCONST_1);
-
-        mv.visitInsn(Opcodes.LCMP);
+        mv.visitInsn(Opcodes.ICONST_1);
 
         Label elseLabel = new Label();
-        mv.visitJumpInsn(Opcodes.IFGT, elseLabel);
+        mv.visitJumpInsn(Opcodes.IF_ICMPGT, elseLabel);
         mv.visitVarInsn(Opcodes.ILOAD, 0);
         mv.visitInsn(Opcodes.I2L);
         mv.visitInsn(Opcodes.LRETURN);
@@ -44,10 +40,8 @@ class LongFibonacci implements StackManipulation {
         mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
 
         mv.visitVarInsn(Opcodes.ILOAD, 0);
-        mv.visitInsn(Opcodes.I2L);
-        mv.visitInsn(Opcodes.LCONST_1);
-        mv.visitInsn(Opcodes.LSUB);
-        mv.visitInsn(Opcodes.L2I);
+        mv.visitInsn(Opcodes.ICONST_1);
+        mv.visitInsn(Opcodes.ISUB);
         mv.visitMethodInsn(
             Opcodes.INVOKESTATIC,
             METHOD_OWNER,
@@ -57,11 +51,8 @@ class LongFibonacci implements StackManipulation {
         );
 
         mv.visitVarInsn(Opcodes.ILOAD, 0);
-        mv.visitInsn(Opcodes.I2L);
         mv.visitInsn(Opcodes.ICONST_2);
-        mv.visitInsn(Opcodes.I2L);
-        mv.visitInsn(Opcodes.LSUB);
-        mv.visitInsn(Opcodes.L2I);
+        mv.visitInsn(Opcodes.ISUB);
         mv.visitMethodInsn(
             Opcodes.INVOKESTATIC,
             METHOD_OWNER,
@@ -88,6 +79,6 @@ class LongFibonacci implements StackManipulation {
     }
 
     private static class SingletonHolder {
-        public static final StackManipulation INSTANCE = new LongFibonacci();
+        public static final StackManipulation INSTANCE = new LongFibonacciManipulation();
     }
 }
