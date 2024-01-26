@@ -1,6 +1,6 @@
 package edu.project2
 
-import edu.project2.Maze.Cell
+import edu.project2.Maze.CellCoordinates
 import edu.project2.Maze.CellType
 import edu.project2.Maze.Maze
 import edu.project2.generators.idealMaze.IdealMazeGenerator
@@ -26,9 +26,9 @@ class MazeTest : ShouldSpec({
 
             forAll(Arb.int(0 until height), Arb.int(0 until width)) { row, column ->
 
-                val cell = Cell(row, column)
+                val cellCoordinates = CellCoordinates(row, column)
 
-                val type = maze.getCellType(cell)
+                val type = maze.getCellType(cellCoordinates)
 
                 type in listOf(CellType.PASSAGE, CellType.WALL)
             }
@@ -39,9 +39,9 @@ class MazeTest : ShouldSpec({
 
             forAll(Arb.int(-height until 0), Arb.int(width until 2 * width)) { row, column ->
 
-                val cell = Cell(row, column)
+                val cellCoordinates = CellCoordinates(row, column)
 
-                val type = maze.getCellType(cell)
+                val type = maze.getCellType(cellCoordinates)
 
                 type == CellType.OUT_OF_BOUNDS
             }
@@ -56,11 +56,11 @@ class MazeTest : ShouldSpec({
 
             forAll(Arb.int(0 until height), Arb.int(0 until width)) { row, column ->
 
-                val cell = Cell(row, column)
+                val cellCoordinates = CellCoordinates(row, column)
 
-                maze.setCellType(cell, CellType.OUT_OF_BOUNDS)
+                maze.setCellType(cellCoordinates, CellType.OUT_OF_BOUNDS)
 
-                maze.getCellType(cell) == CellType.OUT_OF_BOUNDS
+                maze.getCellType(cellCoordinates) == CellType.OUT_OF_BOUNDS
             }
 
         }

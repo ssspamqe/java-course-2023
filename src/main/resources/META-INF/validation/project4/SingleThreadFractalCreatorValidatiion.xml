@@ -1,0 +1,28 @@
+<?xml version ="1.0" encoding = "UTF-8"?>
+<constraint-mappings
+    xmlns="https://jakarta.ee/xml/ns/validation/mapping"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://jakarta.ee/xml/ns/validation/mapping
+            https://jakarta.ee/xml/ns/validation/validation-mapping-3.0.xsd"
+    version="3.0">
+
+    <bean class="edu.project4.fractalGeneration.fractalCreators.MultiThreadFractalCreator" ignore-annotations="true">
+
+        <method name="fillCanvas">
+            <parameter type="PixelCanvas">
+                <constraint annotation="NotNull"/>
+            </parameter>
+            <parameter type="int">
+                <constraint annotation="Positive"/>
+            </parameter>
+            <parameter type="int">
+                <constraint annotation="Positive"/>
+            </parameter>
+            <parameter type="int">
+                <constraint annotation="NegativeOrZero"/>
+            </parameter>
+        </method>
+
+    </bean>
+
+</constraint-mappings>
