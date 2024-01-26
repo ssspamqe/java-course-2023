@@ -46,7 +46,12 @@
 
         <jacoco-maven-plugin.version>0.8.10</jacoco-maven-plugin.version>
         <kotlin.version>1.9.20-RC</kotlin.version>
+
+        <bytebuddy.version>1.14.8</bytebuddy.version>
+        <asm.version>9.6</asm.version>
+
         <jmh.version>1.37</jmh.version>
+
     </properties>
 
     <dependencyManagement>
@@ -166,6 +171,22 @@
             <artifactId>expressly</artifactId>
             <version>5.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm</artifactId>
+            <version>${asm.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy-agent</artifactId>
+            <version>${bytebuddy.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy</artifactId>
+            <version>${bytebuddy.version}</version>
+        </dependency>
 
 
         <dependency>
@@ -192,6 +213,7 @@
             <artifactId>commons-io</artifactId>
             <version>2.15.0</version>
         </dependency>
+
 
     </dependencies>
 
