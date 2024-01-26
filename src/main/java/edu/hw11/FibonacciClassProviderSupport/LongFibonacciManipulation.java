@@ -42,24 +42,24 @@ class LongFibonacciManipulation implements StackManipulation {
         mv.visitVarInsn(Opcodes.ILOAD, 0);
         mv.visitInsn(Opcodes.ICONST_1);
         mv.visitInsn(Opcodes.ISUB); //loading arg-1 to the top of the stack
-        mv.visitMethodInsn ( //calling method recursively, passing arg-1
+        mv.visitMethodInsn(
             Opcodes.INVOKESTATIC,
             METHOD_OWNER,
             FibonacciClassProvider.METHOD_NAME,
             METHOD_DESCRIPTOR,
             false
-        );
+        ); //calling method recursively, passing arg-1
 
         mv.visitVarInsn(Opcodes.ILOAD, 0);
         mv.visitInsn(Opcodes.ICONST_2);
         mv.visitInsn(Opcodes.ISUB); //loading arg-2 to the top of the stack
-        mv.visitMethodInsn ( //calling method recursively, passing arg-2
+        mv.visitMethodInsn(
             Opcodes.INVOKESTATIC,
             METHOD_OWNER,
             FibonacciClassProvider.METHOD_NAME,
             METHOD_DESCRIPTOR,
             false
-        );
+        ); //calling method recursively, passing arg-2
 
         mv.visitInsn(Opcodes.LADD); //summing up two returned long values and loading it to the top of the stack
         mv.visitInsn(Opcodes.LRETURN);
