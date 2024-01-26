@@ -1,32 +1,15 @@
 package edu.project2.Maze
 
-enum class CellType {
-    PASSAGE {
-        override fun getSymbol(): String = "⬛"
-    },
+enum class CellType private constructor(val symbol: String, val solution: Boolean) {
+    PASSAGE("⬛", false),
 
-    WALL {
-        override fun getSymbol(): String = "⬜"
-    },
+    WALL("⬜", false),
 
-    OUT_OF_BOUNDS {
-        override fun getSymbol(): String = "*"
-    },
+    OUT_OF_BOUNDS("*", false),
 
-    START {
-        override fun getSymbol(): String = "\uD83D\uDFE6"
-    },
+    START("\uD83D\uDFE6", true),
 
-    END {
-        override fun getSymbol(): String = "\uD83D\uDFEA"
-    },
+    END("\uD83D\uDFEA", true),
 
-    PATH {
-        override fun getSymbol(): String = "🟥"
-    };
-
-
-    abstract fun getSymbol(): String
-
-
+    PATH("🟥", true)
 }

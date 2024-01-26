@@ -9,9 +9,7 @@ data class Maze(
 
     private val LOGGER = LogManager.getLogger()
 
-    private var matrix: List<List<CellType>>? = null //такова цена дата класса....
-    // (тут все равно надо копировать это поле, а если вызвать .copy(), то скопируются только height:Int и width:Int
-    // и в init{} матрица снова будет состоять только из стен) Зато повторяющегося кода меньше стало
+    private var matrix: List<List<CellType>>? = null
 
     init {
         if (matrix == null)
@@ -28,74 +26,79 @@ data class Maze(
 
         oldMatrix.forEachIndexed { rowIndex, row ->
             row.forEachIndexed { columnIndex, cellType ->
-                setCellType(Cell(rowIndex, columnIndex), cellType)
+                setCellType(CellCoordinates(rowIndex, columnIndex), cellType)
             }
         }
     }
 
-    public fun setCellType(cell: Cell, newType: CellType): Maze {
+    public fun setCellType(cellCoordinates: CellCoordinates, newType: CellType): Maze {
 
-        if (cell.row !in 0 until height)
-            throw IllegalArgumentException("row must be in [0;height), given row is ${cell.row}")
-        if (cell.column !in 0 until width)
-            throw IllegalArgumentException("column must be in [0;width), given column is ${cell.column}")
+        if (cellCoordinates.row !in 0 until height)
+            throw IllegalArgumentException("row must be in [0;height), given row is ${cellCoordinates.row}")
+        if (cellCoordinates.column !in 0 until width)
+            throw IllegalArgumentException("column must be in [0;width), given column is ${cellCoordinates.column}")
 
-        (matrix!![cell.row] as MutableList<CellType>)[cell.column] = newType
+        (matrix!![cellCoordinates.row] as MutableList<CellType>)[cellCoordinates.column] = newType
         return this
     }
 
     public fun printMaze(printBounds: Boolean = false) {
-
         if (printBounds)
-            LOGGER.info(CellType.WALL.getSymbol().repeat(width + 2))
+            LOGGER.info(CellType.WALL.symbol.repeat(width + 2))
 
         matrix!!.forEach { line ->
 
             val symbolLine = buildString {
                 line.forEach {
-                    append(it.getSymbol())
+                    append(it.symbol)
                 }
             }
 
             if (printBounds)
-                LOGGER.info("${CellType.WALL.getSymbol()}$symbolLine + ${CellType.WALL.getSymbol()}")
+                LOGGER.info("${CellType.WALL.symbol}$symbolLine${CellType.WALL.symbol}")
             else
                 LOGGER.info(symbolLine)
         }
 
         if (printBounds)
-            LOGGER.info(CellType.WALL.getSymbol().repeat(width + 2))
+            LOGGER.info(CellType.WALL.symbol.repeat(width + 2))
     }
 
-    public fun getCellType(cell: Cell): CellType =
-        if (cell.row !in 0 until height || cell.column !in 0 until width)
+    public fun getCellType(cellCoordinates: CellCoordinates): CellType =
+        if (cellCoordinates.row !in 0 until height || cellCoordinates.column !in 0 until width)
             CellType.OUT_OF_BOUNDS
-        else matrix!![cell.row][cell.column]
+        else matrix!![cellCoordinates.row][cellCoordinates.column]
 
-    fun getAdjacentCells(cell: Cell): List<Cell> = getAdjacentCells(cell, 1)
+    fun getAdjacentCells(cellCoordinates: CellCoordinates): List<CellCoordinates> = getAdjacentCells(cellCoordinates, 1)
 
 
-    fun getAdjacentCells(cell: Cell, distance: Int): List<Cell> {
-
+    fun getAdjacentCells(cellCoordinates: CellCoordinates, distance: Int): List<CellCoordinates> {
         if (distance <= 0)
             throw IllegalArgumentException("Distance must be positive number ")
 
-        val adjacentCells = mutableListOf<Cell>()
+        val adjacentCellCoordinates = mutableListOf<CellCoordinates>()
 
-        if (cell.row >= distance) //up
-            adjacentCells.add(Cell(cell.row - distance, cell.column))
+        if (cellCoordinates.row >= distance) //up
+            adjacentCellCoordinates.add(CellCoordinates(cellCoordinates.row - distance, cellCoordinates.column))
 
-        if (cell.column < width - distance) //right
-            adjacentCells.add(Cell(cell.row, cell.column + distance))
+        if (cellCoordinates.column < width - distance) //right
+            adjacentCellCoordinates.add(CellCoordinates(cellCoordinates.row, cellCoordinates.column + distance))
 
-        if (cell.row < height - distance) //down
-            adjacentCells.add(Cell(cell.row + distance, cell.column))
+        if (cellCoordinates.row < height - distance) //down
+            adjacentCellCoordinates.add(CellCoordinates(cellCoordinates.row + distance, cellCoordinates.column))
 
-        if (cell.column >= distance)
-            adjacentCells.add(Cell(cell.row, cell.column - distance))
+        if (cellCoordinates.column >= distance)
+            adjacentCellCoordinates.add(CellCoordinates(cellCoordinates.row, cellCoordinates.column - distance))
 
-        return adjacentCells
+        return adjacentCellCoordinates
     }
+
+    fun getAdjacentPassages(cellCoordinates: CellCoordinates, distance: Int): List<CellCoordinates> {
+        val adjacentCells = getAdjacentCells(cellCoordinates, distance)
+        return adjacentCells.filter { getCellType(it) == CellType.PASSAGE }
+    }
+
+    fun getAdjacentPassages(cellCoordinates: CellCoordinates) = getAdjacentPassages(cellCoordinates, 1)
 
     public override fun clone(): Maze = Maze(matrix!!)
 }
