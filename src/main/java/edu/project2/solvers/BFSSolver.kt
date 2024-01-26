@@ -1,32 +1,20 @@
 package edu.project2.solvers
 
-import edu.project2.Maze.Cell
+import edu.project2.Maze.CellCoordinates
 import edu.project2.Maze.CellType
 import edu.project2.Maze.Maze
 import java.util.*
 
 class BFSSolver : MazeSolver() {
 
-    public override fun solve(mazeParam: Maze, start: Cell, end: Cell): Maze {
-
+    public override fun solve(mazeParam: Maze, start: CellCoordinates, end: CellCoordinates): Maze {
         val maze = mazeParam.clone()
 
-        if (maze.getCellType(start) != CellType.PASSAGE)
-            throw IllegalArgumentException("Start cell is not a passage")
-
-        if (maze.getCellType(end) != CellType.PASSAGE)
-            throw IllegalArgumentException("End cell is not a passage")
-
-
-        val queue: Queue<Cell> = LinkedList()
-
+        val queue: Queue<CellCoordinates> = LinkedList()
         queue.add(start)
-        var ancestors = List(maze.height) { _ ->
-            List(maze.width) { Cell(-1, -1) }
-        }
 
-
-        val visited = hashSetOf<Cell>()
+        val ancestors: Map<CellCoordinates, CellCoordinates> = hashMapOf();
+        val visited = hashSetOf<CellCoordinates>()
 
         while (queue.isNotEmpty()) {
             val currentCell = queue.poll()
@@ -36,7 +24,7 @@ class BFSSolver : MazeSolver() {
             }
 
             for (cell in nextCells) {
-                (ancestors[cell.row] as MutableList<Cell>)[cell.column] = currentCell
+                (ancestors as HashMap<CellCoordinates, CellCoordinates>)[cell] = currentCell
 
                 queue.add(cell)
                 if (cell.row == end.row && cell.column == end.column)

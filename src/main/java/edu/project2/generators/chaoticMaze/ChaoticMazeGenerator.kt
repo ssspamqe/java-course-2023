@@ -1,6 +1,6 @@
 package edu.project2.generators.chaoticMaze
 
-import edu.project2.Maze.Cell
+import edu.project2.Maze.CellCoordinates
 import edu.project2.Maze.CellType
 import edu.project2.Maze.Maze
 import edu.project2.generators.MazeGenerator
@@ -12,7 +12,6 @@ class ChaoticMazeGenerator() : MazeGenerator {
     private lateinit var maze: Maze
 
     public fun getMaze(height: Int, width: Int, wallChance: Int = 75): Maze {
-
         if (height <= 0 || width <= 0)
             throw IllegalArgumentException("Sizes of maze must be positive integers")
 
@@ -23,15 +22,14 @@ class ChaoticMazeGenerator() : MazeGenerator {
 
 
     private fun generateMaze(height: Int, width: Int, wallChance: Int): Maze {
-
         maze = Maze(height, width)
 
-        val startCell = Cell(Random.nextInt(height), Random.nextInt(width))
+        val startCellCoordinates = CellCoordinates(Random.nextInt(height), Random.nextInt(width))
 
-        val trace: Stack<Cell> = Stack()
-        trace.add(startCell)
+        val trace: Stack<CellCoordinates> = Stack()
+        trace.add(startCellCoordinates)
 
-        val visited = hashSetOf(startCell)
+        val visited = hashSetOf(startCellCoordinates)
 
         //start bfs
         while (trace.isNotEmpty()) {
@@ -58,7 +56,6 @@ class ChaoticMazeGenerator() : MazeGenerator {
     }
 
     private fun getNextCellsAssignment(amount: Int, wallChance: Int): List<CellType> {
-
         if (amount == 0)
             return emptyList()
 
