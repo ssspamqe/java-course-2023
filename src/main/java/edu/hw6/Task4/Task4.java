@@ -12,18 +12,14 @@ import java.util.zip.CheckedOutputStream;
 public class Task4 {
 
     public void writeData(String fileName, String message) throws IOException {
-        try (var outputStream = new FileOutputStream(fileName)) {
-            var checkedOutputStream = new CheckedOutputStream(outputStream, new CRC32());
-            var bufferedOutputStream = new BufferedOutputStream(checkedOutputStream);
-            var outputStreamWriter = new OutputStreamWriter(bufferedOutputStream, StandardCharsets.UTF_8);
-            var printWriter = new PrintWriter(outputStreamWriter);
+        try (var outputStream = new FileOutputStream(fileName);
+             var checkedOutputStream = new CheckedOutputStream(outputStream, new CRC32());
+             var bufferedOutputStream = new BufferedOutputStream(checkedOutputStream);
+             var outputStreamWriter = new OutputStreamWriter(bufferedOutputStream, StandardCharsets.UTF_8);
+             var printWriter = new PrintWriter(outputStreamWriter)
+        ) {
 
             printWriter.println(message);
-
-            printWriter.close();
-            outputStreamWriter.close();
-            bufferedOutputStream.close();
-            checkedOutputStream.close();
         }
     }
 
